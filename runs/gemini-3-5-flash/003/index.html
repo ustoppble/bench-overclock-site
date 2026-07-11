@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simulação interativa de física premium com gravidade, colisões realistas, atração e explosões.">
+  <title>Kinetic Laboratory - Simulação de Física</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Reset & Base System */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    :root {
+      --bg-dark: #09090b;
+      --panel-bg: rgba(15, 15, 20, 0.75);
+      --panel-border: rgba(255, 255, 255, 0.08);
+      --accent-primary: #a855f7; /* Purple */
+      --accent-secondary: #06b6d4; /* Cyan */
+      --accent-glow: rgba(168, 85, 247, 0.3);
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0),
+        radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 0);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Glassmorphic Container styling */
+    .glass-panel {
+      background: var(--panel-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--panel-border);
+      border-radius: 24px;
+      box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.3s ease;
+    }
+
+    /* UI Overlay Wrapper */
+    .ui-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: grid;
+      grid-template-columns: 350px 1fr;
+      padding: 24px;
+      gap: 24px;
+    }
+
+    /* Left Sidebar Panel */
+    .sidebar {
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+      padding: 28px;
+      gap: 24px;
+    }
+
+    /* Hide scrollbar for sidebar but allow scrolling */
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .sidebar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+    }
+
+    /* Header styling */
+    .header {
+      margin-bottom: 8px;
+    }
+
+    .brand-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(135deg, #fff 30%, var(--accent-primary) 70%, var(--accent-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 4px;
+    }
+
+    /* Statistics Row */
+    .stats-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Section styling */
+    .section-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--accent-secondary);
+      letter-spacing: 1.5px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .control-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .control-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .control-value {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-primary);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Custom range input */
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+      transition: background 0.3s;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 6px;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      box-shadow: 0 0 10px var(--accent-primary);
+      cursor: pointer;
+      margin-top: -5px;
+      transition: transform 0.1s, background-color 0.2s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+      background: #c084fc;
+    }
+
+    /* Preset buttons */
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .btn-preset {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-main);
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-preset:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn-preset.active {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(6, 182, 212, 0.2));
+      border-color: var(--accent-primary);
+      color: #fff;
+    }
+
+    /* Theme color choices */
+    .theme-flex {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .theme-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .theme-dot.active {
+      border-color: #fff;
+      transform: scale(1.15);
+      box-shadow: 0 0 12px currentColor;
+    }
+
+    /* Audio Toggle */
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 22px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider-toggle {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: .3s;
+      border-radius: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .slider-toggle:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider-toggle {
+      background-color: var(--accent-primary);
+    }
+
+    input:checked + .slider-toggle:before {
+      transform: translateX(22px);
+    }
+
+    /* Primary Action Buttons */
+    .actions-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: auto;
+    }
+
+    /* Primary button rule: always pill (border-radius 9999px) */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-primary) 0%, #8b5cf6 50%, var(--accent-secondary) 100%);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 9999px; /* Primary pill-shaped button rule */
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      pointer-events: auto;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6);
+      filter: brightness(1.1);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 24px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 9999px; /* Secondary action can also be pill for uniformity */
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* HUD overlays */
+    .hud-right {
+      grid-column: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      padding-bottom: 8px;
+    }
+
+    .interaction-help {
+      background: var(--panel-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--panel-border);
+      border-radius: 18px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 280px;
+      pointer-events: auto;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      animation: fadeIn 0.8s ease;
+    }
+
+    .help-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .mouse-icon {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+    }
+
+    /* Floating Panel collapse button */
+    .collapse-btn {
+      position: absolute;
+      top: 24px;
+      left: 390px;
+      background: var(--panel-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--panel-border);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 11;
+      pointer-events: auto;
+      color: var(--text-main);
+      transition: all 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .collapse-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+
+    /* Collapse states */
+    .sidebar.collapsed {
+      transform: translateX(-400px);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .collapse-btn.collapsed {
+      left: 24px;
+      transform: rotate(180deg);
+    }
+
+    /* Lucide icons compliance: always stroke-width 1.5, size 20px */
+    .lucide-icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 1.5;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      display: inline-block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .ui-layer {
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+      .sidebar {
+        position: absolute;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
+        height: auto;
+        max-height: 40vh;
+        z-index: 20;
+      }
+      .collapse-btn {
+        display: none;
+      }
+      .hud-right {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background physics canvas -->
+  <canvas id="physicsCanvas"></canvas>
+
+  <!-- Toggle Sidebar Panel Button -->
+  <button id="btnToggleSidebar" class="collapse-btn" aria-label="Toggle Controls">
+    <svg class="lucide-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+
+  <!-- User Interface Layer -->
+  <div class="ui-layer">
+    <!-- Configuration Panel -->
+    <div id="sidebar" class="sidebar glass-panel">
+      <!-- Title -->
+      <div class="header">
+        <h1 class="brand-title">
+          <svg class="lucide-icon" style="color: var(--accent-primary)" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/></svg>
+          Kinetic Lab
+        </h1>
+        <p class="brand-subtitle">Simulador de Física 2D</p>
+      </div>
+
+      <!-- Live Counters -->
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-label">Partículas</div>
+          <div id="particleCount" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Taxa FPS</div>
+          <div id="fpsCount" class="stat-value">60</div>
+        </div>
+      </div>
+
+      <!-- Section: Physics Constants -->
+      <div>
+        <h2 class="section-title">
+          <svg class="lucide-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"/><path d="M21 16.5a2.5 2.5 0 0 1-5 0V15H9v1.5a2.5 2.5 0 0 1-5 0V14h17v2.5z"/></svg>
+          Variáveis da Física
+        </h2>
+        <div class="control-group">
+          <!-- Gravity Slider -->
+          <div class="control-item">
+            <div class="control-label-row">
+              <span>Gravidade</span>
+              <span id="valGravity" class="control-value">0.5</span>
+            </div>
+            <input type="range" id="slideGravity" min="0" max="2" step="0.05" value="0.5">
+          </div>
+
+          <!-- Bounce Slider -->
+          <div class="control-item">
+            <div class="control-label-row">
+              <span>Elasticidade (Rebote)</span>
+              <span id="valBounce" class="control-value">0.8</span>
+            </div>
+            <input type="range" id="slideBounce" min="0.1" max="1.0" step="0.05" value="0.8">
+          </div>
+
+          <!-- Friction Slider -->
+          <div class="control-item">
+            <div class="control-label-row">
+              <span>Fricção do Ar</span>
+              <span id="valFriction" class="control-value">0.005</span>
+            </div>
+            <input type="range" id="slideFriction" min="0" max="0.05" step="0.001" value="0.005">
+          </div>
+        </div>
+      </div>
+
+      <!-- Section: Presets -->
+      <div>
+        <h2 class="section-title">
+          <svg class="lucide-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="m12 3-1.912 5.886H3.894l5.018 3.646L6.999 18.42 12 14.773l5.001 3.646-1.913-5.888 5.018-3.646h-6.194L12 3z"/></svg>
+          Presets de Gravidade
+        </h2>
+        <div class="preset-grid">
+          <button class="btn-preset" data-g="0">Zero G</button>
+          <button class="btn-preset" data-g="0.15">Espaço</button>
+          <button class="btn-preset active" data-g="0.5">Terra</button>
+          <button class="btn-preset" data-g="1.5">Júpiter</button>
+        </div>
+      </div>
+
+      <!-- Section: Visuals & Audio -->
+      <div>
+        <h2 class="section-title">
+          <svg class="lucide-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M12 2v20M17 5v14M22 9v6M7 8v8M2 10v4"/></svg>
+          Estilo & Som
+        </h2>
+        <div class="control-group">
+          <!-- Sound Toggle -->
+          <div class="toggle-row">
+            <span style="font-size: 13px;">Efeitos Sonoros Synthesized</span>
+            <label class="switch">
+              <input type="checkbox" id="toggleSound">
+              <span class="slider-toggle"></span>
+            </label>
+          </div>
+
+          <!-- Colors Selector -->
+          <div class="control-item">
+            <span style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">Esquema de Cores</span>
+            <div class="theme-flex">
+              <div class="theme-dot active" style="background: linear-gradient(135deg, #a855f7, #06b6d4); color: #a855f7;" data-theme="neon" title="Neon"></div>
+              <div class="theme-dot" style="background: linear-gradient(135deg, #ff4500, #ff8c00); color: #ff4500;" data-theme="sunset" title="Sunset"></div>
+              <div class="theme-dot" style="background: linear-gradient(135deg, #10b981, #3b82f6); color: #10b981;" data-theme="aurora" title="Aurora"></div>
+              <div class="theme-dot" style="background: linear-gradient(135deg, #ff007f, #7000ff); color: #ff007f;" data-theme="cyberpunk" title="Cyberpunk"></div>
+              <div class="theme-dot" style="background: linear-gradient(135deg, #f4f4f5, #71717a); color: #f4f4f5;" data-theme="mono" title="Monocromático"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions-group">
+        <!-- Primary button rule: always pill (border-radius 9999px) -->
+        <button id="btnSpawn50" class="btn-primary">
+          <svg class="lucide-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Soltar 50 Bolinhas
+        </button>
+        <button id="btnClear" class="btn-secondary">
+          <svg class="lucide-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+          Limpar Tudo
+        </button>
+      </div>
+    </div>
+
+    <!-- HUD Right (Interaction Helper) -->
+    <div class="hud-right">
+      <div class="interaction-help">
+        <div class="help-item">
+          <div class="mouse-icon">
+            <svg class="lucide-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="7"/><path d="M12 6V2"/><path d="M5 10h14"/></svg>
+          </div>
+          <div>
+            <strong style="display: block; font-size: 13px;">Segurar Mouse</strong>
+            <span style="font-size: 11px; color: var(--text-muted);">Atrai bolinhas perto do cursor</span>
+          </div>
+        </div>
+        <div class="help-item">
+          <div class="mouse-icon">
+            <svg class="lucide-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m12 8-4 4 4 4 4-4-4-4z"/></svg>
+          </div>
+          <div>
+            <strong style="display: block; font-size: 13px;">Clicar Rápido</strong>
+            <span style="font-size: 11px; color: var(--text-muted);">Gera repulsão explosiva</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio and Physics Engines -->
+  <script>
+    // --- AUDIO SYSTEM (Web Audio API Synthesizer) ---
+    let audioCtx = null;
+    const toggleSound = document.getElementById('toggleSound');
+
+    function initAudio() {
+      if (audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    // Play synthesized collision sounds
+    function playCollisionSound(ballA, ballB, relativeVel) {
+      if (!toggleSound.checked || !audioCtx) return;
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      
+      const now = audioCtx.currentTime;
+      // Volume scales with velocity, capped
+      const volume = Math.min(0.08, relativeVel * 0.005);
+      if (volume < 0.002) return;
+      
+      // Pitch is inversely proportional to radius (smaller = higher pitch)
+      const avgRadius = (ballA.r + ballB.r) / 2;
+      const frequency = Math.max(120, Math.min(1800, 1600 - avgRadius * 30));
+      
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      
+      // Use standard sine oscillator for pure glassy tinkles
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(frequency, now);
+      
+      gainNode.gain.setValueAtTime(volume, now);
+      // Exponential decay
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+      
+      osc.start(now);
+      osc.stop(now + 0.13);
+    }
+
+    // Synthesized explosion sound
+    function playExplosionSound() {
+      if (!toggleSound.checked || !audioCtx) return;
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      
+      const now = audioCtx.currentTime;
+      
+      // Generate custom noise buffer for raw low rumble
+      const bufferSize = audioCtx.sampleRate * 0.6; 
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      
+      const noiseSource = audioCtx.createBufferSource();
+      noiseSource.buffer = buffer;
+      
+      // Bandpass sweep to filter frequencies
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(160, now);
+      filter.Q.setValueAtTime(2.0, now);
+      filter.frequency.exponentialRampToValueAtTime(15, now + 0.5);
+      
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0.35, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.55);
+      
+      noiseSource.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(audioCtx.destination);
+      
+      noiseSource.start(now);
+      noiseSource.stop(now + 0.6);
+      
+      // Add a low frequency oscillator sweep for sub bass boom
+      const subOsc = audioCtx.createOscillator();
+      const subGain = audioCtx.createGain();
+      
+      subOsc.type = 'triangle';
+      subOsc.frequency.setValueAtTime(90, now);
+      subOsc.frequency.linearRampToValueAtTime(20, now + 0.45);
+      
+      subGain.gain.setValueAtTime(0.45, now);
+      subGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+      
+      subOsc.connect(subGain);
+      subGain.connect(audioCtx.destination);
+      
+      subOsc.start(now);
+      subOsc.stop(now + 0.5);
+    }
+
+
+    // --- PHYSICS & VISUAL SYSTEM ---
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // State Variables
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    let gravity = 0.5;
+    let elasticity = 0.8;
+    let friction = 0.005;
+    let soundEnabled = false;
+    let currentTheme = 'neon';
+
+    const balls = [];
+    const visualParticles = [];
+    const shockwaves = [];
+
+    // Mouse control states
+    const mouse = { x: 0, y: 0, active: false };
+    let isMouseDown = false;
+    let mouseDownTime = 0;
+    let mousePosOnDown = { x: 0, y: 0 };
+
+    // Screen Shake variables for juicy feedbacks
+    let shakeTimer = 0;
+    let shakeIntensity = 0;
+
+    // Themes Map
+    const colorThemes = {
+      neon: [
+        { main: '#a855f7', light: '#d8b4fe', dark: '#6b21a8' }, // Purple
+        { main: '#06b6d4', light: '#67e8f9', dark: '#0891b2' }, // Cyan
+        { main: '#10b981', light: '#6ee7b7', dark: '#047857' }, // Green
+        { main: '#f43f5e', light: '#fda4af', dark: '#be123c' }, // Rose
+        { main: '#eab308', light: '#fef08a', dark: '#a16207' }  // Yellow
+      ],
+      sunset: [
+        { main: '#f97316', light: '#ffedd5', dark: '#c2410c' }, // Orange
+        { main: '#ef4444', light: '#fee2e2', dark: '#b91c1c' }, // Red
+        { main: '#ec4899', light: '#fce7f3', dark: '#be185d' }, // Pink
+        { main: '#f43f5e', light: '#fda4af', dark: '#be123c' }, // Rose
+        { main: '#eab308', light: '#fef08a', dark: '#a16207' }  // Gold
+      ],
+      aurora: [
+        { main: '#10b981', light: '#a7f3d0', dark: '#064e3b' }, // Green
+        { main: '#059669', light: '#6ee7b7', dark: '#047857' }, // Dark Green
+        { main: '#06b6d4', light: '#afeeee', dark: '#0891b2' }, // Cyan
+        { main: '#3b82f6', light: '#bfdbfe', dark: '#1d4ed8' }, // Blue
+        { main: '#6366f1', light: '#c7d2fe', dark: '#4338ca' }  // Indigo
+      ],
+      cyberpunk: [
+        { main: '#ff007f', light: '#ffb3d9', dark: '#b30059' }, // Neon Pink
+        { main: '#7000ff', light: '#d9b3ff', dark: '#4c00b3' }, // Indigo Neon
+        { main: '#00f2fe', light: '#b3f9ff', dark: '#00a9b3' }, // Cyan Neon
+        { main: '#ffe600', light: '#ffffb3', dark: '#b3a100' }, // Neon Yellow
+        { main: '#ff5d00', light: '#ffc3a0', dark: '#b34100' }  // Orange Neon
+      ],
+      mono: [
+        { main: '#f4f4f5', light: '#ffffff', dark: '#71717a' }, // Soft White
+        { main: '#e4e4e7', light: '#f4f4f5', dark: '#52525b' }, // Grey
+        { main: '#a1a1aa', light: '#d4d4d8', dark: '#3f3f46' }, // Mid Grey
+        { main: '#71717a', light: '#a1a1aa', dark: '#27272a' }, // Darker
+        { main: '#e0f2fe', light: '#ffffff', dark: '#0369a1' }  // Silver Ice
+      ]
+    };
+
+    // --- CLASSES ---
+
+    // Ball (Particle with rigid physics body)
+    class Ball {
+      constructor(x, y, r, colorObj) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 8;
+        this.vy = (Math.random() - 0.5) * 4;
+        this.r = r;
+        this.mass = r * r; // Mass proportional to area/volume estimation
+        
+        // Colors
+        this.colorMain = colorObj.main;
+        this.colorLight = colorObj.light;
+        this.colorDark = colorObj.dark;
+      }
+
+      update() {
+        // Apply forces (Gravity + Air Friction)
+        this.vy += gravity;
+        this.vx *= (1 - friction);
+        this.vy *= (1 - friction);
+
+        // Update positions
+        this.x += this.vx;
+        this.y += this.vy;
+      }
+
+      draw() {
+        ctx.beginPath();
+        // Give 3D spherical glow using radial gradient
+        const radialGrad = ctx.createRadialGradient(
+          this.x - this.r * 0.3, this.y - this.r * 0.3, this.r * 0.05,
+          this.x, this.y, this.r
+        );
+        radialGrad.addColorStop(0, this.colorLight);
+        radialGrad.addColorStop(0.3, this.colorMain);
+        radialGrad.addColorStop(1, this.colorDark);
+        
+        ctx.fillStyle = radialGrad;
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+      }
+    }
+
+    // Aesthetic visual particles (Sparks/Vortex Dust)
+    class Spark {
+      constructor(x, y, vx, vy, color, r, life) {
+        this.x = x;
+        this.y = y;
+        this.vx = vx;
+        this.vy = vy;
+        this.color = color;
+        this.r = r;
+        this.maxLife = life;
+        this.life = life;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vx *= 0.96;
+        this.vy *= 0.96;
+        this.life--;
+      }
+
+      draw() {
+        const opacity = this.life / this.maxLife;
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = opacity;
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+        ctx.closePath();
+      }
+    }
+
+    // Shockwave ring explosion ring
+    class Shockwave {
+      constructor(x, y, maxR) {
+        this.x = x;
+        this.y = y;
+        this.r = 0;
+        this.maxR = maxR;
+        this.speed = 8;
+        this.alpha = 1;
+      }
+
+      update() {
+        this.r += this.speed;
+        this.speed *= 0.95;
+        this.alpha = 1 - (this.r / this.maxR);
+      }
+
+      draw() {
+        if (this.alpha <= 0) return;
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(168, 85, 247, ${this.alpha * 0.7})`;
+        ctx.lineWidth = 6 * this.alpha;
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(6, 182, 212, ${this.alpha * 0.35})`;
+        ctx.lineWidth = 2 * this.alpha;
+        ctx.arc(this.x, this.y, Math.max(0, this.r - 12), 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.closePath();
+      }
+    }
+
+    // Helper: trigger screen shake
+    function shakeScreen(intensity, durationFrames) {
+      shakeIntensity = intensity;
+      shakeTimer = durationFrames;
+    }
+
+    // --- INSTANTIATIONS & LOGIC ---
+
+    // Spawn N balls
+    function spawnBalls(count) {
+      const colors = colorThemes[currentTheme];
+      const minRadius = 10;
+      const maxRadius = 30;
+
+      for (let i = 0; i < count; i++) {
+        const radius = minRadius + Math.random() * (maxRadius - minRadius);
+        // Ensure starting safely inside canvas edges to prevent glitching out immediately
+        const x = radius + Math.random() * (width - radius * 2);
+        const y = radius + Math.random() * (height / 2);
+        const colorObj = colors[Math.floor(Math.random() * colors.length)];
+        balls.push(new Ball(x, y, radius, colorObj));
+      }
+      document.getElementById('particleCount').innerText = balls.length;
+    }
+
+    // Trigger explosive push away from mouse
+    function triggerExplosion(ex, ey) {
+      const radius = 280;
+      const forceScalar = 14;
+
+      // Visual: Ring + sparks
+      shockwaves.push(new Shockwave(ex, ey, radius));
+      
+      const themeColors = colorThemes[currentTheme];
+      for (let i = 0; i < 40; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 20;
+        const speed = 4 + Math.random() * 12;
+        const px = ex + Math.cos(angle) * dist;
+        const py = ey + Math.sin(angle) * dist;
+        const vx = Math.cos(angle) * speed;
+        const vy = Math.sin(angle) * speed;
+        const color = themeColors[Math.floor(Math.random() * themeColors.length)].main;
+        visualParticles.push(new Spark(px, py, vx, vy, color, 2 + Math.random() * 4, 30 + Math.random() * 20));
+      }
+
+      shakeScreen(8, 15);
+      playExplosionSound();
+
+      // Apply explosive forces to rigid balls
+      for (let i = 0; i < balls.length; i++) {
+        const ball = balls[i];
+        const dx = ball.x - ex;
+        const dy = ball.y - ey;
+        const distSqr = dx * dx + dy * dy;
+
+        if (distSqr < radius * radius) {
+          const dist = Math.sqrt(distSqr) || 0.0001;
+          const normalX = dx / dist;
+          const normalY = dy / dist;
+          const strength = (1 - dist / radius) * forceScalar;
+          
+          ball.vx += normalX * strength;
+          ball.vy += normalY * strength;
+        }
+      }
+    }
+
+    // Resolve ball-to-ball collisions (Elastic collisions with overlap projection)
+    function resolveCollisions() {
+      // SUB-STEPPING: We do multiple updates per frame to guarantee 60fps high speed physics precision without clipping
+      const SUB_STEPS = 4;
+      
+      for (let step = 0; step < SUB_STEPS; step++) {
+        // Resolve pairwise collisions
+        for (let i = 0; i < balls.length; i++) {
+          const ballA = balls[i];
+          for (let j = i + 1; j < balls.length; j++) {
+            const ballB = balls[j];
+
+            const dx = ballB.x - ballA.x;
+            const dy = ballB.y - ballA.y;
+            const distSqr = dx * dx + dy * dy;
+            const minDist = ballA.r + ballB.r;
+
+            if (distSqr < minDist * minDist) {
+              const dist = Math.sqrt(distSqr) || 0.0001;
+              const overlap = minDist - dist;
+
+              // Collision normal
+              const nx = dx / dist;
+              const ny = dy / dist;
+
+              // Projection resolution (push apart weighted by mass)
+              const totalMass = ballA.mass + ballB.mass;
+              const ratioA = ballB.mass / totalMass;
+              const ratioB = ballA.mass / totalMass;
+
+              ballA.x -= nx * overlap * ratioA;
+              ballA.y -= ny * overlap * ratioA;
+              ballB.x += nx * overlap * ratioB;
+              ballB.y += ny * overlap * ratioB;
+
+              // Elastic impulse physics
+              const relVx = ballA.vx - ballB.vx;
+              const relVy = ballA.vy - ballB.vy;
+              const velAlongNormal = relVx * nx + relVy * ny;
+
+              // Only resolve if velocities are directed towards each other
+              if (velAlongNormal > 0) {
+                const impulse = (1 + elasticity) * velAlongNormal / ((1 / ballA.mass) + (1 / ballB.mass));
+                
+                ballA.vx -= (impulse / ballA.mass) * nx;
+                ballA.vy -= (impulse / ballA.mass) * ny;
+                ballB.vx += (impulse / ballB.mass) * nx;
+                ballB.vy += (impulse / ballB.mass) * ny;
+
+                // Play collision audio synthesis
+                if (soundEnabled && velAlongNormal > 0.4) {
+                  playCollisionSound(ballA, ballB, velAlongNormal);
+                }
+              }
+            }
+          }
+        }
+
+        // Apply boundaries checks within the sub-step
+        for (let i = 0; i < balls.length; i++) {
+          const ball = balls[i];
+          
+          // Left & Right bounds
+          if (ball.x - ball.r < 0) {
+            ball.x = ball.r;
+            ball.vx = -ball.vx * elasticity;
+            ball.vy *= 0.98; // minor friction on sliding walls
+          } else if (ball.x + ball.r > width) {
+            ball.x = width - ball.r;
+            ball.vx = -ball.vx * elasticity;
+            ball.vy *= 0.98;
+          }
+
+          // Top & Bottom bounds
+          if (ball.y - ball.r < 0) {
+            ball.y = ball.r;
+            ball.vy = -ball.vy * elasticity;
+            ball.vx *= 0.98;
+          } else if (ball.y + ball.r > height) {
+            ball.y = height - ball.r;
+            ball.vy = -ball.vy * elasticity;
+            ball.vx *= 0.98;
+          }
+        }
+      }
+    }
+
+
+    // --- RENDERING LOOP & SIMULATION STEPS ---
+    
+    // FPS computation states
+    let lastTime = performance.now();
+    let frameCount = 0;
+    let fps = 60;
+
+    function renderLoop() {
+      // Clear canvas with trace tail effect (very slight transparency)
+      ctx.fillStyle = 'rgba(9, 9, 11, 0.25)';
+      ctx.fillRect(0, 0, width, height);
+
+      // 1. Screen Shake setup
+      ctx.save();
+      if (shakeTimer > 0) {
+        const dx = (Math.random() - 0.5) * shakeIntensity;
+        const dy = (Math.random() - 0.5) * shakeIntensity;
+        ctx.translate(dx, dy);
+        shakeTimer--;
+      }
+
+      // 2. Attraction Vortex effect
+      if (isMouseDown && performance.now() - mouseDownTime > 180) {
+        const attractRadius = 250;
+        
+        // Draw glow aura under mouse
+        const radialVortex = ctx.createRadialGradient(
+          mouse.x, mouse.y, 0, 
+          mouse.x, mouse.y, attractRadius
+        );
+        radialVortex.addColorStop(0, 'rgba(168, 85, 247, 0.12)');
+        radialVortex.addColorStop(0.5, 'rgba(6, 182, 212, 0.05)');
+        radialVortex.addColorStop(1, 'rgba(9, 9, 11, 0)');
+        
+        ctx.beginPath();
+        ctx.fillStyle = radialVortex;
+        ctx.arc(mouse.x, mouse.y, attractRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+
+        // Attraction Physics
+        for (let i = 0; i < balls.length; i++) {
+          const ball = balls[i];
+          const dx = mouse.x - ball.x;
+          const dy = mouse.y - ball.y;
+          const distSqr = dx * dx + dy * dy;
+
+          if (distSqr < attractRadius * attractRadius) {
+            const dist = Math.sqrt(distSqr) || 0.0001;
+            // Stronger force pull closer to cursor
+            const force = (1 - dist / attractRadius) * 0.75;
+            ball.vx += (dx / dist) * force;
+            ball.vy += (dy / dist) * force;
+          }
+        }
+
+        // Spawn visual vortex dust swirling in
+        if (Math.random() < 0.6) {
+          const angle = Math.random() * Math.PI * 2;
+          const dist = 50 + Math.random() * 200;
+          const px = mouse.x + Math.cos(angle) * dist;
+          const py = mouse.y + Math.sin(angle) * dist;
+          const speed = 2 + Math.random() * 3;
+          // Swirling vector + radial pull inward
+          const vx = -Math.sin(angle) * speed - Math.cos(angle) * 1.5;
+          const vy = Math.cos(angle) * speed - Math.sin(angle) * 1.5;
+          const themeColors = colorThemes[currentTheme];
+          const color = themeColors[Math.floor(Math.random() * themeColors.length)].main;
+          visualParticles.push(new Spark(px, py, vx, vy, color, 1 + Math.random() * 2, 25));
+        }
+      }
+
+      // 3. Update & Draw Balls
+      for (let i = 0; i < balls.length; i++) {
+        const ball = balls[i];
+        ball.update();
+      }
+
+      // Physics resolve collisions and borders
+      resolveCollisions();
+
+      // Draw all balls
+      for (let i = 0; i < balls.length; i++) {
+        balls[i].draw();
+      }
+
+      // 4. Update & Draw Shockwaves
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const wave = shockwaves[i];
+        wave.update();
+        wave.draw();
+        if (wave.alpha <= 0) {
+          shockwaves.splice(i, 1);
+        }
+      }
+
+      // 5. Update & Draw Spark Particles
+      for (let i = visualParticles.length - 1; i >= 0; i--) {
+        const spark = visualParticles[i];
+        spark.update();
+        spark.draw();
+        if (spark.life <= 0) {
+          visualParticles.splice(i, 1);
+        }
+      }
+
+      ctx.restore(); // Screen shake end
+
+      // 6. Compute FPS Rate
+      frameCount++;
+      const now = performance.now();
+      if (now - lastTime >= 1000) {
+        fps = Math.round((frameCount * 1000) / (now - lastTime));
+        document.getElementById('fpsCount').innerText = fps;
+        frameCount = 0;
+        lastTime = now;
+      }
+
+      requestAnimationFrame(renderLoop);
+    }
+
+
+    // --- DOM INTERACTORS & LISTENERS ---
+
+    // Toggle Sidebar collapse
+    const btnToggleSidebar = document.getElementById('btnToggleSidebar');
+    const sidebar = document.getElementById('sidebar');
+
+    btnToggleSidebar.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      btnToggleSidebar.classList.toggle('collapsed');
+    });
+
+    // Inputs updates
+    const slideGravity = document.getElementById('slideGravity');
+    const valGravity = document.getElementById('valGravity');
+    slideGravity.addEventListener('input', (e) => {
+      gravity = parseFloat(e.target.value);
+      valGravity.innerText = gravity.toFixed(2);
+      // Remove preset button active styles if customized
+      document.querySelectorAll('.btn-preset').forEach(btn => btn.classList.remove('active'));
+    });
+
+    const slideBounce = document.getElementById('slideBounce');
+    const valBounce = document.getElementById('valBounce');
+    slideBounce.addEventListener('input', (e) => {
+      elasticity = parseFloat(e.target.value);
+      valBounce.innerText = elasticity.toFixed(2);
+    });
+
+    const slideFriction = document.getElementById('slideFriction');
+    const valFriction = document.getElementById('valFriction');
+    slideFriction.addEventListener('input', (e) => {
+      friction = parseFloat(e.target.value);
+      valFriction.innerText = friction.toFixed(3);
+    });
+
+    // Preset selection
+    document.querySelectorAll('.btn-preset').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        gravity = parseFloat(btn.dataset.g);
+        slideGravity.value = gravity;
+        valGravity.innerText = gravity.toFixed(2);
+      });
+    });
+
+    // Color themes choice
+    document.querySelectorAll('.theme-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        document.querySelectorAll('.theme-dot').forEach(d => d.classList.remove('active'));
+        dot.classList.add('active');
+        
+        currentTheme = dot.dataset.theme;
+        
+        // Re-color existing balls mapping theme colors
+        const colors = colorThemes[currentTheme];
+        balls.forEach(ball => {
+          const colorObj = colors[Math.floor(Math.random() * colors.length)];
+          ball.colorMain = colorObj.main;
+          ball.colorLight = colorObj.light;
+          ball.colorDark = colorObj.dark;
+        });
+
+        // Set visual root CSS accent to matching theme color
+        const baseColor = dot.style.color || '#a855f7';
+        document.documentElement.style.setProperty('--accent-primary', baseColor);
+      });
+    });
+
+    // Spawn & Clear actions
+    document.getElementById('btnSpawn50').addEventListener('click', () => {
+      initAudio();
+      spawnBalls(50);
+    });
+
+    document.getElementById('btnClear').addEventListener('click', () => {
+      balls.length = 0;
+      visualParticles.length = 0;
+      shockwaves.length = 0;
+      document.getElementById('particleCount').innerText = 0;
+    });
+
+    // Sound toggle initializer
+    toggleSound.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        initAudio();
+        soundEnabled = true;
+      } else {
+        soundEnabled = false;
+      }
+    });
+
+    // Mouse Tracking Event Listeners
+    window.addEventListener('mousedown', (e) => {
+      // Prevent click triggers when handling UI controls
+      if (e.target.closest('#sidebar') || e.target.closest('#btnToggleSidebar')) return;
+      
+      initAudio();
+      isMouseDown = true;
+      mouseDownTime = performance.now();
+      mousePosOnDown = { x: e.clientX, y: e.clientY };
+      
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseup', (e) => {
+      if (!isMouseDown) return;
+      isMouseDown = false;
+      
+      const duration = performance.now() - mouseDownTime;
+      const dx = e.clientX - mousePosOnDown.x;
+      const dy = e.clientY - mousePosOnDown.y;
+      const movement = Math.sqrt(dx * dx + dy * dy);
+
+      // If release was quick (less than 200ms) and mouse did not drag heavily, treat as instant click explosion
+      if (duration < 220 && movement < 12) {
+        triggerExplosion(e.clientX, e.clientY);
+      }
+    });
+
+    // Touch support for mobiles/tablets
+    window.addEventListener('touchstart', (e) => {
+      if (e.target.closest('#sidebar') || e.target.closest('#btnToggleSidebar')) return;
+      
+      initAudio();
+      isMouseDown = true;
+      mouseDownTime = performance.now();
+      const touch = e.touches[0];
+      mousePosOnDown = { x: touch.clientX, y: touch.clientY };
+      mouse.x = touch.clientX;
+      mouse.y = touch.clientY;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      mouse.x = touch.clientX;
+      mouse.y = touch.clientY;
+    });
+
+    window.addEventListener('touchend', (e) => {
+      if (!isMouseDown) return;
+      isMouseDown = false;
+      
+      const duration = performance.now() - mouseDownTime;
+      const touch = e.changedTouches[0];
+      const dx = touch.clientX - mousePosOnDown.x;
+      const dy = touch.clientY - mousePosOnDown.y;
+      const movement = Math.sqrt(dx * dx + dy * dy);
+
+      if (duration < 220 && movement < 12) {
+        triggerExplosion(touch.clientX, touch.clientY);
+      }
+    });
+
+    // Screen resizing handler
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      
+      // Clamp balls within resized screen dimensions so they don't get trapped off screen
+      balls.forEach(ball => {
+        if (ball.x - ball.r < 0) ball.x = ball.r;
+        if (ball.x + ball.r > width) ball.x = width - ball.r;
+        if (ball.y - ball.r < 0) ball.y = ball.r;
+        if (ball.y + ball.r > height) ball.y = height - ball.r;
+      });
+    });
+
+    // Spawning some initial balls to start beautifully
+    spawnBalls(100);
+
+    // Run Engine
+    requestAnimationFrame(renderLoop);
+  </script>
+</body>
+</html>

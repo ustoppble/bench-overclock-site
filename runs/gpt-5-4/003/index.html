@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bolinhas com Física</title>
+  <style>
+    :root {
+      --bg-1: #07111f;
+      --bg-2: #102a43;
+      --bg-3: #1f6f78;
+      --panel: rgba(7, 17, 31, 0.7);
+      --panel-border: rgba(255, 255, 255, 0.12);
+      --text: #eaf7ff;
+      --accent: #f2c14e;
+      --accent-strong: #f78154;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(242, 193, 78, 0.15), transparent 28%),
+        radial-gradient(circle at 80% 30%, rgba(247, 129, 84, 0.18), transparent 24%),
+        linear-gradient(160deg, var(--bg-1), var(--bg-2) 48%, var(--bg-3));
+    }
+
+    canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      cursor: crosshair;
+    }
+
+    .hud {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border: 1px solid var(--panel-border);
+      border-radius: 18px;
+      background: var(--panel);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
+      user-select: none;
+      z-index: 10;
+    }
+
+    .hud-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 190px;
+    }
+
+    .hud-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(234, 247, 255, 0.92);
+    }
+
+    .hud-subtitle {
+      font-size: 0.82rem;
+      color: rgba(234, 247, 255, 0.7);
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: 700;
+      color: #04101d;
+      background: linear-gradient(135deg, var(--accent), var(--accent-strong));
+      box-shadow: 0 10px 24px rgba(247, 129, 84, 0.35);
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: saturate(1.08);
+      box-shadow: 0 14px 28px rgba(247, 129, 84, 0.42);
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.99);
+      box-shadow: 0 8px 16px rgba(247, 129, 84, 0.28);
+    }
+
+    .stats {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--panel-border);
+      background: rgba(7, 17, 31, 0.55);
+      font-size: 0.8rem;
+      letter-spacing: 0.03em;
+      color: rgba(234, 247, 255, 0.78);
+      z-index: 10;
+    }
+
+    @media (max-width: 720px) {
+      .hud {
+        top: 12px;
+        left: 12px;
+        right: 12px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .hud-copy {
+        min-width: 0;
+      }
+
+      .stats {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hud">
+    <div class="hud-copy">
+      <div class="hud-title">Campo de Bolinhas</div>
+      <div class="hud-subtitle">Segure o mouse para atrair. Clique para explodir.</div>
+    </div>
+    <button id="spawnButton" type="button">+ 50 bolinhas</button>
+  </div>
+
+  <canvas id="world"></canvas>
+  <div class="stats" id="stats">0 bolinhas</div>
+
+  <script>
+    const canvas = document.getElementById("world");
+    const ctx = canvas.getContext("2d", { alpha: true });
+    const stats = document.getElementById("stats");
+    const spawnButton = document.getElementById("spawnButton");
+
+    const config = {
+      gravity: 1450,
+      airDrag: 0.0008,
+      wallRestitution: 0.9,
+      ballRestitution: 0.96,
+      maxSpeed: 1800,
+      initialBalls: 90,
+      spawnBurst: 50,
+      maxBalls: 1200,
+      attractionRadius: 170,
+      attractionForce: 4200,
+      explosionRadius: 220,
+      explosionForce: 1150,
+      cellSize: 44,
+      fixedStep: 1 / 120,
+      maxFrame: 1 / 24
+    };
+
+    const palette = [
+      "#ff6b6b",
+      "#ffd166",
+      "#06d6a0",
+      "#4cc9f0",
+      "#8ecae6",
+      "#f72585",
+      "#b8f2e6",
+      "#f4a261",
+      "#90be6d"
+    ];
+
+    const balls = [];
+    const pointer = {
+      x: 0,
+      y: 0,
+      down: false,
+      inside: false
+    };
+
+    let width = 0;
+    let height = 0;
+    let accumulator = 0;
+    let previousTime = performance.now();
+    let fps = 60;
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      for (const ball of balls) {
+        ball.x = clamp(ball.x, ball.radius, width - ball.radius);
+        ball.y = clamp(ball.y, ball.radius, height - ball.radius);
+      }
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function randomBetween(min, max) {
+      return min + Math.random() * (max - min);
+    }
+
+    function pick(array) {
+      return array[(Math.random() * array.length) | 0];
+    }
+
+    function createBall(x, y) {
+      const radius = randomBetween(7, 16);
+      const mass = radius * radius * Math.PI;
+      const color = pick(palette);
+      return {
+        x,
+        y,
+        vx: randomBetween(-140, 140),
+        vy: randomBetween(-80, 80),
+        radius,
+        mass,
+        color,
+        shadowColor: shade(color, -18)
+      };
+    }
+
+    function addBalls(count, options = {}) {
+      const spawnX = options.x ?? width * 0.5;
+      const spawnY = options.y ?? 80;
+      const spreadX = options.spreadX ?? Math.min(width * 0.42, 340);
+      const spreadY = options.spreadY ?? 80;
+
+      const available = Math.max(0, config.maxBalls - balls.length);
+      const total = Math.min(count, available);
+
+      for (let i = 0; i < total; i += 1) {
+        const x = clamp(
+          spawnX + randomBetween(-spreadX, spreadX),
+          0,
+          width
+        );
+        const y = clamp(
+          spawnY + randomBetween(-spreadY, spreadY),
+          0,
+          Math.max(0, height * 0.35)
+        );
+        const ball = createBall(x, y);
+        ball.x = clamp(ball.x, ball.radius, width - ball.radius);
+        ball.y = clamp(ball.y, ball.radius, height - ball.radius);
+        balls.push(ball);
+      }
+    }
+
+    function applyPointerForces(ball, dt) {
+      if (!pointer.inside) {
+        return;
+      }
+
+      const dx = pointer.x - ball.x;
+      const dy = pointer.y - ball.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance === 0) {
+        return;
+      }
+
+      if (pointer.down && distance < config.attractionRadius) {
+        const strength = 1 - distance / config.attractionRadius;
+        const accel = config.attractionForce * strength * strength;
+        const invDistance = 1 / distance;
+        ball.vx += dx * invDistance * accel * dt;
+        ball.vy += dy * invDistance * accel * dt;
+      }
+    }
+
+    function explode(x, y) {
+      for (const ball of balls) {
+        const dx = ball.x - x;
+        const dy = ball.y - y;
+        const distance = Math.hypot(dx, dy);
+        if (distance === 0 || distance > config.explosionRadius) {
+          continue;
+        }
+
+        const strength = 1 - distance / config.explosionRadius;
+        const impulse = config.explosionForce * strength * strength;
+        const invDistance = 1 / distance;
+        ball.vx += dx * invDistance * impulse;
+        ball.vy += dy * invDistance * impulse - impulse * 0.08;
+      }
+    }
+
+    function buildGrid() {
+      const grid = new Map();
+      for (let i = 0; i < balls.length; i += 1) {
+        const ball = balls[i];
+        const cellX = Math.floor(ball.x / config.cellSize);
+        const cellY = Math.floor(ball.y / config.cellSize);
+        const key = cellX + "," + cellY;
+        let cell = grid.get(key);
+        if (!cell) {
+          cell = [];
+          grid.set(key, cell);
+        }
+        cell.push(i);
+      }
+      return grid;
+    }
+
+    function resolvePair(a, b) {
+      let dx = b.x - a.x;
+      let dy = b.y - a.y;
+      let distanceSq = dx * dx + dy * dy;
+      const minDistance = a.radius + b.radius;
+
+      if (distanceSq === 0) {
+        const angle = Math.random() * Math.PI * 2;
+        dx = Math.cos(angle) * 0.01;
+        dy = Math.sin(angle) * 0.01;
+        distanceSq = dx * dx + dy * dy;
+      }
+
+      if (distanceSq >= minDistance * minDistance) {
+        return;
+      }
+
+      const distance = Math.sqrt(distanceSq);
+      const nx = dx / distance;
+      const ny = dy / distance;
+      const overlap = minDistance - distance;
+      const invMassA = 1 / a.mass;
+      const invMassB = 1 / b.mass;
+      const totalInvMass = invMassA + invMassB;
+      const correction = overlap / totalInvMass;
+
+      a.x -= nx * correction * invMassA;
+      a.y -= ny * correction * invMassA;
+      b.x += nx * correction * invMassB;
+      b.y += ny * correction * invMassB;
+
+      const rvx = b.vx - a.vx;
+      const rvy = b.vy - a.vy;
+      const velocityAlongNormal = rvx * nx + rvy * ny;
+
+      if (velocityAlongNormal > 0) {
+        return;
+      }
+
+      const impulseMagnitude =
+        (-(1 + config.ballRestitution) * velocityAlongNormal) / totalInvMass;
+      const impulseX = impulseMagnitude * nx;
+      const impulseY = impulseMagnitude * ny;
+
+      a.vx -= impulseX * invMassA;
+      a.vy -= impulseY * invMassA;
+      b.vx += impulseX * invMassB;
+      b.vy += impulseY * invMassB;
+    }
+
+    function resolveCollisions() {
+      const grid = buildGrid();
+      const visited = new Set();
+
+      for (const [key, indices] of grid) {
+        const [cellX, cellY] = key.split(",").map(Number);
+
+        for (let oy = -1; oy <= 1; oy += 1) {
+          for (let ox = -1; ox <= 1; ox += 1) {
+            const neighborKey = cellX + ox + "," + (cellY + oy);
+            const neighbor = grid.get(neighborKey);
+            if (!neighbor) {
+              continue;
+            }
+
+            for (const i of indices) {
+              for (const j of neighbor) {
+                if (i >= j) {
+                  continue;
+                }
+                const pairKey = i + ":" + j;
+                if (visited.has(pairKey)) {
+                  continue;
+                }
+                visited.add(pairKey);
+                resolvePair(balls[i], balls[j]);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    function integrate(dt) {
+      for (const ball of balls) {
+        applyPointerForces(ball, dt);
+
+        ball.vy += config.gravity * dt;
+
+        const drag = Math.max(0, 1 - config.airDrag * ball.radius * 60 * dt);
+        ball.vx *= drag;
+        ball.vy *= drag;
+
+        const speed = Math.hypot(ball.vx, ball.vy);
+        if (speed > config.maxSpeed) {
+          const scale = config.maxSpeed / speed;
+          ball.vx *= scale;
+          ball.vy *= scale;
+        }
+
+        ball.x += ball.vx * dt;
+        ball.y += ball.vy * dt;
+
+        if (ball.x - ball.radius < 0) {
+          ball.x = ball.radius;
+          ball.vx = Math.abs(ball.vx) * config.wallRestitution;
+        } else if (ball.x + ball.radius > width) {
+          ball.x = width - ball.radius;
+          ball.vx = -Math.abs(ball.vx) * config.wallRestitution;
+        }
+
+        if (ball.y - ball.radius < 0) {
+          ball.y = ball.radius;
+          ball.vy = Math.abs(ball.vy) * config.wallRestitution;
+        } else if (ball.y + ball.radius > height) {
+          ball.y = height - ball.radius;
+          ball.vy = -Math.abs(ball.vy) * config.wallRestitution;
+          ball.vx *= 0.992;
+        }
+      }
+
+      resolveCollisions();
+    }
+
+    function drawPointerField() {
+      if (!pointer.inside) {
+        return;
+      }
+
+      const radius = pointer.down ? config.attractionRadius : config.explosionRadius * 0.55;
+      const gradient = ctx.createRadialGradient(
+        pointer.x,
+        pointer.y,
+        0,
+        pointer.x,
+        pointer.y,
+        radius
+      );
+
+      if (pointer.down) {
+        gradient.addColorStop(0, "rgba(255, 209, 102, 0.24)");
+        gradient.addColorStop(0.6, "rgba(255, 209, 102, 0.09)");
+        gradient.addColorStop(1, "rgba(255, 209, 102, 0)");
+      } else {
+        gradient.addColorStop(0, "rgba(76, 201, 240, 0.16)");
+        gradient.addColorStop(0.65, "rgba(76, 201, 240, 0.05)");
+        gradient.addColorStop(1, "rgba(76, 201, 240, 0)");
+      }
+
+      ctx.beginPath();
+      ctx.fillStyle = gradient;
+      ctx.arc(pointer.x, pointer.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.strokeStyle = pointer.down
+        ? "rgba(255, 209, 102, 0.48)"
+        : "rgba(76, 201, 240, 0.4)";
+      ctx.lineWidth = 1.25;
+      ctx.arc(pointer.x, pointer.y, radius, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    function drawBall(ball) {
+      const highlightX = ball.x - ball.radius * 0.35;
+      const highlightY = ball.y - ball.radius * 0.4;
+      const gradient = ctx.createRadialGradient(
+        highlightX,
+        highlightY,
+        ball.radius * 0.2,
+        ball.x,
+        ball.y,
+        ball.radius
+      );
+      gradient.addColorStop(0, "rgba(255, 255, 255, 0.96)");
+      gradient.addColorStop(0.18, ball.color);
+      gradient.addColorStop(1, ball.shadowColor);
+
+      ctx.beginPath();
+      ctx.fillStyle = gradient;
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function shade(hex, amount) {
+      const value = hex.replace("#", "");
+      const r = clamp(parseInt(value.slice(0, 2), 16) + amount, 0, 255);
+      const g = clamp(parseInt(value.slice(2, 4), 16) + amount, 0, 255);
+      const b = clamp(parseInt(value.slice(4, 6), 16) + amount, 0, 255);
+      return "#" + [r, g, b].map((part) => part.toString(16).padStart(2, "0")).join("");
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, width, height);
+
+      const background = ctx.createLinearGradient(0, 0, 0, height);
+      background.addColorStop(0, "rgba(255, 255, 255, 0.02)");
+      background.addColorStop(1, "rgba(0, 0, 0, 0.08)");
+      ctx.fillStyle = background;
+      ctx.fillRect(0, 0, width, height);
+
+      drawPointerField();
+
+      for (const ball of balls) {
+        drawBall(ball);
+      }
+
+      stats.textContent = balls.length + " bolinhas  |  " + Math.round(fps) + " fps";
+    }
+
+    function frame(now) {
+      const deltaSeconds = Math.min((now - previousTime) / 1000, config.maxFrame);
+      previousTime = now;
+      accumulator += deltaSeconds;
+      fps = 0.92 * fps + 0.08 * (1 / Math.max(deltaSeconds, 1e-4));
+
+      while (accumulator >= config.fixedStep) {
+        integrate(config.fixedStep);
+        accumulator -= config.fixedStep;
+      }
+
+      render();
+      requestAnimationFrame(frame);
+    }
+
+    canvas.addEventListener("pointermove", (event) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointer.inside = true;
+    });
+
+    canvas.addEventListener("pointerenter", (event) => {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointer.inside = true;
+    });
+
+    canvas.addEventListener("pointerleave", () => {
+      pointer.inside = false;
+      pointer.down = false;
+    });
+
+    canvas.addEventListener("pointerdown", (event) => {
+      if (event.button !== 0) {
+        return;
+      }
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointer.down = true;
+      pointer.inside = true;
+    });
+
+    window.addEventListener("pointerup", (event) => {
+      if (event.button !== 0) {
+        return;
+      }
+      pointer.down = false;
+    });
+
+    canvas.addEventListener("click", (event) => {
+      explode(event.clientX, event.clientY);
+    });
+
+    spawnButton.addEventListener("click", () => {
+      addBalls(config.spawnBurst, {
+        x: width * 0.5,
+        y: 90,
+        spreadX: Math.min(width * 0.45, 420),
+        spreadY: 50
+      });
+    });
+
+    window.addEventListener("resize", resize);
+
+    resize();
+    addBalls(config.initialBalls, {
+      x: width * 0.5,
+      y: 60,
+      spreadX: Math.min(width * 0.44, 360),
+      spreadY: 50
+    });
+    requestAnimationFrame(frame);
+  </script>
+</body>
+</html>

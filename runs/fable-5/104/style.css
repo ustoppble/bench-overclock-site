@@ -1,0 +1,94 @@
+* { box-sizing: border-box; margin: 0; }
+body { font-family: Georgia, 'Times New Roman', serif; color: #2b1d12; background: #fdfaf5; }
+
+.topo {
+  width: 960px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 0;
+}
+.marca { font-size: 1.3rem; font-weight: 700; letter-spacing: .5px; }
+.menu { display: flex; gap: 28px; }
+.menu a { color: #2b1d12; text-decoration: none; font-size: .95rem; white-space: nowrap; }
+.menu a.destaque { background: #6b3f1d; color: #fff; padding: 8px 16px; border-radius: 20px; }
+
+.hero {
+  width: 960px;
+  margin: 30px auto 60px;
+  text-align: center;
+  padding: 70px 40px;
+  background: linear-gradient(160deg, #efe3d0, #e2cdae);
+  border-radius: 14px;
+}
+.hero h1 { font-size: 52px; line-height: 1.1; margin-bottom: 16px; }
+.hero p { font-size: 1.1rem; color: #5a4630; max-width: 520px; margin: 0 auto 26px; }
+.cta { display: inline-block; background: #6b3f1d; color: #fff; padding: 14px 28px; border-radius: 28px; text-decoration: none; font-weight: 700; }
+
+.grade-cafes {
+  width: 960px;
+  margin: 0 auto 70px;
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  gap: 30px;
+}
+.card { background: #fff; border: 1px solid #e8dcc8; border-radius: 12px; overflow: hidden; padding-bottom: 18px; }
+.card h2 { font-size: 1.15rem; margin: 14px 16px 8px; }
+.card p { font-size: .93rem; color: #6a563e; margin: 0 16px 10px; line-height: 1.45; }
+.card .preco { margin: 0 16px; font-weight: 700; color: #6b3f1d; }
+.foto { height: 170px; background-size: cover; background-position: center; }
+.foto-1 { background-image: linear-gradient(135deg, #d9b98a, #a97b45); }
+.foto-2 { background-image: linear-gradient(135deg, #b98a5f, #7a4a26); }
+.foto-3 { background-image: linear-gradient(135deg, #e3cfae, #c29a63); }
+
+.faixa-historia {
+  width: 960px;
+  margin: 0 auto 70px;
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+.texto-historia { width: 480px; }
+.texto-historia h2 { font-size: 1.7rem; margin-bottom: 12px; }
+.texto-historia p { color: #5a4630; line-height: 1.6; }
+.foto-historia {
+  width: 440px;
+  height: 260px;
+  min-width: 440px;
+  border-radius: 12px;
+  background: linear-gradient(120deg, #8a6844, #4d311f);
+}
+
+.assinatura { width: 960px; margin: 0 auto 70px; text-align: center; }
+.assinatura h2 { font-size: 1.7rem; margin-bottom: 20px; }
+.planos { width: 700px; margin: 0 auto 26px; border-collapse: collapse; }
+.planos th, .planos td { border: 1px solid #e0d2ba; padding: 12px 22px; }
+.planos thead { background: #efe3d0; }
+
+.rodape { background: #2b1d12; color: #d9c8ae; text-align: center; padding: 26px 12px; margin-top: 40px; font-size: .9rem; }
+
+/* Mobile — abaixo de 1000px os containers fixos de 960px não cabem */
+@media (max-width: 1000px) {
+  .topo, .hero, .grade-cafes, .faixa-historia, .assinatura {
+    width: auto;
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+
+  .topo { flex-direction: column; gap: 14px; padding: 18px 0; }
+  .menu { flex-wrap: wrap; justify-content: center; gap: 12px 20px; }
+
+  .hero { margin-top: 12px; margin-bottom: 44px; padding: 44px 22px; }
+  .hero h1 { font-size: 34px; }
+
+  .grade-cafes { grid-template-columns: 1fr; margin-bottom: 50px; }
+
+  .faixa-historia { flex-direction: column; align-items: stretch; gap: 24px; margin-bottom: 50px; }
+  .texto-historia { width: auto; }
+  .foto-historia { width: 100%; min-width: 0; }
+
+  .assinatura { margin-bottom: 50px; }
+  .planos { width: 100%; font-size: .85rem; }
+  .planos th, .planos td { padding: 10px 6px; }
+}

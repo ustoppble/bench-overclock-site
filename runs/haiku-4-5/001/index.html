@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Solar 3D</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: #000;
+        }
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 14px;
+            max-width: 300px;
+            z-index: 10;
+            border: 1px solid #444;
+        }
+        #info h2 {
+            margin-bottom: 8px;
+            color: #4dd0e1;
+        }
+        #info p {
+            margin: 4px 0;
+            line-height: 1.5;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #aaa;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            border: 1px solid #444;
+        }
+        #controls p {
+            margin: 3px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <h2>Sistema Solar</h2>
+        <p id="infoText">Clique em um planeta para ver informações</p>
+    </div>
+    <div id="controls">
+        <p><strong>Controles:</strong></p>
+        <p>W/A/S/D - Mover</p>
+        <p>Mouse - Girar câmera</p>
+        <p>Scroll - Zoom</p>
+        <p>Clique - Info do planeta</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Dados dos planetas: nome, tamanho relativo (km), cor, distância orbital (UA), velocidade orbital
+        const planetsData = [
+            { name: 'Mercúrio', size: 3.8, color: 0x8c7853, distance: 0.39, speed: 47.4, temp: '-173°C a 427°C', type: 'Rochoso' },
+            { name: 'Vênus', size: 9.5, color: 0xffc649, distance: 0.72, speed: 35.0, temp: '465°C', type: 'Rochoso' },
+            { name: 'Terra', size: 10.0, color: 0x4da6ff, distance: 1.0, speed: 29.8, temp: '15°C', type: 'Rochoso' },
+            { name: 'Marte', size: 5.3, color: 0xff6b4d, distance: 1.52, speed: 24.1, temp: '-65°C', type: 'Rochoso' },
+            { name: 'Júpiter', size: 112.0, color: 0xc88b3a, distance: 5.2, speed: 13.1, temp: '-110°C', type: 'Gasoso' },
+            { name: 'Saturno', size: 95.0, color: 0xfad5a5, distance: 9.5, speed: 9.7, temp: '-140°C', type: 'Gasoso' },
+            { name: 'Urano', size: 40.0, color: 0x4fd0e7, distance: 19.2, speed: 6.8, temp: '-195°C', type: 'Gasoso' },
+            { name: 'Netuno', size: 39.0, color: 0x4169e1, distance: 30.1, speed: 5.4, temp: '-200°C', type: 'Gasoso' }
+        ];
+
+        // Configuração básica
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000);
+        document.body.appendChild(renderer.domElement);
+
+        // Posição inicial da câmera
+        camera.position.set(0, 50, 80);
+        camera.lookAt(0, 0, 0);
+
+        // Controles de câmera
+        const controls = {
+            moveForward: false,
+            moveBackward: false,
+            moveLeft: false,
+            moveRight: false,
+            moveUp: false,
+            moveDown: false,
+            yaw: 0,
+            pitch: 0,
+            speed: 0.5
+        };
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key.toLowerCase() === 'w') controls.moveForward = true;
+            if (e.key.toLowerCase() === 's') controls.moveBackward = true;
+            if (e.key.toLowerCase() === 'a') controls.moveLeft = true;
+            if (e.key.toLowerCase() === 'd') controls.moveRight = true;
+            if (e.key.toLowerCase() === 'q') controls.moveUp = true;
+            if (e.key.toLowerCase() === 'e') controls.moveDown = true;
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key.toLowerCase() === 'w') controls.moveForward = false;
+            if (e.key.toLowerCase() === 's') controls.moveBackward = false;
+            if (e.key.toLowerCase() === 'a') controls.moveLeft = false;
+            if (e.key.toLowerCase() === 'd') controls.moveRight = false;
+            if (e.key.toLowerCase() === 'q') controls.moveUp = false;
+            if (e.key.toLowerCase() === 'e') controls.moveDown = false;
+        });
+
+        let mouseDown = false;
+        let lastX = 0, lastY = 0;
+
+        document.addEventListener('mousedown', (e) => {
+            mouseDown = true;
+            lastX = e.clientX;
+            lastY = e.clientY;
+        });
+
+        document.addEventListener('mouseup', () => {
+            mouseDown = false;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (mouseDown) {
+                const deltaX = e.clientX - lastX;
+                const deltaY = e.clientY - lastY;
+                controls.yaw -= deltaX * 0.005;
+                controls.pitch -= deltaY * 0.005;
+                controls.pitch = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, controls.pitch));
+                lastX = e.clientX;
+                lastY = e.clientY;
+            }
+        });
+
+        document.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const direction = new THREE.Vector3();
+            camera.getWorldDirection(direction);
+            const zoomSpeed = 2;
+            if (e.deltaY < 0) {
+                camera.position.addScaledVector(direction, zoomSpeed);
+            } else {
+                camera.position.addScaledVector(direction, -zoomSpeed);
+            }
+        }, { passive: false });
+
+        // Criar estrelas de fundo
+        function createStarfield() {
+            const starsGeometry = new THREE.BufferGeometry();
+            const starsMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 0.7,
+                sizeAttenuation: true
+            });
+
+            const starsVertices = [];
+            for (let i = 0; i < 10000; i++) {
+                const x = (Math.random() - 0.5) * 4000;
+                const y = (Math.random() - 0.5) * 4000;
+                const z = (Math.random() - 0.5) * 4000;
+                starsVertices.push(x, y, z);
+            }
+
+            starsGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(starsVertices), 3));
+            const starfield = new THREE.Points(starsGeometry, starsMaterial);
+            scene.add(starfield);
+        }
+
+        createStarfield();
+
+        // Criar o Sol
+        const sunGeometry = new THREE.SphereGeometry(15, 32, 32);
+        const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xfdb813 });
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        scene.add(sun);
+
+        // Adicionar brilho ao Sol
+        const sunLight = new THREE.PointLight(0xfdb813, 1.5, 1000);
+        sunLight.position.set(0, 0, 0);
+        scene.add(sunLight);
+
+        // Criar planetas
+        const planets = [];
+        const planetMeshes = [];
+
+        planetsData.forEach((data) => {
+            const geometry = new THREE.SphereGeometry(data.size / 10, 32, 32);
+            const material = new THREE.MeshPhongMaterial({ color: data.color });
+            const planet = new THREE.Mesh(geometry, material);
+
+            const scaleUnit = 5; // 1 UA = 5 unidades
+            planet.userData = {
+                name: data.name,
+                distance: data.distance * scaleUnit,
+                angle: Math.random() * Math.PI * 2,
+                speed: data.speed,
+                info: data
+            };
+
+            scene.add(planet);
+            planets.push(planet.userData);
+            planetMeshes.push(planet);
+        });
+
+        // Raycaster para detecção de clique
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        document.addEventListener('click', (e) => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(planetMeshes);
+
+            if (intersects.length > 0) {
+                const planet = intersects[0].object;
+                const data = planet.userData.info;
+                document.getElementById('infoText').innerHTML = `
+                    <strong>${data.name}</strong><br>
+                    Tipo: ${data.type}<br>
+                    Distância: ${data.distance} UA<br>
+                    Velocidade: ${data.speed} km/s<br>
+                    Temperatura: ${data.temp}
+                `;
+            }
+        });
+
+        // Iluminação ambiental
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        // Loop de animação
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Atualizar posição da câmera baseado em entrada
+            const forward = new THREE.Vector3();
+            const right = new THREE.Vector3();
+            camera.getWorldDirection(forward);
+            right.crossVectors(camera.up, forward).normalize();
+            forward.normalize();
+
+            if (controls.moveForward) camera.position.addScaledVector(forward, controls.speed);
+            if (controls.moveBackward) camera.position.addScaledVector(forward, -controls.speed);
+            if (controls.moveLeft) camera.position.addScaledVector(right, -controls.speed);
+            if (controls.moveRight) camera.position.addScaledVector(right, controls.speed);
+            if (controls.moveUp) camera.position.y += controls.speed;
+            if (controls.moveDown) camera.position.y -= controls.speed;
+
+            // Atualizar rotação da câmera
+            const euler = new THREE.Euler(0, controls.yaw, 0, 'YXZ');
+            camera.quaternion.setFromEuler(euler);
+            const pitchObject = new THREE.Euler(controls.pitch, 0, 0, 'XYZ');
+            camera.quaternion.multiplyQuaternions(
+                new THREE.Quaternion().setFromEuler(new THREE.Euler(controls.pitch, 0, 0, 'XYZ')),
+                new THREE.Quaternion().setFromEuler(new THREE.Euler(0, controls.yaw, 0, 'YXZ'))
+            );
+            camera.lookAt(camera.position.clone().add(forward));
+
+            // Animar planetas
+            planetMeshes.forEach((mesh, i) => {
+                const data = mesh.userData;
+                data.angle += data.speed * 0.0001;
+
+                mesh.position.x = Math.cos(data.angle) * data.distance;
+                mesh.position.z = Math.sin(data.angle) * data.distance;
+                mesh.rotation.y += 0.01;
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Ajustar ao redimensionar janela
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>

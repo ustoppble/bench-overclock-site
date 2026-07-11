@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Vendas — Semestre</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:#f0f2f5;color:#1a1a2e;min-height:100vh;padding:32px 16px}
+    h1{font-size:1.6rem;font-weight:700;margin-bottom:4px}
+    .subtitle{color:#64748b;font-size:.9rem;margin-bottom:32px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
+    .card{background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+    .card .label{font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:#64748b;margin-bottom:6px}
+    .card .value{font-size:1.8rem;font-weight:700;color:#0f172a}
+    .card .value.green{color:#16a34a}
+    .card .value.red{color:#dc2626}
+    .card .value.blue{color:#2563eb}
+    section{background:#fff;border-radius:12px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.08);margin-bottom:24px}
+    section h2{font-size:1rem;font-weight:600;margin-bottom:16px;color:#0f172a}
+    table{width:100%;border-collapse:collapse;font-size:.9rem}
+    th{text-align:left;padding:8px 12px;border-bottom:2px solid #e2e8f0;color:#64748b;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+    td{padding:10px 12px;border-bottom:1px solid #f1f5f9}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:#f8fafc}
+    .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+    .bar-cell{width:160px;padding-right:16px}
+    .bar{height:10px;border-radius:5px;background:linear-gradient(90deg,#2563eb,#38bdf8);min-width:2px}
+    .rank{font-weight:700;color:#2563eb;width:40px}
+    .mais{color:#94a3b8;font-size:.85rem;padding:8px 12px}
+    .descarte-section h2{color:#dc2626}
+    .chip{display:inline-block;background:#fef3c7;color:#92400e;border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:600;margin-left:8px}
+    footer{text-align:center;color:#94a3b8;font-size:.8rem;margin-top:32px}
+  </style>
+</head>
+<body>
+  <h1>Relatório de Vendas — Semestre 2026</h1>
+  <p class="subtitle">Gerado em 10/07/2026 22:38 · 1500 linhas brutas processadas</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">Receita Total</div>
+      <div class="value green">R$ 515.086,00</div>
+    </div>
+    <div class="card">
+      <div class="label">Pedidos Válidos</div>
+      <div class="value blue">1,409</div>
+    </div>
+    <div class="card">
+      <div class="label">Linhas Descartadas</div>
+      <div class="value red">91</div>
+    </div>
+    <div class="card">
+      <div class="label">Ticket Médio</div>
+      <div class="value">R$ 365,57</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Receita por Categoria</h2>
+    <table>
+      <thead><tr><th>Categoria</th><th class="num">Receita</th><th class="num">%</th><th></th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Vestuario</td>
+          <td class="num">R$ 206.272,00</td>
+          <td class="num">40.0%</td>
+          <td class="bar-cell"><div class="bar" style="width:40.0%"></div></td>
+        </tr>
+        <tr>
+          <td>Acessorios</td>
+          <td class="num">R$ 159.637,90</td>
+          <td class="num">31.0%</td>
+          <td class="bar-cell"><div class="bar" style="width:31.0%"></div></td>
+        </tr>
+        <tr>
+          <td>Calcados</td>
+          <td class="num">R$ 149.176,10</td>
+          <td class="num">29.0%</td>
+          <td class="bar-cell"><div class="bar" style="width:29.0%"></div></td>
+        </tr></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Top 5 Produtos por Quantidade Vendida</h2>
+    <table>
+      <thead><tr><th></th><th>Produto</th><th class="num">Quantidade</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="rank">#1</td>
+          <td>Bermuda Tactel</td>
+          <td class="num">465 un.</td>
+        </tr>
+        <tr>
+          <td class="rank">#2</td>
+          <td>Camiseta Básica</td>
+          <td class="num">453 un.</td>
+        </tr>
+        <tr>
+          <td class="rank">#3</td>
+          <td>Chinelo Slide</td>
+          <td class="num">449 un.</td>
+        </tr>
+        <tr>
+          <td class="rank">#4</td>
+          <td>Tênis Corrida</td>
+          <td class="num">439 un.</td>
+        </tr>
+        <tr>
+          <td class="rank">#5</td>
+          <td>Mochila Urbana</td>
+          <td class="num">429 un.</td>
+        </tr></tbody>
+    </table>
+  </section>
+
+  <section class="descarte-section">
+    <h2>Linhas Descartadas <span class="chip">91 linhas</span></h2>
+    <table>
+      <thead><tr><th>Linha CSV</th><th>Motivo do descarte</th></tr></thead>
+      <tbody><tr><td>17</td><td>linha incompleta (3 campos)</td></tr><tr><td>41</td><td>linha vazia</td></tr><tr><td>73</td><td>duplicata do pedido P10019</td></tr><tr><td>110</td><td>linha incompleta (3 campos)</td></tr><tr><td>115</td><td>linha incompleta (3 campos)</td></tr><tr><td>118</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>129</td><td>linha incompleta (3 campos)</td></tr><tr><td>177</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>180</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>183</td><td>duplicata do pedido P10032</td></tr><tr><td>189</td><td>linha vazia</td></tr><tr><td>213</td><td>linha incompleta (3 campos)</td></tr><tr><td>216</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>226</td><td>duplicata do pedido P10109</td></tr><tr><td>227</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>259</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>264</td><td>linha incompleta (3 campos)</td></tr><tr><td>265</td><td>linha incompleta (3 campos)</td></tr><tr><td>284</td><td>linha incompleta (3 campos)</td></tr><tr><td>290</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>302</td><td>linha incompleta (3 campos)</td></tr><tr><td>310</td><td>duplicata do pedido P10044</td></tr><tr><td>322</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>325</td><td>linha incompleta (3 campos)</td></tr><tr><td>352</td><td>duplicata do pedido P10092</td></tr><tr><td>365</td><td>linha incompleta (3 campos)</td></tr><tr><td>379</td><td>valor inválido 'ERRO_IMPORT'</td></tr><tr><td>382</td><td>linha incompleta (3 campos)</td></tr><tr><td>421</td><td>linha incompleta (3 campos)</td></tr><tr><td>423</td><td>duplicata do pedido P10092</td></tr><tr><td colspan='2' class='mais'>… e mais 61 linhas</td></tr></tbody>
+    </table>
+  </section>
+
+  <footer>Dados: vendas.csv · Pedidos únicos considerados: 1409 de 1500 linhas brutas</footer>
+</body>
+</html>

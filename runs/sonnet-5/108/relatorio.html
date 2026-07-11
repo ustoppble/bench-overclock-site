@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Relatório de Vendas — Semestre</title>
+<style>
+  body { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: #f4f5f7; color: #1f2430; margin: 0; padding: 40px; }
+  h1 { font-size: 24px; margin-bottom: 4px; }
+  .subtitulo { color: #6b7280; margin-bottom: 32px; }
+  .cards { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+  .card { background: #fff; border-radius: 10px; padding: 20px 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); min-width: 200px; flex: 1; }
+  .card .label { font-size: 13px; color: #6b7280; text-transform: uppercase; letter-spacing: .04em; }
+  .card .valor { font-size: 28px; font-weight: 700; margin-top: 6px; }
+  section { background: #fff; border-radius: 10px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+  section h2 { font-size: 16px; margin-top: 0; margin-bottom: 16px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid #eef0f2; font-size: 14px; }
+  th { color: #6b7280; font-weight: 600; font-size: 12px; text-transform: uppercase; }
+  td.num, th.num { text-align: right; }
+  tr:last-child td { border-bottom: none; }
+  footer { color: #9ca3af; font-size: 12px; margin-top: 24px; }
+</style>
+</head>
+<body>
+  <h1>Relatório de Vendas — Semestre</h1>
+  <div class="subtitulo">Gerado a partir de vendas.csv, com limpeza de datas, valores, categorias e remoção de linhas inválidas/duplicadas.</div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="label">Receita total</div>
+      <div class="valor">R$ 515.086,00</div>
+    </div>
+    <div class="card">
+      <div class="label">Pedidos válidos considerados</div>
+      <div class="valor">1409</div>
+    </div>
+    <div class="card">
+      <div class="label">Linhas descartadas</div>
+      <div class="valor">91</div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Receita por categoria</h2>
+    <table>
+      <thead><tr><th>Categoria</th><th class="num">Receita</th></tr></thead>
+      <tbody>
+      <tr><td>Vestuario</td><td class="num">R$ 206.272,00</td></tr>
+<tr><td>Acessorios</td><td class="num">R$ 159.637,90</td></tr>
+<tr><td>Calcados</td><td class="num">R$ 149.176,10</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Top 5 produtos por quantidade vendida</h2>
+    <table>
+      <thead><tr><th>#</th><th>Produto</th><th class="num">Quantidade</th></tr></thead>
+      <tbody>
+      <tr><td>1</td><td>Bermuda tactel</td><td class="num">465</td></tr>
+<tr><td>2</td><td>Camiseta básica</td><td class="num">453</td></tr>
+<tr><td>3</td><td>Chinelo slide</td><td class="num">449</td></tr>
+<tr><td>4</td><td>Tênis corrida</td><td class="num">439</td></tr>
+<tr><td>5</td><td>Mochila urbana</td><td class="num">429</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Linhas descartadas por motivo (total: 91)</h2>
+    <table>
+      <thead><tr><th>Motivo</th><th class="num">Quantidade</th></tr></thead>
+      <tbody>
+      <tr><td>Linha quebrada (campos faltando)</td><td class="num">39</td></tr>
+<tr><td>Pedido duplicado</td><td class="num">29</td></tr>
+<tr><td>Valor unitário inválido</td><td class="num">15</td></tr>
+<tr><td>Linha vazia</td><td class="num">8</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>Relatório gerado automaticamente a partir de 1500 linhas de dados (excluindo cabeçalho).</footer>
+</body>
+</html>

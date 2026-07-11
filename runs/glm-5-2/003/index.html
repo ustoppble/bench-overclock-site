@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bolinhas — Física Interativa</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #0b0f1a;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    user-select: none; -webkit-user-select: none;
+  }
+  canvas { display: block; position: fixed; inset: 0; cursor: crosshair; touch-action: none; }
+
+  .ui {
+    position: fixed; top: 16px; left: 16px; z-index: 10;
+    display: flex; flex-direction: column; gap: 10px; align-items: flex-start;
+    pointer-events: none;
+  }
+  .ui > * { pointer-events: auto; }
+
+  button {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff; border: none; padding: 12px 20px; border-radius: 12px;
+    font-size: 15px; font-weight: 600; cursor: pointer;
+    box-shadow: 0 6px 20px rgba(99, 102, 241, .45);
+    transition: transform .08s ease, box-shadow .08s ease;
+    letter-spacing: .2px;
+  }
+  button:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(99, 102, 241, .6); }
+  button:active { transform: translateY(1px) scale(.98); }
+
+  .hint {
+    color: #9aa4be; font-size: 13px; line-height: 1.55; max-width: 290px;
+    background: rgba(15, 20, 35, .6); padding: 10px 14px; border-radius: 10px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  }
+  .hint b { color: #e6e9f2; }
+
+  .stats {
+    position: fixed; top: 16px; right: 16px; z-index: 10;
+    color: #9aa4be; font-size: 13px; text-align: right; line-height: 1.55;
+    background: rgba(15, 20, 35, .6); padding: 8px 12px; border-radius: 10px;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    font-variant-numeric: tabular-nums;
+  }
+  .stats b { color: #e6e9f2; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div class="ui">
+  <button id="add">＋ Soltar 50 bolinhas</button>
+  <div class="hint">
+    <b>Segurar</b> o mouse: atrai as bolinhas próximas.<br>
+    <b>Clicar</b> (toque rápido): explosão que repele.<br>
+    <b>Arrastar</b> enquanto segura: move o ímã.
+  </div>
+</div>
+
+<div class="stats">
+  <div><b id="fps">—</b> fps</div>
+  <div><b id="count">0</b> bolinhas</div>
+</div>
+
+<script>
+"use strict";
+
+// ---------- Canvas / resize ----------
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d', { alpha: false });
+let W = 0, H = 0, DPR = 1;
+
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width  = Math.floor(W * DPR);
+  canvas.height = Math.floor(H * DPR);
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+// ---------- Sprites pré-renderizados (desenho rápido) ----------
+// Quantizamos o matiz em N buckets e geramos uma bolinha com gradiente + brilho.
+// Assim o render é só drawImage (barato) mesmo com centenas de bolinhas.
+const HUES = 24;
+const sprites = [];
+function buildSprites() {
+  const size = 64, cx = size / 2, cy = size / 2, r = size / 2 - 1;
+  for (let i = 0; i < HUES; i++) {
+    const hue = Math.round(i * 360 / HUES);
+    const off = document.createElement('canvas');
+    off.width = off.height = size;
+    const g = off.getContext('2d');
+    const body = g.createRadialGradient(cx - r * .35, cy - r * .35, r * .1, cx, cy, r);
+    body.addColorStop(0,   'hsl(' + hue + ', 90%, 75%)');
+    body.addColorStop(.55, 'hsl(' + hue + ', 85%, 56%)');
+    body.addColorStop(1,   'hsl(' + hue + ', 80%, 40%)');
+    g.fillStyle = body;
+    g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.fill();
+    const hl = g.createRadialGradient(cx - r * .4, cy - r * .4, 0, cx - r * .4, cy - r * .4, r * .55);
+    hl.addColorStop(0, 'rgba(255,255,255,0.55)');
+    hl.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = hl;
+    g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.fill();
+    sprites.push(off);
+  }
+}
+buildSprites();
+
+// ---------- Bolinhas ----------
+const MAX_BALLS = 500;
+const balls = [];
+
+function addBalls(n, originX, originY) {
+  for (let i = 0; i < n; i++) {
+    if (balls.length >= MAX_BALLS) balls.shift();          // remove a mais antiga
+    const radius = 7 + Math.random() * 13;                 // 7..20 (diâmetro <= cellSize)
+    balls.push({
+      x: (originX !== undefined ? originX : Math.random() * W) + (Math.random() - .5) * 30,
+      y: (originY !== undefined ? originY : -30) - Math.random() * 180,
+      vx: (Math.random() - .5) * 80,
+      vy: Math.random() * 40,
+      r: radius,
+      mass: radius * radius,                                // massa ~ área
+      hueIdx: (Math.random() * HUES) | 0,
+    });
+  }
+}
+addBalls(60);                                               // começa populado
+
+// ---------- Constantes físicas ----------
+const GRAVITY    = 1500;   // px/s²
+const REST_BALL  = 0.82;   // restitution bolinha-bolinha
+const REST_WALL  = 0.72;   // restitution paredes
+const DAMP       = 0.999;  // atrito do ar por step
+const MAX_SPEED  = 2500;   // clamp p/ evitar tunneling
+const STEP       = 1 / 120;// passo fixo (física desacoplada do FPS)
+const SUB_MAX    = 5;      // máx. passos por frame (anti spiral of death)
+
+// Interação mouse/toque
+const ATTRACT_R      = 240;
+const ATTRACT_FORCE  = 5500;
+const ATTRACT_DELAY  = 170;   // ímã só ativa depois de segurar um pouco (tiro curto não puxa)
+const EXPLODE_R      = 290;
+const EXPLODE_POWER  = 1750;
+const CLICK_MAX_MS   = 210;   // soltar antes disso = clique
+const CLICK_MAX_MOVE = 14;    // e sem ter arrastado muito
+
+// ---------- Grid espacial (colisão O(N) em vez de O(N²)) ----------
+const CELL = 48;          // >= diâmetro máx. (40)
+let cols = 0, rows = 0, grid = [];
+
+function rebuildGrid() {
+  cols = Math.ceil(W / CELL) + 1;
+  rows = Math.ceil(H / CELL) + 1;
+  const n = cols * rows;
+  if (grid.length !== n) {
+    grid = new Array(n);
+    for (let i = 0; i < n; i++) grid[i] = [];
+  } else {
+    for (let i = 0; i < n; i++) grid[i].length = 0;
+  }
+  for (let i = 0; i < balls.length; i++) {
+    const b = balls[i];
+    const gx = Math.min(cols - 1, Math.max(0, (b.x / CELL) | 0));
+    const gy = Math.min(rows - 1, Math.max(0, (b.y / CELL) | 0));
+    grid[gy * cols + gx].push(i);
+  }
+}
+
+// Vizinhança "pra frente" — cada par de células adjacentes é visitado uma única vez.
+const NEI = [[0,0],[1,0],[0,1],[-1,1],[1,1]];
+
+function collidePairs() {
+  for (let cy = 0; cy < rows; cy++) {
+    for (let cx = 0; cx < cols; cx++) {
+      const cell = grid[cy * cols + cx];
+      if (cell.length === 0) continue;
+      for (let n = 0; n < NEI.length; n++) {
+        const ox = NEI[n][0], oy = NEI[n][1];
+        const nx = cx + ox, ny = cy + oy;
+        if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) continue;
+        const other = grid[ny * cols + nx];
+        if (other.length === 0) continue;
+        const same = (ox === 0 && oy === 0);
+        for (let i = 0; i < cell.length; i++) {
+          const ia = cell[i];
+          const startJ = same ? i + 1 : 0;
+          for (let j = startJ; j < other.length; j++) {
+            resolve(ia, other[j]);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Resposta de colisão entre duas bolinhas (impulso + correção posicional).
+function resolve(ia, ib) {
+  const a = balls[ia], b = balls[ib];
+  let dx = b.x - a.x, dy = b.y - a.y;
+  let d2 = dx * dx + dy * dy;
+  const minD = a.r + b.r;
+  if (d2 >= minD * minD) return;          // sem sobreposição
+  let d = Math.sqrt(d2);
+  if (d === 0) { dx = 0.0001; dy = 0; d = 0.0001; }   // coincidentes: empurra arbitrário
+  const nx = dx / d, ny = dy / d;
+
+  // separa proporcional à massa inversa
+  const overlap = minD - d;
+  const totalM = a.mass + b.mass;
+  const aShare = b.mass / totalM, bShare = a.mass / totalM;
+  a.x -= nx * overlap * aShare; a.y -= ny * overlap * aShare;
+  b.x += nx * overlap * bShare; b.y += ny * overlap * bShare;
+
+  // impulso ao longo da normal (só se estiverem se aproximando)
+  const rvx = b.vx - a.vx, rvy = b.vy - a.vy;
+  const vn = rvx * nx + rvy * ny;
+  if (vn > 0) return;
+  const j = -(1 + REST_BALL) * vn / (1 / a.mass + 1 / b.mass);
+  const ix = j * nx, iy = j * ny;
+  a.vx -= ix / a.mass; a.vy -= iy / a.mass;
+  b.vx += ix / b.mass; b.vy += iy / b.mass;
+}
+
+// ---------- Passo de física ----------
+function physics(dt) {
+  // 1) forças externas (ímã do mouse)
+  applyMouseForces(dt);
+
+  // 2) integração semi-implícita (estável com gravidade)
+  for (let i = 0; i < balls.length; i++) {
+    const b = balls[i];
+    b.vx *= DAMP; b.vy *= DAMP;
+    b.vy += GRAVITY * dt;
+    // clamp de velocidade
+    const sp2 = b.vx * b.vx + b.vy * b.vy;
+    if (sp2 > MAX_SPEED * MAX_SPEED) {
+      const s = MAX_SPEED / Math.sqrt(sp2);
+      b.vx *= s; b.vy *= s;
+    }
+    b.x += b.vx * dt;
+    b.y += b.vy * dt;
+  }
+
+  // 3) colisões bolinha-bolinha (grid + 2 iterações pra estabilidade de pilha)
+  rebuildGrid();
+  collidePairs();
+  collidePairs();
+
+  // 4) colisões com as bordas
+  for (let i = 0; i < balls.length; i++) {
+    const b = balls[i];
+    if (b.x < b.r)        { b.x = b.r;        if (b.vx < 0) b.vx = -b.vx * REST_WALL; }
+    else if (b.x > W - b.r) { b.x = W - b.r;  if (b.vx > 0) b.vx = -b.vx * REST_WALL; }
+    if (b.y < b.r)        { b.y = b.r;        if (b.vy < 0) b.vy = -b.vy * REST_WALL; }
+    else if (b.y > H - b.r) { b.y = H - b.r;  if (b.vy > 0) b.vy = -b.vy * REST_WALL; }
+  }
+}
+
+// ---------- Mouse / toque ----------
+const mouse = { x: 0, y: 0, down: false, active: false, t0: 0, x0: 0, y0: 0 };
+
+function pointerPos(e) {
+  const r = canvas.getBoundingClientRect();
+  const t = (e.touches && e.touches[0]) ? e.touches[0] : e;
+  return { x: t.clientX - r.left, y: t.clientY - r.top };
+}
+
+function applyMouseForces(dt) {
+  if (!mouse.active) return;
+  if (performance.now() - mouse.t0 < ATTRACT_DELAY) return;  // clique curto não atrai
+  const R2 = ATTRACT_R * ATTRACT_R;
+  for (let i = 0; i < balls.length; i++) {
+    const b = balls[i];
+    const dx = mouse.x - b.x, dy = mouse.y - b.y;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < R2 && d2 > 1) {
+      const d = Math.sqrt(d2);
+      const f = (1 - d / ATTRACT_R) * ATTRACT_FORCE;   // cai suavemente na borda
+      b.vx += (dx / d) * f * dt;
+      b.vy += (dy / d) * f * dt;
+    }
+  }
+}
+
+function explode(x, y) {
+  const R2 = EXPLODE_R * EXPLODE_R;
+  for (let i = 0; i < balls.length; i++) {
+    const b = balls[i];
+    const dx = b.x - x, dy = b.y - y;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < R2 && d2 > 1) {
+      const d = Math.sqrt(d2);
+      const f = (1 - d / EXPLODE_R) * EXPLODE_POWER;
+      b.vx += (dx / d) * f;
+      b.vy += (dy / d) * f;
+    }
+  }
+  flash = 1;   // efeito visual
+  burst = { x: x, y: y, t: 1 };
+}
+
+function pressStart(p) {
+  mouse.x = p.x; mouse.y = p.y;
+  mouse.x0 = p.x; mouse.y0 = p.y;
+  mouse.t0 = performance.now();
+  mouse.down = true; mouse.active = true;
+}
+function pressEnd(p) {
+  if (!mouse.down) return;
+  const dur = performance.now() - mouse.t0;
+  const moved = Math.hypot(p.x - mouse.x0, p.y - mouse.y0);
+  mouse.down = false; mouse.active = false;
+  if (dur < CLICK_MAX_MS && moved < CLICK_MAX_MOVE) explode(p.x, p.y);  // = clique
+}
+
+canvas.addEventListener('mousemove', e => { const p = pointerPos(e); mouse.x = p.x; mouse.y = p.y; });
+canvas.addEventListener('mousedown',  e => { if (e.button === 0) pressStart(pointerPos(e)); });
+window.addEventListener('mouseup',    e => { if (e.button === 0) pressEnd(pointerPos(e)); });
+
+canvas.addEventListener('touchstart', e => { e.preventDefault(); pressStart(pointerPos(e)); }, { passive: false });
+canvas.addEventListener('touchmove',  e => { e.preventDefault(); const p = pointerPos(e); mouse.x = p.x; mouse.y = p.y; }, { passive: false });
+canvas.addEventListener('touchend',   e => { pressEnd({ x: mouse.x, y: mouse.y }); });
+
+// ---------- UI ----------
+document.getElementById('add').addEventListener('click', () => addBalls(50, W / 2, -20));
+
+// ---------- Render ----------
+let flash = 0;
+let burst = null;
+
+function render() {
+  // fundo opaco (limpa o frame)
+  ctx.fillStyle = '#0b0f1a';
+  ctx.fillRect(0, 0, W, H);
+
+  // bolinhas
+  for (let i = 0; i < balls.length; i++) {
+    const b = balls[i];
+    const d = b.r * 2;
+    ctx.drawImage(sprites[b.hueIdx], b.x - b.r, b.y - b.r, d, d);
+  }
+
+  // anel do ímã quando ativo
+  if (mouse.active && performance.now() - mouse.t0 > ATTRACT_DELAY) {
+    drawField(mouse.x, mouse.y, ATTRACT_R);
+  }
+
+  // onda da explosão
+  if (burst && burst.t > 0) {
+    const rad = EXPLODE_R * (1 - burst.t) + 10;
+    ctx.strokeStyle = 'rgba(255,255,255,' + (burst.t * 0.5) + ')';
+    ctx.lineWidth = 3 * burst.t + 1;
+    ctx.beginPath(); ctx.arc(burst.x, burst.y, rad, 0, Math.PI * 2); ctx.stroke();
+    burst.t -= 0.05; if (burst.t <= 0) burst = null;
+  }
+
+  // flash geral sutil
+  if (flash > 0) {
+    ctx.fillStyle = 'rgba(255,255,255,' + (flash * 0.10) + ')';
+    ctx.fillRect(0, 0, W, H);
+    flash *= 0.85; if (flash < 0.01) flash = 0;
+  }
+}
+
+function drawField(x, y, r) {
+  const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+  g.addColorStop(0, 'rgba(139,92,246,0.20)');
+  g.addColorStop(1, 'rgba(139,92,246,0)');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = 'rgba(139,92,246,0.55)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke();
+}
+
+// ---------- Loop principal (passo fixo + FPS) ----------
+let last = performance.now();
+let acc = 0;
+let fpsFrames = 0, fpsTime = 0;
+const fpsEl = document.getElementById('fps');
+const countEl = document.getElementById('count');
+
+function loop(now) {
+  let frameDt = (now - last) / 1000;
+  last = now;
+  if (frameDt > 0.05) frameDt = 0.05;        // clamp (troca de aba etc.)
+
+  acc += frameDt;
+  let steps = 0;
+  while (acc >= STEP && steps < SUB_MAX) { physics(STEP); acc -= STEP; steps++; }
+  if (steps === SUB_MAX) acc = 0;            // evita acúmulo (spiral of death)
+
+  render();
+
+  // HUD
+  fpsFrames++; fpsTime += frameDt;
+  if (fpsTime >= 0.5) {
+    fpsEl.textContent = Math.round(fpsFrames / fpsTime);
+    fpsFrames = 0; fpsTime = 0;
+  }
+  countEl.textContent = balls.length;
+
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

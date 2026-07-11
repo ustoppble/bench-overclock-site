@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apple</title>
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+    --black:#1d1d1f;--white:#f5f5f7;--gray:#86868b;--blue:#2997ff;
+    --nav-h:44px;--subnav-h:52px;
+  }
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+    color:var(--black);background:var(--white);line-height:1.47059;
+    font-size:17px;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:var(--blue);text-decoration:none;transition:color .3s}
+  a:hover{text-decoration:underline}
+
+  /* ── Navbar ──────────────────────────────────────────── */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:9999;
+    height:var(--nav-h);background:rgba(29,29,31,.92);
+    backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    display:flex;align-items:center;justify-content:center;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  nav .nav-inner{
+    width:100%;max-width:1024px;padding:0 22px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  nav a{color:rgba(255,255,255,.8);font-size:12px;letter-spacing:-.01em;transition:color .3s}
+  nav a:hover{color:#fff;text-decoration:none}
+  nav .apple-logo svg{width:15px;height:18px;fill:currentColor}
+  nav .nav-links{display:flex;gap:28px;align-items:center}
+  nav .nav-icons{display:flex;gap:18px;align-items:center}
+  nav .nav-icons svg{width:15px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6}
+
+  /* ── Sub-nav promo ──────────────────────────────────── */
+  .subnav{
+    position:fixed;top:var(--nav-h);left:0;right:0;z-index:9998;
+    height:var(--subnav-h);background:rgba(29,29,31,.92);
+    backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
+    display:flex;align-items:center;justify-content:center;
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .subnav a{color:rgba(255,255,255,.8);font-size:14px;font-weight:400}
+  .subnav a:hover{color:#fff;text-decoration:none}
+  .subnav .sub-inner{
+    width:100%;max-width:1024px;padding:0 22px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .subnav .sub-links{display:flex;gap:32px}
+  .subnav .sub-links a{font-size:12px;color:rgba(255,255,255,.7)}
+  .subnav .sub-links a:hover{color:#fff}
+
+  body{padding-top:calc(var(--nav-h) + var(--subnav-h))}
+
+  /* ── Hero ────────────────────────────────────────────── */
+  .hero{
+    text-align:center;padding:56px 22px 0;
+    background:#000;color:#fff;overflow:hidden;
+    position:relative;
+  }
+  .hero-image{
+    width:100%;max-width:734px;margin:0 auto;
+    height:480px;border-radius:0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 55%,rgba(120,80,220,.45),transparent 70%),
+      radial-gradient(ellipse 40% 40% at 40% 50%,rgba(60,140,255,.35),transparent 65%),
+      radial-gradient(ellipse 35% 35% at 65% 45%,rgba(255,100,180,.3),transparent 60%),
+      linear-gradient(180deg,#111 0%,#000 100%);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .hero-image svg{width:280px;height:280px;opacity:.85;filter:drop-shadow(0 20px 60px rgba(120,80,220,.4))}
+  .hero h2{
+    font-size:56px;font-weight:700;letter-spacing:-.015em;line-height:1.07;
+    margin-top:20px;
+    background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.7) 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .hero p{color:var(--gray);font-size:28px;font-weight:400;margin-top:4px}
+  .hero .links{margin-top:16px;display:flex;gap:28px;justify-content:center;font-size:21px}
+  .hero .links a{color:var(--blue)}
+  .hero .links a:hover{text-decoration:underline}
+
+  /* ── Product Grid ─────────────────────────────────────── */
+  .grid{max-width:1060px;margin:12px auto;padding:0 12px}
+  .grid-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .grid-full{grid-column:1/-1}
+
+  .card{position:relative;overflow:hidden;text-align:center;padding:44px 22px 0;min-height:580px;display:flex;flex-direction:column;align-items:center;border-radius:18px}
+  .card-dark{background:#000;color:#fff}
+  .card-light{background:#f5f5f7;color:#000}
+  .card-gray{background:#1d1d1f;color:#fff}
+
+  .card .card-img{
+    margin-top:24px;width:100%;max-width:480px;height:320px;
+    border-radius:12px;flex-shrink:0;
+    position:relative;overflow:hidden;
+  }
+  .card-full .card-img{max-width:700px;height:420px}
+
+  .card h3{font-size:40px;font-weight:700;letter-spacing:-.01em;line-height:1.1}
+  .card-full h3{font-size:56px}
+  .card .card-sub{font-size:21px;font-weight:400;color:var(--gray);margin-top:4px}
+  .card-light .card-sub{color:#6e6e73}
+  .card .card-links{margin-top:14px;display:flex;gap:26px;font-size:17px;flex-shrink:0}
+  .card .card-links a{color:var(--blue);display:inline-flex;align-items:center;gap:4px}
+  .card .card-links a::after{content:'›';font-size:20px;margin-left:2px}
+  .card .card-links a.arrow::after{content:'›'}
+
+  /* ── Product image placeholders (gradients) ──────────── */
+  .img-iphone{
+    background:
+      radial-gradient(ellipse 50% 60% at 50% 50%,rgba(90,120,255,.4),transparent 70%),
+      linear-gradient(160deg,#2a2a2e 0%,#111 100%);
+  }
+  .img-macbook{
+    background:
+      radial-gradient(ellipse 55% 45% at 50% 55%,rgba(100,180,255,.25),transparent 70%),
+      linear-gradient(180deg,#1a1a1c 0%,#0d0d0d 100%);
+  }
+  .img-watch{
+    background:
+      radial-gradient(circle at 50% 50%,rgba(255,60,60,.15),transparent 55%),
+      radial-gradient(circle at 50% 50%,rgba(255,180,60,.12),transparent 50%),
+      linear-gradient(180deg,#1c1c1e 0%,#111 100%);
+  }
+  .img-ipad{
+    background:
+      radial-gradient(ellipse 50% 50% at 50% 50%,rgba(80,200,160,.3),transparent 65%),
+      linear-gradient(180deg,#1d1d1f 0%,#0a0a0a 100%);
+  }
+  .img-airpods{
+    background:
+      radial-gradient(ellipse 45% 50% at 50% 50%,rgba(255,200,100,.2),transparent 65%),
+      linear-gradient(180deg,#f5f5f7 0%,#e8e8ed 100%);
+  }
+  .img-vision{
+    background:
+      radial-gradient(ellipse 55% 50% at 50% 50%,rgba(120,60,220,.35),transparent 60%),
+      radial-gradient(ellipse 30% 30% at 60% 40%,rgba(60,180,255,.25),transparent 55%),
+      linear-gradient(180deg,#f5f5f7 0%,#e8e8ed 100%);
+  }
+  .img-trade{
+    background:
+      radial-gradient(ellipse 40% 40% at 50% 50%,rgba(50,200,100,.3),transparent 65%),
+      linear-gradient(180deg,#111 0%,#0a0a0a 100%);
+  }
+  .img-macbook-air{
+    background:
+      radial-gradient(ellipse 55% 45% at 50% 55%,rgba(180,160,255,.25),rgba(100,180,255,.15),transparent 70%),
+      linear-gradient(180deg,#f5f5f7 0%,#e8e8ed 100%);
+  }
+
+  /* ── Footer ──────────────────────────────────────────── */
+  footer{
+    background:#f5f5f7;color:#6e6e73;padding:20px 22px 34px;
+    border-top:1px solid #d2d2d7;
+  }
+  .footer-inner{max-width:980px;margin:0 auto}
+  footer p{font-size:12px;line-height:1.6}
+  footer .foot-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;font-size:12px}
+  footer .foot-links a{color:var(--blue);white-space:nowrap}
+  footer .foot-links span{color:#d2d2d7}
+  footer .copyright{margin-top:16px;padding-top:16px;border-top:1px solid #d2d2d7}
+
+  /* ── Animations ─────────────────────────────────────── */
+  .fade-up{
+    opacity:0;transform:translateY(40px);
+    transition:opacity .8s cubic-bezier(.25,.46,.45,.94),transform .8s cubic-bezier(.25,.46,.45,.94);
+  }
+  .fade-up.visible{opacity:1;transform:translateY(0)}
+  .card{transition:transform .4s cubic-bezier(.25,.46,.45,.94),box-shadow .4s ease}
+  .card:hover{transform:scale(1.008);box-shadow:0 8px 40px rgba(0,0,0,.12)}
+
+  /* ── Responsive ─────────────────────────────────────── */
+  @media(max-width:834px){
+    .grid-row{grid-template-columns:1fr}
+    .hero h2{font-size:40px}
+    .hero p{font-size:21px}
+    .card h3{font-size:32px}
+    .card-full h3{font-size:40px}
+    .card{min-height:500px}
+    .card .card-img{height:260px}
+    .subnav .sub-links{gap:20px}
+    nav .nav-links{gap:18px}
+  }
+  @media(max-width:480px){
+    nav .nav-links{display:none}
+    .hero h2{font-size:32px}
+    .hero p{font-size:19px}
+    .hero .links{font-size:17px;gap:20px}
+    .card h3{font-size:28px}
+    .card-full h3{font-size:32px}
+    .card .card-sub{font-size:17px}
+    .hero-image{height:320px}
+    .hero-image svg{width:200px;height:200px}
+    .card{min-height:460px;padding:32px 16px 0}
+    .card .card-img{height:200px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="apple-logo" aria-label="Apple">
+      <svg viewBox="0 0 17 20"><path d="M15.5 14.8c-.4.9-.6 1.3-1.1 2.1-.7 1.1-1.7 2.5-3 2.5s-1.6-.8-3.3-.8c-1.6 0-2.2.8-3.3.9-1.2.1-2.4-1.5-3.1-2.6C.3 14.2-.2 10.4 1.2 8.4c1-1.4 2.6-2.3 4.2-2.3 1.4 0 2.5.9 3.4.9.8 0 2.2-1.1 3.7-.9.6.1 2.4.3 3.6 2.1-.1.1-2.2 1.3-2.2 3.8 0 2.9 2.6 3.9 2.6 3.9zM11.4 3.8C12 3.1 12.4 2.1 12.3 1c-.9 0-2 .6-2.6 1.3-.6.7-1.1 1.7-1 2.7 1 .1 2-.5 2.7-1.2z"/></svg>
+    </a>
+    <div class="nav-links">
+      <a href="#">Loja</a>
+      <a href="#">Mac</a>
+      <a href="#">iPad</a>
+      <a href="#">iPhone</a>
+      <a href="#">Watch</a>
+      <a href="#">AirPods</a>
+      <a href="#">TV e Casa</a>
+      <a href="#">Entretenimento</a>
+      <a href="#">Acessórios</a>
+      <a href="#">Suporte</a>
+    </div>
+    <div class="nav-icons">
+      <a href="#" aria-label="Buscar">
+        <svg viewBox="0 0 17 17"><circle cx="7" cy="7" r="5.5"/><line x1="11" y1="11" x2="15.5" y2="15.5"/></svg>
+      </a>
+      <a href="#" aria-label="Sacola">
+        <svg viewBox="0 0 17 17"><path d="M1.5 4.5h14l-1.3 11.2c-.1.6-.6 1-1.2 1H4c-.6 0-1.1-.4-1.2-1L1.5 4.5zM5.5 1.5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v3h-6v-3z" transform="translate(0 1)"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Sub-nav ── -->
+<div class="subnav">
+  <div class="sub-inner">
+    <a href="#" style="font-size:21px;font-weight:600;color:#fff">iPhone 16 Pro</a>
+    <div class="sub-links">
+      <a href="#">Visão geral</a>
+      <a href="#">Avançar</a>
+      <a href="#">Câmera</a>
+      <a href="#">Chip</a>
+      <a href="#">Comprar</a>
+    </div>
+  </div>
+</div>
+
+<!-- ── Hero ── -->
+<section class="hero fade-up">
+  <div class="hero-image">
+    <svg viewBox="0 0 280 280" fill="none">
+      <defs>
+        <linearGradient id="hg" x1="0" y1="0" x2="280" y2="280" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#a78bfa"/><stop offset="50%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#f472b6"/>
+        </linearGradient>
+      </defs>
+      <rect x="68" y="28" width="144" height="224" rx="32" stroke="url(#hg)" stroke-width="4" fill="none"/>
+      <rect x="80" y="44" width="120" height="192" rx="24" fill="rgba(255,255,255,.06)"/>
+      <circle cx="140" cy="218" r="14" stroke="url(#hg)" stroke-width="2.5" fill="none"/>
+      <rect x="118" y="36" width="44" height="5" rx="2.5" fill="rgba(255,255,255,.2)"/>
+      <circle cx="140" cy="140" r="28" stroke="url(#hg)" stroke-width="2" fill="none"/>
+      <circle cx="140" cy="140" r="8" fill="url(#hg)" opacity=".5"/>
+    </svg>
+  </div>
+  <h2>iPhone 16 Pro</h2>
+  <p>Maravilha por onde você olhar.</p>
+  <div class="links">
+    <a href="#">Saiba mais ›</a>
+    <a href="#">Comprar ›</a>
+  </div>
+</section>
+
+<!-- ── Product Grid ── -->
+<div class="grid">
+
+  <!-- Row 1 -->
+  <div class="grid-row">
+    <section class="card card-dark fade-up">
+      <h3>MacBook Air</h3>
+      <p class="card-sub">Leve nas costas. Pesado no desempenho.</p>
+      <div class="card-links"><a href="#">Saiba mais</a><a href="#">Comprar</a></div>
+      <div class="card-img img-macbook-air">
+        <svg viewBox="0 0 400 240" style="width:100%;height:100%;padding:20px"><defs><linearGradient id="mg" x1="0" y1="0" x2="400" y2="240" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#60a5fa"/></linearGradient></defs>
+        <rect x="60" y="20" width="280" height="170" rx="10" fill="none" stroke="url(#mg)" stroke-width="2.5"/>
+        <rect x="72" y="30" width="256" height="148" rx="6" fill="rgba(120,100,220,.08)"/>
+        <path d="M30 200 h340 l-30 30 h-280 z" fill="none" stroke="url(#mg)" stroke-width="2"/>
+        <path d="M170 215 h60" stroke="rgba(255,255,255,.2)" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+    </section>
+    <section class="card card-light fade-up">
+      <h3>iPhone 16</h3>
+      <p class="card-sub">Feito para ser muito amado.</p>
+      <div class="card-links"><a href="#">Saiba mais</a><a href="#">Comprar</a></div>
+      <div class="card-img img-iphone">
+        <svg viewBox="0 0 240 300" style="width:70%;height:100%;margin:0 auto;display:block"><defs><linearGradient id="ig" x1="0" y1="0" x2="240" y2="300" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#818cf8"/></linearGradient></defs>
+        <rect x="52" y="16" width="136" height="268" rx="28" stroke="url(#ig)" stroke-width="3" fill="none"/>
+        <rect x="62" y="30" width="116" height="238" rx="22" fill="rgba(96,165,250,.06)"/>
+        <circle cx="120" cy="248" r="14" stroke="url(#ig)" stroke-width="2" fill="none"/>
+        <rect x="100" y="22" width="40" height="5" rx="2.5" fill="rgba(96,165,250,.25)"/>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="grid-row">
+    <section class="card card-light fade-up">
+      <h3>AirPods Pro 2</h3>
+      <p class="card-sub">Som adaptativo. Agora também com proteção auditiva.</p>
+      <div class="card-links"><a href="#">Saiba mais</a><a href="#">Comprar</a></div>
+      <div class="card-img img-airpods">
+        <svg viewBox="0 0 280 220" style="width:80%;height:100%;margin:0 auto;display:block"><defs><linearGradient id="ag" x1="0" y1="0" x2="280" y2="220" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#f97316"/></linearGradient></defs>
+        <ellipse cx="100" cy="80" rx="28" ry="40" stroke="url(#ag)" stroke-width="2.5" fill="rgba(245,158,11,.06)" transform="rotate(-15 100 80)"/>
+        <ellipse cx="180" cy="80" rx="28" ry="40" stroke="url(#ag)" stroke-width="2.5" fill="rgba(245,158,11,.06)" transform="rotate(15 180 80)"/>
+        <path d="M80 110 Q140 160 200 110" stroke="url(#ag)" stroke-width="2.5" fill="none"/>
+        <rect x="110" y="150" width="60" height="40" rx="14" stroke="url(#ag)" stroke-width="2.5" fill="rgba(245,158,11,.06)"/>
+        </svg>
+      </div>
+    </section>
+    <section class="card card-dark fade-up">
+      <h3>Apple Watch Series 10</h3>
+      <p class="card-sub">Design mais fino. Barras mais inteligentes.</p>
+      <div class="card-links"><a href="#">Saiba mais</a><a href="#">Comprar</a></div>
+      <div class="card-img img-watch">
+        <svg viewBox="0 0 260 300" style="width:65%;height:100%;margin:0 auto;display:block"><defs><linearGradient id="wg" x1="0" y1="0" x2="260" y2="300" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f87171"/><stop offset="100%" stop-color="#fbbf24"/></linearGradient></defs>
+        <rect x="80" y="50" width="100" height="120" rx="24" stroke="url(#wg)" stroke-width="2.5" fill="none"/>
+        <circle cx="130" cy="110" r="30" stroke="url(#wg)" stroke-width="1.5" fill="rgba(248,113,113,.06)"/>
+        <rect x="108" y="90" width="44" height="6" rx="3" fill="url(#wg)" opacity=".4"/>
+        <rect x="108" y="104" width="44" height="6" rx="3" fill="url(#wg)" opacity=".25"/>
+        <rect x="108" y="118" width="30" height="6" rx="3" fill="url(#wg)" opacity=".2"/>
+        <path d="M95 50 Q130 20 165 50" stroke="url(#wg)" stroke-width="2.5" fill="none"/>
+        <path d="M95 170 Q130 200 165 170" stroke="url(#wg)" stroke-width="2.5" fill="none"/>
+        <rect x="112" y="4" width="36" height="18" rx="6" stroke="url(#wg)" stroke-width="1.5" fill="none"/>
+        <rect x="112" y="278" width="36" height="18" rx="6" stroke="url(#wg)" stroke-width="1.5" fill="none"/>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+  <!-- Row 3 -->
+  <div class="grid-row">
+    <section class="card card-dark fade-up card-full">
+      <h3>MacBook Pro</h3>
+      <p class="card-sub">O mais avançado chip da Apple, para o Mac mais avançado.</p>
+      <div class="card-links"><a href="#">Saiba mais</a><a href="#">Comprar</a></div>
+      <div class="card-img img-macbook" style="max-width:780px;height:400px">
+        <svg viewBox="0 0 520 280" style="width:90%;height:100%;margin:0 auto;display:block"><defs><linearGradient id="pg" x1="0" y1="0" x2="520" y2="280" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs>
+        <rect x="50" y="16" width="420" height="220" rx="12" fill="none" stroke="url(#pg)" stroke-width="2.5"/>
+        <rect x="64" y="28" width="392" height="196" rx="6" fill="rgba(129,140,248,.05)"/>
+        <path d="M20 246 h480 l-40 34 h-400 z" fill="none" stroke="url(#pg)" stroke-width="2"/>
+        <path d="M220 268 h80" stroke="rgba(255,255,255,.15)" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="260" y="135" text-anchor="middle" fill="url(#pg)" font-size="16" font-weight="600" opacity=".5">M4 Pro &amp; M4 Max</text>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+  <!-- Row 4 -->
+  <div class="grid-row">
+    <section class="card card-dark fade-up">
+      <h3>iPad Pro</h3>
+      <p class="card-sub">Finamente poderoso. Poderosamente fino.</p>
+      <div class="card-links"><a href="#">Saiba mais</a><a href="#">Comprar</a></div>
+      <div class="card-img img-ipad">
+        <svg viewBox="0 0 300 220" style="width:85%;height:100%;margin:0 auto;display:block"><defs><linearGradient id="dg" x1="0" y1="0" x2="300" y2="220" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs>
+        <rect x="40" y="20" width="220" height="180" rx="14" stroke="url(#dg)" stroke-width="2.5" fill="none"/>
+        <rect x="52" y="30" width="196" height="158" rx="6" fill="rgba(52,211,153,.05)"/>
+        <circle cx="150" cy="196" r="6" stroke="url(#dg)" stroke-width="1.5" fill="none"/>
+        <rect x="142" y="28" width="16" height="4" rx="2" fill="rgba(52,211,153,.2)"/>
+        </svg>
+      </div>
+    </section>
+    <section class="card card-light fade-up">
+      <h3>AirPods Max</h3>
+      <p class="card-sub">O som de vanguarda, em alto nível.</p>
+      <div class="card-links"><a href="#">Saiba mais</a><a href="#">Comprar</a></div>
+      <div class="card-img" style="background:radial-gradient(ellipse 40% 50% at 50% 50%,rgba(120,100,220,.2),transparent 65%),linear-gradient(180deg,#f5f5f7,#e8e8ed)">
+        <svg viewBox="0 0 280 200" style="width:80%;height:100%;margin:0 auto;display:block"><defs><linearGradient id="xg" x1="0" y1="0" x2="280" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#818cf8"/><stop offset="100%" stop-color="#c084fc"/></linearGradient></defs>
+        <ellipse cx="140" cy="50" rx="80" ry="14" stroke="url(#xg)" stroke-width="2.5" fill="none"/>
+        <path d="M60 50 Q60 130 90 170" stroke="url(#xg)" stroke-width="2.5" fill="none"/>
+        <path d="M220 50 Q220 130 190 170" stroke="url(#xg)" stroke-width="2.5" fill="none"/>
+        <ellipse cx="90" cy="175" rx="24" ry="16" stroke="url(#xg)" stroke-width="2" fill="rgba(129,140,248,.06)"/>
+        <ellipse cx="190" cy="175" rx="24" ry="16" stroke="url(#xg)" stroke-width="2" fill="rgba(129,140,248,.06)"/>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+  <!-- Row 5 -->
+  <div class="grid-row">
+    <section class="card card-light fade-up">
+      <h3>Apple Trade In</h3>
+      <p class="card-sub" style="color:#6e6e73">Troque seu dispositivo usado por desconto em um novo.</p>
+      <div class="card-links"><a href="#">Saiba mais</a></div>
+      <div class="card-img img-trade" style="opacity:.9">
+        <svg viewBox="0 0 280 200" style="width:70%;height:100%;margin:0 auto;display:block"><defs><linearGradient id="tg" x1="0" y1="0" x2="280" y2="200" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient></defs>
+        <text x="140" y="100" text-anchor="middle" fill="url(#tg)" font-size="42" font-weight="700" opacity=".35">♻</text>
+        <text x="140" y="140" text-anchor="middle" fill="rgba(255,255,255,.3)" font-size="14" font-weight="500">Troque. Ganhe. Renove.</text>
+        </svg>
+      </div>
+    </section>
+    <section class="card card-dark fade-up">
+      <h3>Apple Card</h3>
+      <p class="card-sub">Get 3% Daily Cash back from Apple.</p>
+      <div class="card-links"><a href="#">Saiba mais</a><a href="#">Solicitar</a></div>
+      <div class="card-img" style="background:radial-gradient(ellipse 45% 50% at 50% 50%,rgba(255,255,255,.08),transparent 65%),linear-gradient(160deg,#1c1c1e,#000)">
+        <svg viewBox="0 0 280 180" style="width:70%;height:100%;margin:0 auto;display:block"><defs><linearGradient id="cg" x1="0" y1="0" x2="280" y2="180" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fff" stop-opacity=".4"/><stop offset="100%" stop-color="#fff" stop-opacity=".1"/></linearGradient></defs>
+        <rect x="30" y="30" width="220" height="120" rx="12" stroke="url(#cg)" stroke-width="2" fill="rgba(255,255,255,.03)"/>
+        <circle cx="230" cy="60" r="20" fill="none" stroke="url(#cg)" stroke-width="2"/>
+        <circle cx="230" cy="60" r="10" fill="url(#cg)" opacity=".3"/>
+        <text x="50" y="110" fill="rgba(255,255,255,.2)" font-size="16" font-weight="500" letter-spacing="2">APPLE</text>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+</div><!-- /grid -->
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <p>1. Os valores de troca variam de acordo com o estado, ano e configuração do dispositivo de troque. Nem todos os dispositivos são elegíveis para crédito. Você deve ter pelo menos 18 anos. A oferta pode não estar disponível em todas as lojas. Algumas lojas podem ter requisitos adicionais.</p>
+    <div class="foot-links">
+      <a href="#">Política de Privacidade</a>
+      <span>|</span>
+      <a href="#">Termos de Uso</a>
+      <span>|</span>
+      <a href="#">Vendas e Reembolsos</a>
+      <span>|</span>
+      <a href="#">Mapa do Site</a>
+    </div>
+    <div class="copyright">
+      <p>Copyright © 2026 Apple Inc. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Intersection Observer for fade-up
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('visible');
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+  // Smooth nav background on scroll
+  const nav=document.querySelector('nav');
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        nav.style.background=window.scrollY>10
+          ?'rgba(29,29,31,.96)':'rgba(29,29,31,.92)';
+        ticking=false;
+      });
+      ticking=true;
+    }
+  });
+})();
+</script>
+</body>
+</html>

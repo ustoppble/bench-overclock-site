@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Minhas Notas</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <h1>Minhas Notas</h1>
+  <form id="form-nota">
+    <input id="campo-titulo" type="text" placeholder="Título da nota" required>
+    <textarea id="campo-corpo" placeholder="Escreva aqui..." rows="4" required></textarea>
+    <button type="submit">Salvar nota</button>
+  </form>
+  <section id="lista-notas" aria-live="polite"></section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

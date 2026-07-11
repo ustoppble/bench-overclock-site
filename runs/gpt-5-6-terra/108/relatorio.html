@@ -1,0 +1,480 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Relatório de vendas — 1º semestre de 2026</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17233a;
+        --muted: #68758b;
+        --line: #dce4ef;
+        --surface: #ffffff;
+        --canvas: #f4f7fb;
+        --navy: #14284a;
+        --blue: #2768d9;
+        --blue-soft: #e7f0ff;
+        --teal: #068f87;
+        --amber: #b96600;
+        --amber-soft: #fff4e1;
+        --shadow: 0 14px 34px rgba(26, 46, 77, .08);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background: var(--canvas);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .hero {
+        padding: 56px max(24px, calc((100vw - 1120px) / 2));
+        color: #fff;
+        background:
+          radial-gradient(circle at 84% 12%, rgba(87, 163, 255, .45), transparent 29rem),
+          linear-gradient(120deg, #102240, #163c72);
+      }
+
+      .eyebrow {
+        margin: 0 0 10px;
+        color: #b8d5ff;
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: .13em;
+      }
+
+      h1, h2, h3, p { margin-top: 0; }
+
+      h1 {
+        margin-bottom: 10px;
+        font-size: clamp(2rem, 5vw, 3.25rem);
+        line-height: 1.05;
+        letter-spacing: -.045em;
+      }
+
+      .hero p {
+        max-width: 620px;
+        margin-bottom: 0;
+        color: #d8e7ff;
+        font-size: 1rem;
+      }
+
+      main {
+        width: min(1120px, calc(100% - 48px));
+        margin: -24px auto 48px;
+      }
+
+      .summary {
+        display: grid;
+        grid-template-columns: 1.25fr 1fr 1fr;
+        gap: 16px;
+      }
+
+      .card, .panel {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+      }
+
+      .card { padding: 24px; }
+
+      .card--revenue {
+        color: #fff;
+        border: 0;
+        background: linear-gradient(135deg, #1b58b7, #157b9a);
+      }
+
+      .metric-label {
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: .85rem;
+        font-weight: 750;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+      }
+
+      .card--revenue .metric-label,
+      .card--revenue .metric-note { color: #dcecff; }
+
+      .metric-value {
+        margin-bottom: 10px;
+        font-size: clamp(1.75rem, 3vw, 2.5rem);
+        font-weight: 800;
+        letter-spacing: -.045em;
+        line-height: 1.05;
+      }
+
+      .metric-note {
+        margin: 0;
+        color: var(--muted);
+        font-size: .92rem;
+        line-height: 1.45;
+      }
+
+      .discard-breakdown {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 13px;
+      }
+
+      .pill {
+        padding: 4px 8px;
+        border-radius: 999px;
+        color: #8b4e00;
+        background: var(--amber-soft);
+        font-size: .78rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .audit {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        margin: 24px 0;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--line);
+      }
+
+      .audit-item {
+        padding: 16px 18px;
+        background: #fff;
+      }
+
+      .audit-number {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--navy);
+        font-size: 1.2rem;
+        font-weight: 800;
+      }
+
+      .audit-label {
+        color: var(--muted);
+        font-size: .88rem;
+      }
+
+      .content-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+        gap: 24px;
+        align-items: start;
+      }
+
+      .panel { padding: 28px; }
+
+      .panel-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: baseline;
+        margin-bottom: 24px;
+      }
+
+      h2 {
+        margin-bottom: 0;
+        font-size: 1.35rem;
+        letter-spacing: -.025em;
+      }
+
+      .panel-heading p {
+        margin-bottom: 0;
+        color: var(--muted);
+        font-size: .88rem;
+        text-align: right;
+      }
+
+      .category + .category { margin-top: 23px; }
+
+      .category-top {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px 14px;
+        align-items: baseline;
+      }
+
+      .category-name { font-weight: 750; }
+
+      .category-value {
+        color: var(--navy);
+        font-weight: 800;
+      }
+
+      .category-detail {
+        grid-column: 1 / -1;
+        color: var(--muted);
+        font-size: .84rem;
+      }
+
+      .bar {
+        height: 10px;
+        margin-top: 10px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #eaf0f7;
+      }
+
+      .bar > span {
+        display: block;
+        width: var(--share);
+        height: 100%;
+        border-radius: inherit;
+        background: var(--bar-color, var(--blue));
+      }
+
+      .top-list {
+        display: grid;
+        gap: 2px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .top-list li {
+        display: grid;
+        grid-template-columns: 36px 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 13px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .top-list li:last-child { border-bottom: 0; }
+
+      .rank {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        border-radius: 10px;
+        color: var(--blue);
+        background: var(--blue-soft);
+        font-size: .79rem;
+        font-weight: 850;
+      }
+
+      .product-name { font-weight: 750; }
+
+      .product-revenue {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: .79rem;
+      }
+
+      .quantity {
+        color: var(--navy);
+        font-size: 1.05rem;
+        font-weight: 850;
+        text-align: right;
+      }
+
+      .quantity small {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: .71rem;
+        font-weight: 650;
+        text-transform: uppercase;
+      }
+
+      .methodology {
+        margin-top: 24px;
+        padding: 28px;
+      }
+
+      .methodology > p {
+        max-width: 770px;
+        margin: 9px 0 20px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .rules {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .rule {
+        padding: 15px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fbfcfe;
+      }
+
+      .rule strong { display: block; margin-bottom: 5px; }
+
+      .rule span {
+        color: var(--muted);
+        font-size: .88rem;
+        line-height: 1.42;
+      }
+
+      footer {
+        margin-top: 20px;
+        color: var(--muted);
+        font-size: .82rem;
+        text-align: center;
+      }
+
+      @media (max-width: 820px) {
+        .summary, .content-grid { grid-template-columns: 1fr; }
+        .audit { grid-template-columns: 1fr; }
+        .audit-item + .audit-item { border-top: 1px solid var(--line); }
+      }
+
+      @media (max-width: 540px) {
+        .hero { padding-top: 42px; padding-bottom: 42px; }
+        main { width: min(100% - 28px, 1120px); }
+        .card, .panel { padding: 21px; }
+        .panel-heading { display: block; }
+        .panel-heading p { margin-top: 5px; text-align: left; }
+        .rules { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="eyebrow">VENDAS · 1º SEMESTRE DE 2026</div>
+      <h1>Relatório de vendas</h1>
+      <p>Resultado da limpeza e consolidação de <strong>vendas.csv</strong>, cobrindo pedidos de 01 de janeiro a 28 de junho de 2026.</p>
+    </header>
+
+    <main>
+      <section class="summary" aria-label="Resumo das vendas">
+        <article class="card card--revenue">
+          <div class="metric-label">Receita total</div>
+          <div class="metric-value">R$&nbsp;515.086,00</div>
+          <p class="metric-note">Quantidade vendida × valor unitário, após a limpeza da base.</p>
+        </article>
+
+        <article class="card">
+          <div class="metric-label">Pedidos válidos considerados</div>
+          <div class="metric-value">1.409</div>
+          <p class="metric-note">Registros completos, com dados interpretáveis e sem repetição.</p>
+        </article>
+
+        <article class="card">
+          <div class="metric-label">Linhas descartadas</div>
+          <div class="metric-value">91</div>
+          <p class="metric-note">De 1.500 linhas de dados analisadas.</p>
+          <div class="discard-breakdown" aria-label="Detalhamento dos descartes">
+            <span class="pill">62 inválidas</span>
+            <span class="pill">29 duplicadas</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="audit" aria-label="Fluxo de tratamento dos dados">
+        <div class="audit-item">
+          <span class="audit-number">1.500</span>
+          <span class="audit-label">linhas de dados lidas</span>
+        </div>
+        <div class="audit-item">
+          <span class="audit-number">1.438</span>
+          <span class="audit-label">linhas válidas antes de remover duplicatas</span>
+        </div>
+        <div class="audit-item">
+          <span class="audit-number">1.409</span>
+          <span class="audit-label">pedidos incluídos no relatório</span>
+        </div>
+      </section>
+
+      <section class="content-grid" aria-label="Análises de vendas">
+        <article class="panel">
+          <div class="panel-heading">
+            <h2>Receita por categoria</h2>
+            <p>Participação na receita total</p>
+          </div>
+
+          <div class="category">
+            <div class="category-top">
+              <span class="category-name">Vestuário</span>
+              <span class="category-value">R$&nbsp;206.272,00</span>
+              <span class="category-detail">40,0% · 701 pedidos · 2.140 unidades</span>
+            </div>
+            <div class="bar" aria-label="Vestuário: 40,0% da receita"><span style="--share: 40.0%; --bar-color: #2768d9"></span></div>
+          </div>
+
+          <div class="category">
+            <div class="category-top">
+              <span class="category-name">Acessórios</span>
+              <span class="category-value">R$&nbsp;159.637,90</span>
+              <span class="category-detail">31,0% · 413 pedidos · 1.202 unidades</span>
+            </div>
+            <div class="bar" aria-label="Acessórios: 31,0% da receita"><span style="--share: 31.0%; --bar-color: #068f87"></span></div>
+          </div>
+
+          <div class="category">
+            <div class="category-top">
+              <span class="category-name">Calçados</span>
+              <span class="category-value">R$&nbsp;149.176,10</span>
+              <span class="category-detail">29,0% · 295 pedidos · 888 unidades</span>
+            </div>
+            <div class="bar" aria-label="Calçados: 29,0% da receita"><span style="--share: 29.0%; --bar-color: #b96600"></span></div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-heading">
+            <h2>Top 5 produtos</h2>
+            <p>Ordenado por quantidade vendida</p>
+          </div>
+
+          <ol class="top-list">
+            <li>
+              <span class="rank">01</span>
+              <div><div class="product-name">Bermuda tactel</div><div class="product-revenue">R$&nbsp;32.503,50 em receita</div></div>
+              <div class="quantity">465<small>unidades</small></div>
+            </li>
+            <li>
+              <span class="rank">02</span>
+              <div><div class="product-name">Camiseta básica</div><div class="product-revenue">R$&nbsp;22.604,70 em receita</div></div>
+              <div class="quantity">453<small>unidades</small></div>
+            </li>
+            <li>
+              <span class="rank">03</span>
+              <div><div class="product-name">Chinelo slide</div><div class="product-revenue">R$&nbsp;17.915,10 em receita</div></div>
+              <div class="quantity">449<small>unidades</small></div>
+            </li>
+            <li>
+              <span class="rank">04</span>
+              <div><div class="product-name">Tênis corrida</div><div class="product-revenue">R$&nbsp;131.261,00 em receita</div></div>
+              <div class="quantity">439<small>unidades</small></div>
+            </li>
+            <li>
+              <span class="rank">05</span>
+              <div><div class="product-name">Mochila urbana</div><div class="product-revenue">R$&nbsp;81.081,00 em receita</div></div>
+              <div class="quantity">429<small>unidades</small></div>
+            </li>
+          </ol>
+        </article>
+      </section>
+
+      <section class="panel methodology" aria-labelledby="metodologia">
+        <h2 id="metodologia">Como a base foi tratada</h2>
+        <p>O arquivo foi lido integralmente com <code>;</code> como separador. Nenhuma linha incompleta foi usada para compor os indicadores: as 39 linhas truncadas não traziam continuação suficiente para reconstrução, e as 8 linhas vazias também foram contabilizadas como inválidas.</p>
+        <ul class="rules">
+          <li class="rule"><strong>Datas e moeda</strong><span>Foram validados os formatos <code>aaaa-mm-dd</code>, <code>d/m/aaaa</code> e <code>dd-mm-aa</code>. “R$”, vírgula e ponto decimal foram convertidos para centavos antes dos cálculos.</span></li>
+          <li class="rule"><strong>Texto normalizado</strong><span>Espaços excedentes e diferenças de maiúsculas/minúsculas em categoria e produto foram normalizados; as categorias foram consolidadas em Vestuário, Acessórios e Calçados.</span></li>
+          <li class="rule"><strong>Validação</strong><span>Além das linhas estruturais, 15 registros completos com valor <code>ERRO_IMPORT</code> foram descartados por não terem preço interpretável.</span></li>
+          <li class="rule"><strong>Duplicatas</strong><span>Foram removidas 29 ocorrências excedentes de 28 pedidos repetidos (mantida a primeira ocorrência válida de cada <code>pedido_id</code>).</span></li>
+        </ul>
+      </section>
+
+      <footer>Fonte: <strong>vendas.csv</strong> · Valores em reais (BRL) · Relatório estático e autocontido</footer>
+    </main>
+  </body>
+</html>

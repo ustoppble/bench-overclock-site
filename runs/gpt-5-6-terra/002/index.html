@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Apple (Brasil)</title>
+  <style>
+    :root {
+      --ink: #1d1d1f;
+      --quiet: #6e6e73;
+      --surface: #f5f5f7;
+      --paper: #fbfbfd;
+      --blue: #0071e3;
+      --blue-on-dark: #2997ff;
+      --nav-h: 44px;
+      --page-gap: 12px;
+      --ease: cubic-bezier(.25, .1, .25, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--surface);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "Segoe UI", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    body.menu-open { overflow: hidden; }
+
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    svg { display: block; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: 7px;
+      left: 50%;
+      z-index: 100;
+      padding: 9px 15px;
+      border-radius: 20px;
+      color: white;
+      background: var(--blue);
+      transform: translate(-50%, -150%);
+      transition: transform .2s var(--ease);
+    }
+
+    .skip-link:focus { transform: translate(-50%, 0); }
+
+    /* Global navigation */
+    .global-header {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 50;
+      height: var(--nav-h);
+      color: rgba(0, 0, 0, .8);
+      background: rgba(251, 251, 253, .72);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: saturate(180%) blur(20px);
+      transition: background .35s var(--ease), box-shadow .35s var(--ease), color .35s var(--ease);
+    }
+
+    .global-header.is-scrolled {
+      background: rgba(251, 251, 253, .9);
+      box-shadow: 0 1px 0 rgba(0, 0, 0, .05);
+    }
+
+    .global-nav {
+      max-width: 1024px;
+      height: 100%;
+      padding: 0 22px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-wordmark,
+    .nav-icon,
+    .nav-menu-trigger {
+      display: inline-grid;
+      place-items: center;
+      border: 0;
+      padding: 0;
+      color: inherit;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .nav-wordmark { width: 16px; height: 44px; }
+    .nav-wordmark svg { width: 15px; height: 18px; fill: currentColor; }
+    .nav-links { height: 100%; display: flex; align-items: center; justify-content: space-between; flex: 1; margin: 0 27px; }
+    .nav-links a { font-size: 12px; letter-spacing: -.01em; white-space: nowrap; opacity: .88; transition: opacity .2s ease; }
+    .nav-links a:hover, .nav-links a:focus-visible { opacity: 1; }
+    .nav-actions { display: flex; height: 100%; align-items: center; gap: 21px; }
+    .nav-icon { width: 15px; height: 44px; }
+    .nav-icon svg { width: 15px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.45; stroke-linecap: round; stroke-linejoin: round; }
+    .nav-icon.bag svg { fill: none; }
+    .nav-menu-trigger { display: none; width: 18px; height: 44px; position: relative; }
+    .nav-menu-trigger span { position: absolute; width: 13px; height: 1px; background: currentColor; transition: transform .25s var(--ease), top .25s var(--ease); }
+    .nav-menu-trigger span:first-child { top: 18px; }
+    .nav-menu-trigger span:last-child { top: 24px; }
+    .nav-menu-trigger[aria-expanded="true"] span:first-child { top: 21px; transform: rotate(45deg); }
+    .nav-menu-trigger[aria-expanded="true"] span:last-child { top: 21px; transform: rotate(-45deg); }
+
+    .mobile-panel {
+      position: fixed;
+      inset: var(--nav-h) 0 0;
+      z-index: 45;
+      padding: 22px 48px 40px;
+      color: var(--ink);
+      background: rgba(251, 251, 253, .98);
+      -webkit-backdrop-filter: saturate(180%) blur(24px);
+      backdrop-filter: saturate(180%) blur(24px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-12px);
+      transition: opacity .3s var(--ease), visibility .3s var(--ease), transform .3s var(--ease);
+      overflow-y: auto;
+    }
+
+    .mobile-panel.is-open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .mobile-panel nav { display: grid; gap: 4px; }
+    .mobile-panel a { padding: 7px 0; font-size: 28px; line-height: 1.16; font-weight: 600; letter-spacing: -.035em; }
+    .mobile-panel .mobile-search {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+      margin-top: 28px;
+      padding: 10px 12px;
+      color: #6e6e73;
+      border-radius: 10px;
+      background: #e8e8ed;
+    }
+    .mobile-search svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+    .mobile-search span { font-size: 15px; }
+
+    main { padding-top: var(--nav-h); }
+
+    /* Hero system */
+    .hero {
+      position: relative;
+      min-height: 692px;
+      overflow: hidden;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero + .hero { margin-top: var(--page-gap); }
+    .hero.dark { color: #f5f5f7; background: #000; }
+    .hero.light { color: var(--ink); background: var(--paper); }
+    .hero-copy { position: relative; z-index: 3; padding: 52px 20px 0; }
+    .hero h1, .hero h2, .tile h2 { margin: 0; font-weight: 600; letter-spacing: -.045em; }
+    .hero h1, .hero h2 { font-size: 56px; line-height: 1.07; }
+    .hero .eyebrow { margin: 0 0 5px; font-size: 20px; line-height: 1.22; font-weight: 600; letter-spacing: -.01em; }
+    .hero .subhead { max-width: 680px; margin: 7px auto 0; font-size: 28px; line-height: 1.18; font-weight: 400; letter-spacing: .004em; }
+    .hero .subhead.small { max-width: 500px; }
+
+    .cta-row { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; column-gap: 27px; row-gap: 8px; margin-top: 19px; }
+    .cta-row a { color: var(--blue); font-size: 21px; line-height: 1.2; letter-spacing: .011em; transition: color .2s ease, transform .2s var(--ease); }
+    .dark .cta-row a { color: var(--blue-on-dark); }
+    .cta-row a:hover, .cta-row a:focus-visible { text-decoration: underline; text-underline-offset: 3px; transform: translateY(-1px); }
+    .chevron { display: inline-block; margin-left: 2px; font-family: Arial, sans-serif; font-size: 1.02em; transform: translateY(-.02em); }
+
+    /* iPhone Pro backdrop and device art */
+    .hero--pro {
+      min-height: 704px;
+      background:
+        radial-gradient(ellipse 63% 40% at 50% 100%, rgba(30, 56, 85, .55), transparent 72%),
+        radial-gradient(ellipse 34% 32% at 16% 82%, rgba(9, 58, 116, .36), transparent 75%),
+        linear-gradient(180deg, #080b0f 0%, #010204 100%);
+    }
+
+    .hero--pro::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 1160px;
+      height: 420px;
+      left: 50%;
+      bottom: -286px;
+      border-radius: 50%;
+      background: #1681e8;
+      filter: blur(85px);
+      opacity: .28;
+      transform: translateX(-50%);
+    }
+
+    .pro-art {
+      position: absolute;
+      z-index: 1;
+      width: min(1090px, 103vw);
+      height: auto;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: transform 1s var(--ease);
+    }
+
+    .hero--pro:hover .pro-art { transform: translateX(-50%) scale(1.012); }
+
+    /* MacBook full tile */
+    .hero--mac { min-height: 620px; background: #f5f5f7; }
+    .hero--mac .hero-copy { padding-top: 53px; }
+    .hero--mac .subhead { color: #1d1d1f; }
+    .mac-art { position: absolute; z-index: 1; width: min(900px, 100vw); bottom: -15px; left: 50%; transform: translateX(-50%); transition: transform .8s var(--ease); }
+    .hero--mac:hover .mac-art { transform: translateX(-50%) translateY(-4px) scale(1.01); }
+
+    /* iPad full tile */
+    .hero--ipad { min-height: 620px; background: #fff; }
+    .ipad-title { display: inline-flex; align-items: baseline; gap: 8px; }
+    .ipad-title .air { font-style: italic; font-weight: 400; letter-spacing: -.065em; }
+    .hero--ipad .hero-copy { padding-top: 53px; }
+    .ipad-art { position: absolute; z-index: 1; width: min(1015px, 104vw); bottom: -22px; left: 50%; transform: translateX(-50%); transition: transform .8s var(--ease); }
+    .hero--ipad:hover .ipad-art { transform: translateX(-50%) scale(1.01); }
+
+    /* Product grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--page-gap);
+      padding: var(--page-gap);
+    }
+
+    .tile {
+      position: relative;
+      min-height: 580px;
+      overflow: hidden;
+      isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: var(--paper);
+    }
+
+    .tile.dark { color: #f5f5f7; background: #000; }
+    .tile-copy { position: relative; z-index: 3; padding: 48px 20px 0; }
+    .tile h2 { font-size: 40px; line-height: 1.08; }
+    .tile .kicker { margin: 0 0 5px; font-size: 17px; line-height: 1.25; font-weight: 600; letter-spacing: -.01em; }
+    .tile .subhead { max-width: 390px; margin: 7px auto 0; font-size: 21px; line-height: 1.22; letter-spacing: .007em; }
+    .tile .cta-row { margin-top: 14px; column-gap: 20px; }
+    .tile .cta-row a { font-size: 17px; }
+    .tile-art { position: absolute; z-index: 1; pointer-events: none; transition: transform .75s var(--ease); }
+    .tile:hover .tile-art { transform: var(--base-transform, none) scale(1.025); }
+
+    /* Watch card */
+    .watch-tile { background: #f5f5f7; }
+    .watch-title { display: flex; justify-content: center; align-items: center; gap: 5px; font-size: 28px !important; letter-spacing: -.03em !important; }
+    .watch-title .watch-word { letter-spacing: -.06em; }
+    .watch-title .series { font-size: 17px; letter-spacing: -.012em; font-weight: 500; }
+    .watch-tile .tile-copy { padding-top: 48px; }
+    .watch-art { width: 430px; max-width: 85%; bottom: -24px; left: 50%; --base-transform: translateX(-50%); transform: translateX(-50%); }
+
+    /* iPhone 16 card */
+    .iphone-tile { background: #f9f8f5; }
+    .iphone-tile::after { content: ""; position: absolute; inset: auto 0 0; height: 44%; background: linear-gradient(165deg, #f4dfe0, #d1d6eb 52%, #b8c8dc); z-index: -1; }
+    .iphone-art { width: 535px; max-width: 99%; bottom: -2px; left: 50%; --base-transform: translateX(-50%); transform: translateX(-50%); }
+
+    /* AirPods card */
+    .airpods-tile { background: #000; }
+    .airpods-tile::before { content: ""; position: absolute; width: 620px; height: 360px; left: 50%; bottom: -180px; border-radius: 50%; transform: translateX(-50%); background: #1987e6; filter: blur(85px); opacity: .28; }
+    .airpods-art { width: 460px; max-width: 82%; bottom: 8px; left: 50%; --base-transform: translateX(-50%); transform: translateX(-50%); }
+
+    /* iPad mini-like colorful card */
+    .ipad-mini-tile { background: #fff; }
+    .ipad-mini-tile .tile-copy { color: #1d1d1f; }
+    .mini-art { width: 555px; max-width: 98%; bottom: -9px; left: 50%; --base-transform: translateX(-50%); transform: translateX(-50%); }
+
+    /* Trade-in */
+    .trade-tile { background: #f5f5f7; }
+    .trade-tile .tile-copy { padding-top: 45px; }
+    .trade-tile h2 { font-size: 36px; }
+    .trade-art { width: 510px; max-width: 96%; bottom: -8px; left: 50%; --base-transform: translateX(-50%); transform: translateX(-50%); }
+
+    /* Entertainment */
+    .tv-tile { background: #030303; }
+    .tv-tile .tile-copy { position: absolute; bottom: 33px; left: 0; width: 100%; padding: 0 25px; }
+    .tv-tile h2 { font-size: 34px; }
+    .tv-tile .subhead { font-size: 18px; max-width: 340px; }
+    .tv-tile .cta-row { margin-top: 12px; }
+    .tv-art { width: 100%; height: 100%; inset: 0; --base-transform: none; transform: none; }
+    .tile:hover .tv-art { transform: scale(1.018); }
+
+    /* Footer */
+    .site-footer { padding: 22px max(22px, calc((100vw - 980px) / 2)); color: #6e6e73; background: #f5f5f7; font-size: 12px; line-height: 1.35; }
+    .site-footer p { margin: 0; padding-bottom: 14px; border-bottom: 1px solid #d2d2d7; }
+    .footer-bottom { display: flex; flex-wrap: wrap; gap: 10px 25px; padding-top: 14px; }
+    .footer-bottom a:hover { color: #1d1d1f; text-decoration: underline; }
+
+    /* Scroll animation */
+    [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .72s var(--ease), transform .72s var(--ease); }
+    [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+    .hero-copy[data-reveal] { transition-delay: .08s; }
+
+    @media (max-width: 833px) {
+      :root { --nav-h: 48px; }
+      .global-nav { padding: 0 16px; }
+      .nav-wordmark { height: 48px; }
+      .nav-links { display: none; }
+      .nav-actions { gap: 25px; margin-left: auto; }
+      .nav-icon { height: 48px; }
+      .nav-menu-trigger { display: grid; }
+      .hero { min-height: 650px; }
+      .hero h1, .hero h2 { font-size: 48px; }
+      .hero--pro { min-height: 680px; }
+      .hero--mac, .hero--ipad { min-height: 590px; }
+      .tile { min-height: 530px; }
+    }
+
+    @media (max-width: 734px) {
+      .hero { min-height: 500px; }
+      .hero-copy { padding-top: 39px; }
+      .hero h1, .hero h2 { font-size: 32px; line-height: 1.12; letter-spacing: -.04em; }
+      .hero .eyebrow { margin-bottom: 4px; font-size: 17px; }
+      .hero .subhead { max-width: 330px; margin-top: 6px; font-size: 19px; line-height: 1.23; }
+      .cta-row { column-gap: 21px; margin-top: 14px; }
+      .cta-row a { font-size: 17px; }
+      .hero--pro { min-height: 556px; }
+      .pro-art { width: 670px; max-width: 145vw; bottom: 3px; }
+      .hero--mac, .hero--ipad { min-height: 500px; }
+      .hero--mac .hero-copy, .hero--ipad .hero-copy { padding-top: 40px; }
+      .mac-art { width: 590px; max-width: 125vw; bottom: 4px; }
+      .ipad-art { width: 620px; max-width: 135vw; bottom: 1px; }
+      .product-grid { grid-template-columns: 1fr; gap: var(--page-gap); padding: var(--page-gap) 0; }
+      .tile { min-height: 500px; }
+      .tile-copy { padding-top: 40px; }
+      .tile h2 { font-size: 32px; }
+      .tile .kicker { font-size: 15px; }
+      .tile .subhead { max-width: 345px; margin-top: 5px; font-size: 19px; }
+      .tile .cta-row a { font-size: 16px; }
+      .watch-tile .tile-copy { padding-top: 39px; }
+      .watch-art { width: 370px; bottom: -28px; }
+      .iphone-art { width: 480px; bottom: -7px; }
+      .airpods-art { width: 390px; bottom: 0; }
+      .mini-art { width: 460px; bottom: 3px; }
+      .trade-art { width: 445px; bottom: -4px; }
+      .tv-tile .tile-copy { bottom: 27px; }
+      .site-footer { padding: 17px 16px 21px; }
+    }
+
+    @media (max-width: 390px) {
+      .mobile-panel { padding-left: 32px; padding-right: 32px; }
+      .hero--pro { min-height: 535px; }
+      .hero--mac, .hero--ipad { min-height: 480px; }
+      .tile { min-height: 470px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+      [data-reveal] { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir para o conteúdo principal</a>
+
+  <header class="global-header" id="globalHeader">
+    <nav class="global-nav" aria-label="Navegação principal">
+      <a class="nav-wordmark" href="#inicio" aria-label="Apple">
+        <svg viewBox="0 0 17 21" aria-hidden="true"><path d="M14.92 11.1c-.02-2.1 1.71-3.12 1.79-3.17a3.84 3.84 0 0 0-3.03-1.63c-1.27-.14-2.5.76-3.15.76-.66 0-1.65-.75-2.72-.73A4.01 4.01 0 0 0 4.43 8.4c-1.46 2.54-.37 6.27 1.03 8.31.7.99 1.5 2.09 2.55 2.05 1.03-.04 1.41-.66 2.65-.66 1.23 0 1.59.66 2.66.64 1.1-.02 1.79-.99 2.47-1.99.8-1.14 1.12-2.26 1.13-2.32-.03-.01-2.14-.82-2.16-3.33ZM12.85 4.96c.57-.71.96-1.67.85-2.65-.83.04-1.87.58-2.47 1.27-.53.61-1 1.6-.88 2.55.93.07 1.89-.47 2.5-1.17Z"/></svg>
+      </a>
+      <div class="nav-links" aria-label="Produtos">
+        <a href="#loja">Loja</a>
+        <a href="#macbook-air">Mac</a>
+        <a href="#ipad-air">iPad</a>
+        <a href="#iphone-16-pro">iPhone</a>
+        <a href="#watch">Watch</a>
+        <a href="#airpods">AirPods</a>
+        <a href="#tv">TV e Casa</a>
+        <a href="#entretenimento">Entretenimento</a>
+        <a href="#suporte">Suporte</a>
+      </div>
+      <div class="nav-actions">
+        <a class="nav-icon" href="#busca" aria-label="Buscar">
+          <svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.55" cy="7.55" r="4.8"/><path d="m11.1 11.1 4.1 4.1"/></svg>
+        </a>
+        <a class="nav-icon bag" href="#sacola" aria-label="Sacola">
+          <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.25 5.75h11.5l-.65 9H3.9l-.65-9Z"/><path d="M6.25 6V4.75a2.75 2.75 0 0 1 5.5 0V6"/></svg>
+        </a>
+        <button class="nav-menu-trigger" id="menuToggle" type="button" aria-expanded="false" aria-controls="mobilePanel"><span></span><span></span><span class="sr-only">Abrir menu</span></button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="mobile-panel" id="mobilePanel" aria-hidden="true">
+    <nav aria-label="Navegação móvel">
+      <a href="#loja">Loja</a>
+      <a href="#macbook-air">Mac</a>
+      <a href="#ipad-air">iPad</a>
+      <a href="#iphone-16-pro">iPhone</a>
+      <a href="#watch">Apple Watch</a>
+      <a href="#airpods">AirPods</a>
+      <a href="#tv">TV e Casa</a>
+      <a href="#suporte">Suporte</a>
+    </nav>
+    <a class="mobile-search" href="#busca"><svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="7.55" cy="7.55" r="4.8"/><path d="m11.1 11.1 4.1 4.1"/></svg><span>Buscar em apple.com</span></a>
+  </div>
+
+  <main id="conteudo">
+    <section class="hero hero--pro dark" id="inicio" aria-labelledby="iphone-16-pro">
+      <div class="hero-copy" data-reveal>
+        <h1 id="iphone-16-pro">iPhone 16 Pro</h1>
+        <p class="subhead">Titânio. Tão resistente. Tão leve. Tão Pro.</p>
+        <div class="cta-row">
+          <a href="#saiba-iphone">Saiba mais <span class="chevron">›</span></a>
+          <a href="#comprar-iphone">Comprar <span class="chevron">›</span></a>
+        </div>
+      </div>
+      <svg class="pro-art" viewBox="0 0 1100 490" role="img" aria-label="Ilustração de dois iPhones em titânio azul">
+        <defs>
+          <linearGradient id="pro-edge" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#b7d1dc"/><stop offset=".16" stop-color="#496879"/><stop offset=".52" stop-color="#1a2c37"/><stop offset=".81" stop-color="#6d96a7"/><stop offset="1" stop-color="#162934"/></linearGradient>
+          <linearGradient id="pro-back" x1=".2" x2=".84" y1="0" y2="1"><stop stop-color="#436878"/><stop offset=".42" stop-color="#19313e"/><stop offset="1" stop-color="#0c1820"/></linearGradient>
+          <linearGradient id="pro-screen" x1=".28" x2=".75" y1=".02" y2="1"><stop stop-color="#16496e"/><stop offset=".35" stop-color="#061019"/><stop offset=".73" stop-color="#05070b"/><stop offset="1" stop-color="#233746"/></linearGradient>
+          <radialGradient id="lens" cx=".35" cy=".25" r=".75"><stop stop-color="#8195a2"/><stop offset=".18" stop-color="#162f40"/><stop offset=".42" stop-color="#040a0e"/><stop offset=".72" stop-color="#1d536a"/><stop offset="1" stop-color="#081018"/></radialGradient>
+          <filter id="pro-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="22"/></filter>
+          <filter id="pro-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="8"/></filter>
+        </defs>
+        <ellipse cx="555" cy="456" rx="400" ry="31" fill="#000" opacity=".8" filter="url(#pro-shadow)"/>
+        <g transform="translate(271 23) rotate(-11 228 235)">
+          <rect x="20" y="8" width="431" height="461" rx="66" fill="url(#pro-edge)"/>
+          <rect x="31" y="18" width="409" height="440" rx="57" fill="url(#pro-back)"/>
+          <path d="M51 66C51 43 70 28 93 28h165c-15 16-21 37-18 62 4 35 28 71 4 119-33 65-116 78-193 68V66Z" fill="#77a0ad" opacity=".18"/>
+          <rect x="58" y="45" width="147" height="147" rx="43" fill="#14242c" opacity=".92"/>
+          <circle cx="104" cy="92" r="33" fill="#7894a0"/><circle cx="104" cy="92" r="27" fill="url(#lens)"/><circle cx="104" cy="92" r="9" fill="#000"/><circle cx="116" cy="79" r="6" fill="#bdeaff" opacity=".68"/>
+          <circle cx="158" cy="92" r="33" fill="#7894a0"/><circle cx="158" cy="92" r="27" fill="url(#lens)"/><circle cx="158" cy="92" r="9" fill="#000"/><circle cx="170" cy="79" r="6" fill="#bdeaff" opacity=".68"/>
+          <circle cx="104" cy="144" r="33" fill="#7894a0"/><circle cx="104" cy="144" r="27" fill="url(#lens)"/><circle cx="104" cy="144" r="9" fill="#000"/><circle cx="116" cy="131" r="6" fill="#bdeaff" opacity=".68"/>
+          <circle cx="160" cy="144" r="9" fill="#dde7e8"/><circle cx="185" cy="141" r="6" fill="#253d47"/>
+          <path d="M41 190h-6v71h6" fill="#0c1a20"/><path d="M437 136h6v51h-6" fill="#0c1a20"/>
+          <path d="M40 33c42-20 105-19 189-11" stroke="#d5f8ff" stroke-width="2" opacity=".32" fill="none"/>
+        </g>
+        <g transform="translate(533 0) rotate(10 214 241)">
+          <rect x="5" y="0" width="430" height="480" rx="65" fill="url(#pro-edge)"/>
+          <rect x="15" y="10" width="410" height="460" rx="56" fill="#000"/>
+          <rect x="24" y="19" width="392" height="442" rx="49" fill="url(#pro-screen)"/>
+          <path d="M45 345c77-78 195-35 356-185v278H40V356Z" fill="#0c283c" opacity=".8"/>
+          <path d="M112 27c21 61 94 63 141 37 65-36 116-27 154 29V29c0-5-4-9-9-9H42c31 0 54 1 70 7Z" fill="#4ea4cf" opacity=".22"/>
+          <rect x="154" y="26" width="130" height="30" rx="16" fill="#000"/>
+          <circle cx="255" cy="41" r="4" fill="#172229"/>
+          <path d="M15 104H9v62h6M425 109h6v77h-6" fill="#15252c"/>
+          <path d="M357 92c22 33 43 55 55 96" stroke="#9ee2ff" stroke-width="7" opacity=".16" filter="url(#pro-glow)"/>
+          <path d="M355 92c22 33 43 55 55 96" stroke="#b8efff" stroke-width="1.4" opacity=".46"/>
+          <path d="M45 450c94 13 224 12 349-1" stroke="#96c3d3" stroke-width="1" opacity=".2"/>
+        </g>
+      </svg>
+    </section>
+
+    <section class="hero hero--mac light" id="macbook-air" aria-labelledby="macbook-title">
+      <div class="hero-copy" data-reveal>
+        <p class="eyebrow">MacBook Air</p>
+        <h2 id="macbook-title">Impulsionado pelo M4.</h2>
+        <p class="subhead small">Feito para ir a qualquer lugar.</p>
+        <div class="cta-row">
+          <a href="#saiba-mac">Saiba mais <span class="chevron">›</span></a>
+          <a href="#comprar-mac">Comprar <span class="chevron">›</span></a>
+        </div>
+      </div>
+      <svg class="mac-art" viewBox="0 0 950 392" role="img" aria-label="Ilustração de um MacBook Air azul-claro">
+        <defs>
+          <linearGradient id="mac-metal" x1=".1" x2=".9"><stop stop-color="#9dc6d2"/><stop offset=".25" stop-color="#d8f0f2"/><stop offset=".52" stop-color="#86b7c6"/><stop offset=".78" stop-color="#d8f1f1"/><stop offset="1" stop-color="#76aab8"/></linearGradient>
+          <linearGradient id="mac-screen" x1=".08" y1="0" x2=".9" y2="1"><stop stop-color="#93dff1"/><stop offset=".26" stop-color="#f6b9c1"/><stop offset=".56" stop-color="#b998ea"/><stop offset="1" stop-color="#4e8bd1"/></linearGradient>
+          <filter id="mac-shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="16"/></filter>
+        </defs>
+        <ellipse cx="478" cy="362" rx="410" ry="18" fill="#8d939b" opacity=".28" filter="url(#mac-shadow)"/>
+        <g transform="translate(155 0)">
+          <path d="M30 20h580c12 0 21 9 21 21v274H9V41c0-12 9-21 21-21Z" fill="url(#mac-metal)"/>
+          <path d="M45 31h550c13 0 23 10 23 23v245H22V54c0-13 10-23 23-23Z" fill="#10171b"/>
+          <rect x="34" y="43" width="572" height="244" rx="5" fill="url(#mac-screen)"/>
+          <path d="M36 213c94-86 146-19 248-101 83-66 155-30 322-157v332H34l2-74Z" fill="#ec798c" opacity=".75"/>
+          <path d="M34 89c96 84 205 33 313 97 92 55 150-7 259-62v-81H34v46Z" fill="#96f1e3" opacity=".56"/>
+          <path d="M0 314h641l90 42c5 2 4 8-2 8H-89c-6 0-7-6-2-8l91-42Z" fill="url(#mac-metal)"/>
+          <path d="M-81 358h807c3 0 5 2 4 4-3 8-12 13-23 13H-57c-11 0-20-5-24-13-1-2 1-4 4-4Z" fill="#84b4c0"/>
+          <path d="M258 316h124l13 25H245l13-25Z" fill="#9bc3cc"/>
+          <path d="M242 342h157c5 0 7 4 5 7-5 6-13 8-22 8H259c-9 0-17-2-22-8-2-3 0-7 5-7Z" fill="#6f9eac"/>
+          <path d="M48 47h542" stroke="#fff" stroke-width="1.5" opacity=".35"/>
+        </g>
+      </svg>
+    </section>
+
+    <section class="hero hero--ipad light" id="ipad-air" aria-labelledby="ipad-title">
+      <div class="hero-copy" data-reveal>
+        <h2 id="ipad-title" class="ipad-title"><span>iPad</span><span class="air">air</span></h2>
+        <p class="subhead">Agora com a potência do chip M3.</p>
+        <div class="cta-row">
+          <a href="#saiba-ipad">Saiba mais <span class="chevron">›</span></a>
+          <a href="#comprar-ipad">Comprar <span class="chevron">›</span></a>
+        </div>
+      </div>
+      <svg class="ipad-art" viewBox="0 0 1050 365" role="img" aria-label="Ilustração de dois iPads coloridos">
+        <defs>
+          <linearGradient id="ipad-purple" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e4b5ff"/><stop offset=".35" stop-color="#7955d8"/><stop offset="1" stop-color="#33216b"/></linearGradient>
+          <linearGradient id="ipad-blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b4fcfa"/><stop offset=".33" stop-color="#42b6e7"/><stop offset="1" stop-color="#09547f"/></linearGradient>
+          <radialGradient id="ipad-coral" cx=".3" cy=".2" r=".9"><stop stop-color="#fff28d"/><stop offset=".36" stop-color="#ffae68"/><stop offset=".75" stop-color="#ed4674"/><stop offset="1" stop-color="#67206f"/></radialGradient>
+          <filter id="ipad-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="18"/></filter>
+        </defs>
+        <ellipse cx="521" cy="343" rx="432" ry="19" fill="#6d6879" opacity=".25" filter="url(#ipad-shadow)"/>
+        <g transform="translate(124 18) rotate(-8 300 159)">
+          <rect x="0" y="0" width="586" height="318" rx="25" fill="#303743"/>
+          <rect x="10" y="10" width="566" height="298" rx="18" fill="url(#ipad-purple)"/>
+          <path d="M25 270C85 126 218 229 294 106c45-73 130-65 269-55v250H25v-31Z" fill="url(#ipad-coral)" opacity=".94"/>
+          <path d="M28 30c118 24 163 114 250 78 112-46 145-109 286-58v78c-152 56-186 5-272 66-93 65-171-34-264-19V30Z" fill="#ffeb89" opacity=".51"/>
+          <circle cx="294" cy="11" r="3" fill="#fff" opacity=".74"/>
+        </g>
+        <g transform="translate(548 68) rotate(11 230 130)">
+          <rect x="0" y="0" width="467" height="254" rx="23" fill="#2b3640"/>
+          <rect x="9" y="9" width="449" height="236" rx="16" fill="url(#ipad-blue)"/>
+          <path d="M18 207C95 91 184 166 242 96c55-66 102-57 207-68v208H18v-29Z" fill="#6b4bd2" opacity=".79"/>
+          <path d="M18 24c104 26 132 75 213 42 68-28 126-53 217-27v88c-93-37-147 54-239 27C134 129 92 72 18 100V24Z" fill="#a0ffec" opacity=".55"/>
+          <circle cx="234" cy="11" r="3" fill="#fff" opacity=".74"/>
+        </g>
+      </svg>
+    </section>
+
+    <section class="product-grid" aria-label="Mais produtos Apple">
+      <article class="tile watch-tile" id="watch" aria-labelledby="watch-title">
+        <div class="tile-copy" data-reveal>
+          <h2 id="watch-title" class="watch-title"><span class="watch-word">WATCH</span><span class="series">SERIES 10</span></h2>
+          <p class="subhead">Um avanço saudável.</p>
+          <div class="cta-row"><a href="#saiba-watch">Saiba mais <span class="chevron">›</span></a><a href="#comprar-watch">Comprar <span class="chevron">›</span></a></div>
+        </div>
+        <svg class="tile-art watch-art" viewBox="0 0 430 353" role="img" aria-label="Ilustração de Apple Watch">
+          <defs>
+            <linearGradient id="watch-band" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="#171519"/><stop offset=".45" stop-color="#5f5554"/><stop offset="1" stop-color="#191619"/></linearGradient>
+            <linearGradient id="watch-case" x1="0" y1=".15" x2="1" y2=".85"><stop stop-color="#ddd2c7"/><stop offset=".25" stop-color="#76675e"/><stop offset=".63" stop-color="#d9cabe"/><stop offset="1" stop-color="#584a46"/></linearGradient>
+            <radialGradient id="watch-face" cx=".32" cy=".18" r=".85"><stop stop-color="#596d7c"/><stop offset=".44" stop-color="#11191f"/><stop offset="1" stop-color="#030506"/></radialGradient>
+            <filter id="watch-shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
+          </defs>
+          <ellipse cx="218" cy="329" rx="114" ry="17" fill="#2a2a2d" opacity=".23" filter="url(#watch-shadow)"/>
+          <path d="M161 2c-13 0-24 10-25 23l-8 90c-1 10 7 19 17 19h140c10 0 18-9 17-19l-8-90c-1-13-12-23-25-23H161Z" fill="url(#watch-band)"/>
+          <path d="M145 221c-10 0-18 9-17 19l8 90c1 13 12 23 25 23h108c13 0 24-10 25-23l8-90c1-10-7-19-17-19H145Z" fill="url(#watch-band)"/>
+          <rect x="107" y="100" width="216" height="150" rx="47" fill="url(#watch-case)"/>
+          <rect x="116" y="109" width="198" height="132" rx="39" fill="#16191b"/>
+          <rect x="124" y="117" width="182" height="116" rx="34" fill="url(#watch-face)"/>
+          <circle cx="216" cy="175" r="43" fill="#10191f" stroke="#e07c42" stroke-width="3" opacity=".92"/>
+          <circle cx="216" cy="175" r="31" fill="none" stroke="#4ca6ac" stroke-width="3" stroke-dasharray="111 20" transform="rotate(-90 216 175)"/>
+          <path d="M216 144v33l22 14" stroke="#f0ede6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="216" cy="175" r="4" fill="#f0ede6"/>
+          <circle cx="333" cy="144" r="15" fill="#826f63"/><rect x="329" y="158" width="8" height="27" rx="4" fill="#6d5c52"/>
+          <path d="M139 120c12-8 23-12 34-13" stroke="#fff" stroke-width="2" opacity=".35"/>
+        </svg>
+      </article>
+
+      <article class="tile iphone-tile" id="iphone-16" aria-labelledby="iphone16-title">
+        <div class="tile-copy" data-reveal>
+          <h2 id="iphone16-title">iPhone 16</h2>
+          <p class="subhead">Câmera avançada. Design incrível.</p>
+          <div class="cta-row"><a href="#saiba-iphone16">Saiba mais <span class="chevron">›</span></a><a href="#comprar-iphone16">Comprar <span class="chevron">›</span></a></div>
+        </div>
+        <svg class="tile-art iphone-art" viewBox="0 0 535 330" role="img" aria-label="Ilustração de iPhones coloridos">
+          <defs>
+            <linearGradient id="i16-pink" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8d7d0"/><stop offset=".35" stop-color="#f0a9a7"/><stop offset="1" stop-color="#bd6b70"/></linearGradient>
+            <linearGradient id="i16-teal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d5eeee"/><stop offset=".38" stop-color="#75b9bd"/><stop offset="1" stop-color="#2a626d"/></linearGradient>
+            <linearGradient id="i16-screen" x1=".15" y1="0" x2=".83" y2="1"><stop stop-color="#ffb565"/><stop offset=".4" stop-color="#ee687c"/><stop offset="1" stop-color="#663fbd"/></linearGradient>
+            <radialGradient id="i16-lens" cx=".3" cy=".2" r=".8"><stop stop-color="#5d7780"/><stop offset=".35" stop-color="#0a1114"/><stop offset=".76" stop-color="#366173"/><stop offset="1" stop-color="#0a1115"/></radialGradient>
+          </defs>
+          <g transform="translate(25 22) rotate(-9 160 155)">
+            <rect x="0" y="0" width="256" height="296" rx="39" fill="#9a5c61"/>
+            <rect x="6" y="6" width="244" height="284" rx="34" fill="url(#i16-pink)"/>
+            <rect x="23" y="24" width="94" height="94" rx="27" fill="#dd9d9e"/>
+            <circle cx="51" cy="52" r="21" fill="url(#i16-lens)"/><circle cx="87" cy="88" r="21" fill="url(#i16-lens)"/>
+            <circle cx="51" cy="52" r="5" fill="#d0f0ff" opacity=".65"/><circle cx="87" cy="88" r="5" fill="#d0f0ff" opacity=".65"/>
+          </g>
+          <g transform="translate(237 10) rotate(8 150 160)">
+            <rect x="0" y="0" width="264" height="307" rx="40" fill="#21525d"/>
+            <rect x="6" y="6" width="252" height="295" rx="35" fill="#05070a"/>
+            <rect x="13" y="13" width="238" height="281" rx="30" fill="url(#i16-screen)"/>
+            <path d="M26 242c59-104 129-41 219-165v204H21l5-39Z" fill="#4c4ba4" opacity=".75"/>
+            <rect x="90" y="20" width="85" height="22" rx="12" fill="#07090a"/>
+            <path d="M246 94h6v65h-6" fill="#1e5661"/>
+          </g>
+        </svg>
+      </article>
+
+      <article class="tile dark airpods-tile" id="airpods" aria-labelledby="airpods-title">
+        <div class="tile-copy" data-reveal>
+          <h2 id="airpods-title">AirPods Pro 2</h2>
+          <p class="subhead">Som envolvente. Agora em cores novas.</p>
+          <div class="cta-row"><a href="#saiba-airpods">Saiba mais <span class="chevron">›</span></a><a href="#comprar-airpods">Comprar <span class="chevron">›</span></a></div>
+        </div>
+        <svg class="tile-art airpods-art" viewBox="0 0 460 312" role="img" aria-label="Ilustração de AirPods Pro">
+          <defs>
+            <linearGradient id="pods-white" x1=".15" y1="0" x2=".85" y2="1"><stop stop-color="#fff"/><stop offset=".45" stop-color="#e0e5e6"/><stop offset="1" stop-color="#aab5ba"/></linearGradient>
+            <radialGradient id="pods-glow" cx=".5" cy=".1" r=".85"><stop stop-color="#dff8ff" stop-opacity=".85"/><stop offset="1" stop-color="#56b4dd" stop-opacity="0"/></radialGradient>
+            <filter id="pods-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="12"/></filter>
+          </defs>
+          <ellipse cx="230" cy="267" rx="139" ry="30" fill="#0b6ba6" opacity=".55" filter="url(#pods-shadow)"/>
+          <ellipse cx="230" cy="172" rx="190" ry="155" fill="url(#pods-glow)" opacity=".45"/>
+          <g transform="translate(78 15) rotate(-17 80 120)">
+            <path d="M87 13c45 0 76 32 76 77 0 36-20 65-51 74l-1 82c0 22-15 37-36 37s-36-15-36-37v-79C14 157 1 131 1 100 1 52 39 13 87 13Z" fill="url(#pods-white)"/>
+            <path d="M84 34c30 0 53 22 53 51s-23 52-53 52-54-23-54-52 24-51 54-51Z" fill="#c6d1d5"/>
+            <path d="M84 43c25 0 44 18 44 42 0 25-19 43-44 43S39 110 39 85c0-24 20-42 45-42Z" fill="#11171a"/>
+            <path d="M48 143c17 9 39 10 55 1" stroke="#a7b4b8" stroke-width="5" stroke-linecap="round"/>
+            <rect x="59" y="208" width="35" height="10" rx="5" fill="#8d9da2"/>
+          </g>
+          <g transform="translate(245 2) rotate(18 80 120)">
+            <path d="M87 13c45 0 76 32 76 77 0 36-20 65-51 74l-1 82c0 22-15 37-36 37s-36-15-36-37v-79C14 157 1 131 1 100 1 52 39 13 87 13Z" fill="url(#pods-white)"/>
+            <path d="M84 34c30 0 53 22 53 51s-23 52-53 52-54-23-54-52 24-51 54-51Z" fill="#c6d1d5"/>
+            <path d="M84 43c25 0 44 18 44 42 0 25-19 43-44 43S39 110 39 85c0-24 20-42 45-42Z" fill="#11171a"/>
+            <path d="M48 143c17 9 39 10 55 1" stroke="#a7b4b8" stroke-width="5" stroke-linecap="round"/>
+            <rect x="59" y="208" width="35" height="10" rx="5" fill="#8d9da2"/>
+          </g>
+        </svg>
+      </article>
+
+      <article class="tile ipad-mini-tile" id="ipad-mini" aria-labelledby="mini-title">
+        <div class="tile-copy" data-reveal>
+          <h2 id="mini-title">iPad mini</h2>
+          <p class="subhead">Feito para acompanhar tudo o que você faz.</p>
+          <div class="cta-row"><a href="#saiba-mini">Saiba mais <span class="chevron">›</span></a><a href="#comprar-mini">Comprar <span class="chevron">›</span></a></div>
+        </div>
+        <svg class="tile-art mini-art" viewBox="0 0 555 315" role="img" aria-label="Ilustração de iPad mini com cores vivas">
+          <defs>
+            <linearGradient id="mini-body" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8d68d2"/><stop offset=".44" stop-color="#d3a1f5"/><stop offset="1" stop-color="#5e328b"/></linearGradient>
+            <radialGradient id="mini-art" cx=".24" cy=".1" r="1"><stop stop-color="#ffef85"/><stop offset=".24" stop-color="#ffb73f"/><stop offset=".49" stop-color="#f35e96"/><stop offset=".74" stop-color="#6b42c6"/><stop offset="1" stop-color="#172d82"/></radialGradient>
+            <filter id="mini-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="12"/></filter>
+          </defs>
+          <ellipse cx="273" cy="293" rx="217" ry="17" fill="#6f5f7e" opacity=".24" filter="url(#mini-shadow)"/>
+          <g transform="translate(56 10) rotate(-9 223 141)">
+            <rect x="0" y="0" width="447" height="282" rx="23" fill="url(#mini-body)"/>
+            <rect x="10" y="10" width="427" height="262" rx="16" fill="#1e1b2a"/>
+            <rect x="17" y="17" width="413" height="248" rx="12" fill="url(#mini-art)"/>
+            <path d="M21 230C101 120 128 225 232 119c75-77 111-28 195-95v241H21v-35Z" fill="#3c38a3" opacity=".63"/>
+            <path d="M20 44c89 41 113 76 199 30 78-42 113-81 208-37v68c-83-42-158 42-236 18C120 99 85 77 20 92V44Z" fill="#f78e99" opacity=".53"/>
+            <circle cx="224" cy="9" r="3" fill="#ddd3e9"/>
+          </g>
+          <path d="m493 38 18 4-52 247-18-4 52-247Z" fill="#f1e2ef"/><path d="m511 42 5 2-52 247-5-2 52-247Z" fill="#91749d"/>
+        </svg>
+      </article>
+
+      <article class="tile trade-tile" id="loja" aria-labelledby="trade-title">
+        <div class="tile-copy" data-reveal>
+          <p class="kicker">Apple Trade In</p>
+          <h2 id="trade-title">Troque seu aparelho.<br>Ganhe crédito.</h2>
+          <p class="subhead">É bom para você. Melhor ainda para o planeta.</p>
+          <div class="cta-row"><a href="#saiba-trade">Saiba mais <span class="chevron">›</span></a></div>
+        </div>
+        <svg class="tile-art trade-art" viewBox="0 0 510 300" role="img" aria-label="Ilustração de aparelhos Apple recicláveis">
+          <defs>
+            <linearGradient id="trade-phone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d2f3e5"/><stop offset=".5" stop-color="#76c8b5"/><stop offset="1" stop-color="#327c72"/></linearGradient>
+            <linearGradient id="trade-laptop" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e1f3eb"/><stop offset=".55" stop-color="#83b5a4"/><stop offset="1" stop-color="#437466"/></linearGradient>
+            <filter id="trade-shadow" x="-30%" y="-30%" width="160%" height="180%"><feGaussianBlur stdDeviation="12"/></filter>
+          </defs>
+          <ellipse cx="256" cy="280" rx="210" ry="16" fill="#84aaa0" opacity=".27" filter="url(#trade-shadow)"/>
+          <g transform="translate(62 68) rotate(-7 130 90)">
+            <rect x="0" y="0" width="250" height="168" rx="11" fill="#5c8b7e"/>
+            <rect x="8" y="8" width="234" height="151" rx="6" fill="url(#trade-laptop)"/>
+            <path d="M-16 168h280l27 14c3 2 2 5-3 5H-43c-5 0-6-3-2-5l29-14Z" fill="#7fae9f"/>
+            <path d="M104 72c13-16 37-20 55-8 18 12 24 36 14 55-11 21-37 30-59 19-21-11-31-37-20-58 3-7 7-12 10-17Z" fill="#fff" opacity=".95"/>
+            <path d="M120 79c10-10 25-10 35-2M153 126c-10 10-27 9-36-2M111 93l7-14 13 7M163 112l-6 14-14-6" fill="none" stroke="#56ae75" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <g transform="translate(305 19) rotate(10 75 127)">
+            <rect x="0" y="0" width="150" height="257" rx="25" fill="#527f73"/>
+            <rect x="6" y="6" width="138" height="245" rx="20" fill="url(#trade-phone)"/>
+            <rect x="16" y="21" width="54" height="54" rx="16" fill="#6ba998"/>
+            <circle cx="34" cy="39" r="12" fill="#2e5b59"/><circle cx="53" cy="58" r="12" fill="#2e5b59"/>
+            <path d="M72 145c12-16 35-20 52-8 16 12 21 34 11 52-11 18-34 24-53 14-18-11-25-34-15-52 1-2 3-5 5-6Z" fill="#fff" opacity=".96"/>
+            <path d="M84 144c9-9 24-10 34-2M116 188c-10 8-24 8-33-1M76 157l7-13 12 7M126 174l-6 13-12-6" fill="none" stroke="#55a873" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+        </svg>
+      </article>
+
+      <article class="tile dark tv-tile" id="entretenimento" aria-labelledby="tv-title">
+        <svg class="tile-art tv-art" viewBox="0 0 700 580" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Abstração cinematográfica azul e laranja">
+          <defs>
+            <linearGradient id="cinema-bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071a34"/><stop offset=".44" stop-color="#153b67"/><stop offset="1" stop-color="#0d1022"/></linearGradient>
+            <radialGradient id="cinema-sun" cx=".56" cy=".27" r=".55"><stop stop-color="#fff5be"/><stop offset=".2" stop-color="#ffc363"/><stop offset=".46" stop-color="#e36845" stop-opacity=".82"/><stop offset="1" stop-color="#e36845" stop-opacity="0"/></radialGradient>
+            <filter id="cinema-blur"><feGaussianBlur stdDeviation="18"/></filter>
+          </defs>
+          <rect width="700" height="580" fill="url(#cinema-bg)"/>
+          <ellipse cx="390" cy="151" rx="278" ry="214" fill="url(#cinema-sun)"/>
+          <path d="M0 434c107-141 190-157 296-61 104 95 201 90 404-47v254H0V434Z" fill="#071325" opacity=".83"/>
+          <path d="M0 482c122-92 203-71 323 1 117 70 248 39 377-59v156H0v-98Z" fill="#02070e"/>
+          <path d="M46 335c70-101 129-113 204-87 69 24 108 1 165-83" stroke="#79c4de" stroke-width="21" stroke-linecap="round" opacity=".23" filter="url(#cinema-blur)"/>
+          <path d="M45 332c70-101 129-113 204-87 69 24 108 1 165-83" stroke="#c3eeff" stroke-width="2" stroke-linecap="round" opacity=".48"/>
+          <circle cx="105" cy="143" r="2" fill="#fff" opacity=".68"/><circle cx="180" cy="214" r="2" fill="#fff" opacity=".41"/><circle cx="558" cy="89" r="2" fill="#fff" opacity=".78"/>
+        </svg>
+        <div class="tile-copy" data-reveal>
+          <h2 id="tv-title">tv<span style="font-size:.52em; vertical-align: .12em; margin-left:3px; letter-spacing:0">+</span></h2>
+          <p class="subhead">Entre no universo das melhores histórias.</p>
+          <div class="cta-row"><a href="#assistir">Assistir agora <span class="chevron">›</span></a></div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="suporte">
+    <p>Alguns recursos, aplicativos e serviços podem não estar disponíveis em todas as regiões ou idiomas. Este é um estudo visual independente criado para demonstração.</p>
+    <div class="footer-bottom"><span>Copyright © 2026 Apple Inc. Todos os direitos reservados.</span><a href="#privacidade">Política de Privacidade</a><a href="#termos">Termos de Uso</a><a href="#vendas">Vendas e Reembolsos</a><a href="#legal">Avisos Legais</a></div>
+  </footer>
+
+  <script>
+    (() => {
+      const header = document.getElementById('globalHeader');
+      const toggle = document.getElementById('menuToggle');
+      const panel = document.getElementById('mobilePanel');
+      const panelLinks = panel.querySelectorAll('a');
+
+      const setHeaderState = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
+      setHeaderState();
+      window.addEventListener('scroll', setHeaderState, { passive: true });
+
+      const closeMenu = () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        panel.setAttribute('aria-hidden', 'true');
+        panel.classList.remove('is-open');
+        document.body.classList.remove('menu-open');
+      };
+
+      toggle.addEventListener('click', () => {
+        const open = toggle.getAttribute('aria-expanded') !== 'true';
+        toggle.setAttribute('aria-expanded', String(open));
+        panel.setAttribute('aria-hidden', String(!open));
+        panel.classList.toggle('is-open', open);
+        document.body.classList.toggle('menu-open', open);
+      });
+      panelLinks.forEach(link => link.addEventListener('click', closeMenu));
+      window.addEventListener('resize', () => { if (window.innerWidth > 833) closeMenu(); });
+      window.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealItems = document.querySelectorAll('[data-reveal]');
+      if (reducedMotion || !('IntersectionObserver' in window)) {
+        revealItems.forEach(item => item.classList.add('is-visible'));
+      } else {
+        const observer = new IntersectionObserver((entries, obs) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              obs.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .14, rootMargin: '0px 0px -20px' });
+        revealItems.forEach(item => observer.observe(item));
+      }
+    })();
+  </script>
+</body>
+</html>

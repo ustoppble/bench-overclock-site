@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>Relatório de Vendas</title>
+  <style>
+    :root {
+      --bg: #eef4f2;
+      --bg-2: #dfe9e5;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-solid: #ffffff;
+      --text: #0f172a;
+      --muted: #526070;
+      --line: rgba(15, 23, 42, 0.10);
+      --accent: #0f766e;
+      --accent-2: #0b5d54;
+      --accent-soft: rgba(15, 118, 110, 0.12);
+      --warning: #b45309;
+      --danger: #b91c1c;
+      --shadow: 0 18px 50px rgba(15, 23, 42, 0.10);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(245, 158, 11, 0.10), transparent 24%),
+        linear-gradient(180deg, var(--bg), var(--bg-2));
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.18) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.45), transparent 70%);
+      opacity: 0.25;
+    }
+
+    .shell {
+      position: relative;
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 40px 20px 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+      gap: 20px;
+      align-items: stretch;
+      margin-bottom: 24px;
+    }
+
+    .title-block,
+    .panel,
+    .metric {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .title-block {
+      padding: 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 12px;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.15rem, 4.8vw, 4.3rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      margin: 18px 0 0;
+      max-width: 66ch;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.62;
+    }
+
+    .side-panel {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      justify-content: space-between;
+      background:
+        linear-gradient(180deg, rgba(15, 118, 110, 0.14), rgba(255, 255, 255, 0.84)),
+        var(--surface);
+    }
+
+    .side-panel h2,
+    .panel h2 {
+      margin: 0;
+      font-size: 1.06rem;
+      letter-spacing: -0.02em;
+    }
+
+    .side-panel p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.96rem;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .mini-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      color: #183042;
+      line-height: 1.45;
+      font-size: 0.96rem;
+    }
+
+    .mini-dot {
+      flex: 0 0 auto;
+      width: 10px;
+      height: 10px;
+      margin-top: 6px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 0 5px var(--accent-soft);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 20px 0 24px;
+    }
+
+    .metric {
+      padding: 22px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .metric .label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .metric .value {
+      margin-top: 12px;
+      font-size: clamp(1.7rem, 2.4vw, 2.45rem);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric .meta {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.94rem;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-head .hint {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.96fr);
+      gap: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid var(--line);
+    }
+
+    thead th {
+      text-align: left;
+      padding: 14px 16px;
+      background: rgba(15, 118, 110, 0.07);
+      color: #17313a;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    tbody td {
+      padding: 13px 16px;
+      border-top: 1px solid var(--line);
+      vertical-align: middle;
+      font-size: 0.97rem;
+    }
+
+    tbody tr:nth-child(even) td {
+      background: rgba(15, 23, 42, 0.015);
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cat-name,
+    .product-name {
+      font-weight: 650;
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(15, 118, 110, 0.08);
+      border: 1px solid rgba(15, 118, 110, 0.14);
+      color: #14363f;
+      font-size: 0.92rem;
+      font-weight: 650;
+    }
+
+    .chip.warn {
+      background: rgba(180, 83, 9, 0.08);
+      border-color: rgba(180, 83, 9, 0.16);
+    }
+
+    .chip.danger {
+      background: rgba(185, 28, 28, 0.08);
+      border-color: rgba(185, 28, 28, 0.16);
+    }
+
+    .note {
+      margin: 14px 0 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.93rem;
+    }
+
+    .footer {
+      margin-top: 18px;
+      padding: 0 4px;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .mono {
+      font-variant-numeric: tabular-nums;
+    }
+
+    @media (max-width: 960px) {
+      .hero,
+      .content-grid,
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding: 18px 14px 36px;
+      }
+
+      .title-block,
+      .panel,
+      .metric,
+      .side-panel {
+        padding: 18px;
+        border-radius: 20px;
+      }
+
+      .section-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      tbody td,
+      thead th {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero" aria-labelledby="titulo-relatorio">
+      <div class="title-block">
+        <p class="eyebrow">Relatório de vendas do semestre</p>
+        <h1 id="titulo-relatorio">vendas.csv limpo, consolidado e pronto para leitura</h1>
+        <p class="subtitle">
+          O arquivo foi tratado para aceitar datas em três formatos, valores com vírgula, ponto ou prefixo <span class="mono">R$</span>,
+          categorias com caixa/espaço irregular e pedidos repetidos. Os números abaixo consideram apenas pedidos válidos e únicos.
+        </p>
+      </div>
+
+      <aside class="side-panel" aria-label="Resumo da limpeza aplicada">
+        <div>
+          <p class="eyebrow">Limpeza aplicada</p>
+          <h2>Normalização e descarte controlados</h2>
+        </div>
+        <ul class="mini-list">
+          <li><span class="mini-dot"></span><span>Datas aceitas nos formatos <span class="mono">YYYY-MM-DD</span>, <span class="mono">DD/MM/YYYY</span> e <span class="mono">DD-MM-YY</span>.</span></li>
+          <li><span class="mini-dot"></span><span>Valores convertidos para número após remover <span class="mono">R$</span> e unificar separadores decimais.</span></li>
+          <li><span class="mini-dot"></span><span>Categorias e produtos padronizados por caixa e espaços.</span></li>
+          <li><span class="mini-dot"></span><span>Duplicatas removidas pelo <span class="mono">pedido_id</span>.</span></li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="metrics" aria-label="Resumo executivo">
+      <article class="metric">
+        <div>
+          <div class="label">Receita total</div>
+          <div class="value">R$ 515.086,00</div>
+          <div class="meta">Soma de <span class="mono">quantidade × valor_unitario</span> sobre os pedidos válidos.</div>
+        </div>
+      </article>
+
+      <article class="metric">
+        <div>
+          <div class="label">Pedidos válidos considerados</div>
+          <div class="value">1.409</div>
+          <div class="meta">Pedidos únicos depois de limpar e remover duplicatas.</div>
+        </div>
+      </article>
+
+      <article class="metric">
+        <div>
+          <div class="label">Linhas descartadas</div>
+          <div class="value">91</div>
+          <div class="meta">Linhas inválidas ou repetidas que não entraram no cálculo.</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="content-grid section">
+      <article class="panel">
+        <div class="section-head">
+          <h2>Receita por categoria</h2>
+          <div class="hint">Categorias padronizadas após limpeza</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th class="num">Receita</th>
+              <th class="num">Participação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="cat-name">Vestuário</td>
+              <td class="num">R$ 206.272,00</td>
+              <td class="num">40,05%</td>
+            </tr>
+            <tr>
+              <td class="cat-name">Acessórios</td>
+              <td class="num">R$ 159.637,90</td>
+              <td class="num">30,99%</td>
+            </tr>
+            <tr>
+              <td class="cat-name">Calçados</td>
+              <td class="num">R$ 149.176,10</td>
+              <td class="num">28,96%</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <article class="panel">
+        <div class="section-head">
+          <h2>Top 5 produtos por quantidade vendida</h2>
+          <div class="hint">Classificação em ordem decrescente de unidades</div>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th class="num">Qtd. vendida</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="product-name">Bermuda tactel</td>
+              <td class="num">465</td>
+            </tr>
+            <tr>
+              <td class="product-name">Camiseta básica</td>
+              <td class="num">453</td>
+            </tr>
+            <tr>
+              <td class="product-name">Chinelo slide</td>
+              <td class="num">449</td>
+            </tr>
+            <tr>
+              <td class="product-name">Tênis corrida</td>
+              <td class="num">439</td>
+            </tr>
+            <tr>
+              <td class="product-name">Mochila urbana</td>
+              <td class="num">429</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+
+    <section class="panel section">
+      <div class="section-head">
+        <h2>Linhas descartadas</h2>
+        <div class="hint">Total de descartes por tipo de problema</div>
+      </div>
+
+      <div class="chip-row" aria-label="Detalhamento das linhas descartadas">
+        <span class="chip warn">39 linhas truncadas ou quebradas</span>
+        <span class="chip warn">8 linhas vazias</span>
+        <span class="chip danger">15 linhas com valor <span class="mono">ERRO_IMPORT</span></span>
+        <span class="chip">29 linhas duplicadas por <span class="mono">pedido_id</span></span>
+      </div>
+
+      <p class="note">
+        Classificação usada neste relatório: uma linha só entra no cálculo se tiver 7 colunas, data válida, produto e categoria reconhecíveis,
+        quantidade numérica positiva e valor convertido com sucesso. Se o mesmo <span class="mono">pedido_id</span> aparece novamente, a cópia extra é descartada.
+      </p>
+    </section>
+
+    <p class="footer">
+      Fonte: <span class="mono">vendas.csv</span> da pasta atual. O relatório foi gerado para abrir offline no navegador, sem dependências externas.
+    </p>
+  </main>
+</body>
+</html>

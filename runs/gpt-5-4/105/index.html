@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mural de Recados</title>
+<style>
+* { box-sizing: border-box; margin: 0; }
+body { font-family: system-ui, sans-serif; background: #eef1f4; color: #1c2833; }
+.app { max-width: 600px; margin: 36px auto; padding: 0 16px; }
+h1 { margin-bottom: 6px; }
+.sub { color: #7b8a97; margin-bottom: 18px; font-size: .92rem; }
+form { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+input, textarea, button { padding: 10px 12px; border: 1px solid #ccd4dc; border-radius: 8px; font: inherit; }
+button { background: #2471a3; color: #fff; border: 0; font-weight: 600; cursor: pointer; }
+.recado { background: #fff; border: 1px solid #e0e6ec; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+.recado .autor { font-weight: 700; font-size: .92rem; }
+.recado .quando { color: #93a3b1; font-size: .8rem; margin-left: 8px; }
+.recado p { margin-top: 6px; }
+#status { font-size: .85rem; color: #7b8a97; min-height: 1.2em; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<main class="app">
+  <h1>Mural de Recados</h1>
+  <p class="sub">Deixe seu recado — ele aparece pra todo mundo que abrir o mural.</p>
+  <form id="form">
+    <input id="autor" placeholder="Seu nome" required>
+    <textarea id="mensagem" rows="3" placeholder="Seu recado" required></textarea>
+    <button type="submit">Publicar</button>
+  </form>
+  <p id="status"></p>
+  <section id="mural"></section>
+</main>
+<script src="mural.js"></script>
+</body>
+</html>

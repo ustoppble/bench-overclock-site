@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulação de Física - Bolinhas</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0b0f19;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  canvas {
+    display: block;
+    cursor: crosshair;
+  }
+
+  #ui {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  button {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.55);
+  }
+
+  button:active {
+    transform: translateY(0);
+  }
+
+  #info {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 8px 12px;
+    border-radius: 8px;
+    line-height: 1.5;
+  }
+
+  #stats {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div id="ui">
+  <button id="addBalls">+ 50 bolinhas</button>
+  <div id="info">Segure o mouse: atrai &nbsp;|&nbsp; Clique: explode</div>
+</div>
+
+<div id="stats">FPS: <span id="fps">60</span> &nbsp;|&nbsp; Bolinhas: <span id="count">0</span></div>
+
+<script>
+(function () {
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  let W, H;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const GRAVITY = 0.35;
+  const RESTITUTION = 0.85;
+  const FRICTION = 0.995;
+  const MAX_BALLS = 400;
+
+  const COLORS = [
+    '#ff6b6b', '#4ecdc4', '#ffe66d', '#95e1d3', '#a29bfe',
+    '#fd79a8', '#00cec9', '#fab1a0', '#74b9ff', '#55efc4'
+  ];
+
+  class Ball {
+    constructor(x, y, r) {
+      this.x = x;
+      this.y = y;
+      this.r = r || 8 + Math.random() * 14;
+      this.mass = this.r * this.r;
+      this.vx = (Math.random() - 0.5) * 6;
+      this.vy = (Math.random() - 0.5) * 6;
+      this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    }
+  }
+
+  let balls = [];
+
+  function spawnBalls(n) {
+    const room = MAX_BALLS - balls.length;
+    const toSpawn = Math.min(n, Math.max(room, 0));
+    for (let i = 0; i < toSpawn; i++) {
+      const r = 8 + Math.random() * 14;
+      const x = r + Math.random() * (W - r * 2);
+      const y = -Math.random() * 200 - r;
+      balls.push(new Ball(x, y, r));
+    }
+  }
+
+  spawnBalls(80);
+
+  // --- Mouse interaction ---
+  const mouse = { x: -9999, y: -9999, down: false, active: false };
+  const ATTRACT_RADIUS = 220;
+  const ATTRACT_STRENGTH = 0.6;
+  const EXPLODE_RADIUS = 260;
+  const EXPLODE_STRENGTH = 28;
+
+  canvas.addEventListener('mousemove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+    mouse.active = true;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    mouse.active = false;
+    mouse.down = false;
+  });
+
+  canvas.addEventListener('mousedown', (e) => {
+    mouse.down = true;
+    explode(mouse.x, mouse.y);
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    mouse.down = false;
+  });
+
+  // Touch support
+  canvas.addEventListener('touchstart', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches[0];
+    mouse.x = t.clientX - rect.left;
+    mouse.y = t.clientY - rect.top;
+    mouse.active = true;
+    mouse.down = true;
+    explode(mouse.x, mouse.y);
+    e.preventDefault();
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const t = e.touches[0];
+    mouse.x = t.clientX - rect.left;
+    mouse.y = t.clientY - rect.top;
+    e.preventDefault();
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', () => {
+    mouse.active = false;
+    mouse.down = false;
+  });
+
+  function explode(cx, cy) {
+    for (const b of balls) {
+      const dx = b.x - cx;
+      const dy = b.y - cy;
+      const distSq = dx * dx + dy * dy;
+      const dist = Math.sqrt(distSq) || 0.001;
+      if (dist < EXPLODE_RADIUS) {
+        const falloff = 1 - dist / EXPLODE_RADIUS;
+        const force = EXPLODE_STRENGTH * falloff;
+        b.vx += (dx / dist) * force;
+        b.vy += (dy / dist) * force;
+      }
+    }
+  }
+
+  // --- Spatial grid for collision broad-phase ---
+  function buildGrid(cellSize) {
+    const grid = new Map();
+    for (const b of balls) {
+      const cx = Math.floor(b.x / cellSize);
+      const cy = Math.floor(b.y / cellSize);
+      const key = cx + ',' + cy;
+      if (!grid.has(key)) grid.set(key, []);
+      grid.get(key).push(b);
+    }
+    return grid;
+  }
+
+  function getNearby(grid, cellSize, b) {
+    const cx = Math.floor(b.x / cellSize);
+    const cy = Math.floor(b.y / cellSize);
+    const nearby = [];
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        const key = (cx + dx) + ',' + (cy + dy);
+        const cell = grid.get(key);
+        if (cell) nearby.push(...cell);
+      }
+    }
+    return nearby;
+  }
+
+  function resolveCollision(a, b) {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const distSq = dx * dx + dy * dy;
+    const minDist = a.r + b.r;
+
+    if (distSq === 0 || distSq >= minDist * minDist) return;
+
+    const dist = Math.sqrt(distSq);
+    const nx = dx / dist;
+    const ny = dy / dist;
+
+    // separate overlapping balls
+    const overlap = minDist - dist;
+    const totalMass = a.mass + b.mass;
+    const aPush = (b.mass / totalMass) * overlap;
+    const bPush = (a.mass / totalMass) * overlap;
+    a.x -= nx * aPush;
+    a.y -= ny * aPush;
+    b.x += nx * bPush;
+    b.y += ny * bPush;
+
+    // relative velocity along normal
+    const rvx = b.vx - a.vx;
+    const rvy = b.vy - a.vy;
+    const velAlongNormal = rvx * nx + rvy * ny;
+
+    if (velAlongNormal > 0) return; // already separating
+
+    const impulseMag = -(1 + RESTITUTION) * velAlongNormal / (1 / a.mass + 1 / b.mass);
+    const ix = impulseMag * nx;
+    const iy = impulseMag * ny;
+
+    a.vx -= ix / a.mass;
+    a.vy -= iy / a.mass;
+    b.vx += ix / b.mass;
+    b.vy += iy / b.mass;
+  }
+
+  function update(dt) {
+    const scale = dt / (1000 / 60); // normalize to 60fps step
+
+    for (const b of balls) {
+      // gravity
+      b.vy += GRAVITY * scale;
+
+      // mouse attraction (hold, no click)
+      if (mouse.active && !mouse.down) {
+        const dx = mouse.x - b.x;
+        const dy = mouse.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 0.001;
+        if (dist < ATTRACT_RADIUS) {
+          const force = ATTRACT_STRENGTH * (1 - dist / ATTRACT_RADIUS);
+          b.vx += (dx / dist) * force * scale;
+          b.vy += (dy / dist) * force * scale;
+        }
+      }
+
+      b.vx *= FRICTION;
+      b.vy *= FRICTION;
+
+      b.x += b.vx * scale;
+      b.y += b.vy * scale;
+
+      // walls
+      if (b.x - b.r < 0) {
+        b.x = b.r;
+        b.vx = -b.vx * RESTITUTION;
+      } else if (b.x + b.r > W) {
+        b.x = W - b.r;
+        b.vx = -b.vx * RESTITUTION;
+      }
+
+      if (b.y - b.r < 0) {
+        b.y = b.r;
+        b.vy = -b.vy * RESTITUTION;
+      } else if (b.y + b.r > H) {
+        b.y = H - b.r;
+        b.vy = -b.vy * RESTITUTION;
+
+        // resting friction on floor
+        if (Math.abs(b.vy) < 0.6) b.vy = 0;
+        b.vx *= 0.98;
+      }
+    }
+
+    // collisions via spatial grid
+    const cellSize = 48;
+    const grid = buildGrid(cellSize);
+    const checked = new Set();
+
+    for (const b of balls) {
+      const nearby = getNearby(grid, cellSize, b);
+      for (const other of nearby) {
+        if (other === b) continue;
+        const key1 = b.__id ?? (b.__id = idCounter++);
+        const key2 = other.__id ?? (other.__id = idCounter++);
+        const pairKey = key1 < key2 ? key1 + '_' + key2 : key2 + '_' + key1;
+        if (checked.has(pairKey)) continue;
+        checked.add(pairKey);
+        resolveCollision(b, other);
+      }
+    }
+  }
+
+  let idCounter = 0;
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    for (const b of balls) {
+      ctx.beginPath();
+      const gradient = ctx.createRadialGradient(
+        b.x - b.r * 0.3, b.y - b.r * 0.3, b.r * 0.1,
+        b.x, b.y, b.r
+      );
+      gradient.addColorStop(0, lighten(b.color, 40));
+      gradient.addColorStop(1, b.color);
+      ctx.fillStyle = gradient;
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // attraction radius indicator
+    if (mouse.active && !mouse.down) {
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, ATTRACT_RADIUS, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+  }
+
+  function lighten(hex, amt) {
+    const num = parseInt(hex.slice(1), 16);
+    let r = (num >> 16) + amt;
+    let g = ((num >> 8) & 0x00ff) + amt;
+    let b = (num & 0x0000ff) + amt;
+    r = Math.min(255, r);
+    g = Math.min(255, g);
+    b = Math.min(255, b);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
+
+  // --- Main loop with fixed-step-ish physics, fps counter ---
+  const fpsEl = document.getElementById('fps');
+  const countEl = document.getElementById('count');
+  let lastTime = performance.now();
+  let fpsAcc = 0, fpsFrames = 0, fpsTimer = 0;
+
+  function loop(now) {
+    const dt = Math.min(now - lastTime, 32); // clamp to avoid huge jumps on tab switch
+    lastTime = now;
+
+    update(dt);
+    draw();
+
+    fpsFrames++;
+    fpsTimer += dt;
+    if (fpsTimer >= 500) {
+      fpsEl.textContent = Math.round((fpsFrames * 1000) / fpsTimer);
+      countEl.textContent = balls.length;
+      fpsFrames = 0;
+      fpsTimer = 0;
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  requestAnimationFrame(loop);
+
+  document.getElementById('addBalls').addEventListener('click', () => {
+    spawnBalls(50);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1501 @@
+pedido_id;data;produto;categoria;quantidade;valor_unitario;canal
+P10000;2026-01-27;Jaqueta corta-vento;vestuario;3;219.90;loja
+P10001;04/02/2026;Calça jeans;vestuario;5;129,90;loja
+P10002;20/06/2026;Camiseta básica;vestuario;5;49,90;loja
+P10003;17/4/2026;Meia kit 3;vestuario;1;24.50;site
+P10004;2026-06-24;Camiseta básica;  vestuario ;3;49,90;site
+P10005;2026-04-28;Meia kit 3;vestuario;1;24.50;marketplace
+P10006;9/1/2026;Calça jeans;vestuario;3;129.90;site
+P10007;16/01/2026;Boné aba reta;acessorios;5;R$ 59,90;loja
+P10008;21/05/2026;Tênis corrida;CALCADOS;4;299,00;site
+P10009;2026-01-13;Chinelo slide;calcados;1;39,90;marketplace
+P10010;17/1/2026;Calça jeans;vestuario;3;R$ 129,90;loja
+P10011;20/6/2026;Tênis corrida;calcados;5;299.00;marketplace
+P10012;4/5/2026;Chinelo slide;calcados;1;39,90;site
+P10013;2026-01-18;Jaqueta corta-vento;vestuario;5;R$ 219,90;loja
+P10014;23/1/2026;CAMISETA BÁSICA;VESTUARIO;5;49,90;site
+P10015;24/06/2026;Camiseta básica
+P10016;13/01/2026;Bermuda tactel;vestuario;2;69,90;loja
+P10017;27/2/2026;Jaqueta corta-vento;  vestuario ;3;219,90;marketplace
+P10018;2026-03-05;Tênis corrida;calcados;1;R$ 299,00;marketplace
+P10019;13/02/2026;Mochila urbana;acessorios;3;189,00;loja
+P10020;12-04-26;Boné aba reta;acessorios;5;59.90;marketplace
+P10021;2026-04-25;Bermuda tactel;vestuario;3;R$ 69,90;site
+P10022;13/6/2026;Calça jeans;VESTUARIO;4;129,90;loja
+P10023;11/05/2026;Bermuda tactel;vestuario;4;69.90;marketplace
+P10024;2026-05-01;Calça jeans;VESTUARIO;3;129.90;loja
+P10025;2026-06-21;Calça jeans;vestuario;1;129,90;loja
+P10026;8/1/2026;Mochila urbana;ACESSORIOS;4;189,00;loja
+P10027;01/02/2026;Boné aba reta;acessorios;3;59,90;marketplace
+P10028;24-06-26;Jaqueta corta-vento;vestuario;5;219,90;marketplace
+P10029;11-03-26;Óculos de sol;acessorios;2;149.00;site
+P10030;2026-03-15;Chinelo slide;calcados;1;R$ 39,90;marketplace
+P10031;24-04-26;Meia kit 3;vestuario;4;R$ 24,50;loja
+P10032;2026-06-17;Calça jeans;vestuario;4;129,90;site
+P10033;02-01-26;Mochila urbana;acessorios;3;189.00;loja
+P10034;11/1/2026;Mochila urbana;acessorios;3;189.00;site
+P10035;5/6/2026;ÓCULOS DE SOL;acessorios;2;R$ 149,00;marketplace
+P10036;2026-02-10;Tênis corrida;calcados;3;299,00;site
+P10037;2026-01-19;Mochila urbana;acessorios;5;189,00;marketplace
+P10038;17-02-26;Óculos de sol;acessorios;3;149,00;site
+
+P10039;2026-05-21;Meia kit 3;  vestuario ;1;24,50;site
+P10040;16/03/2026;JAQUETA CORTA-VENTO;vestuario;1;219,90;marketplace
+P10041;09/02/2026;Boné aba reta;acessorios;2;59,90;loja
+P10042;4/6/2026;Jaqueta corta-vento;vestuario;2;219,90;loja
+P10043;2026-01-26;CHINELO SLIDE;calcados;2;39,90;marketplace
+P10044;16/3/2026;Boné aba reta;acessorios;2;R$ 59,90;site
+P10045;11/3/2026;Calça jeans;vestuario;4;R$ 129,90;loja
+P10046;2026-04-17;Bermuda tactel;vestuario;1;R$ 69,90;loja
+P10047;2026-02-23;Óculos de sol;ACESSORIOS;5;149.00;site
+P10048;24/04/2026;Calça jeans;vestuario;2;129,90;loja
+P10049;23/03/2026;Bermuda tactel;vestuario;3;69,90;loja
+P10050;02/06/2026;Calça jeans;vestuario;2;129.90;marketplace
+P10051;16/03/2026;Camiseta básica;VESTUARIO;2;49,90;marketplace
+P10052;01-01-26;Boné aba reta;acessorios;5;59,90;marketplace
+P10053;06-04-26;Camiseta básica;vestuario;5;49.90;loja
+P10054;05/06/2026;Óculos de sol;acessorios;1;R$ 149,00;loja
+P10055;07-01-26;Mochila urbana;acessorios;5;189,00;site
+P10056;8/1/2026;Camiseta básica;  vestuario ;5;R$ 49,90;marketplace
+P10057;06-03-26;Boné aba reta;acessorios;3;R$ 59,90;loja
+P10058;24/06/2026;Mochila urbana;acessorios;4;189,00;loja
+P10059;16/5/2026;Meia kit 3;vestuario;1;24,50;loja
+P10060;22/03/2026;Camiseta básica;  vestuario ;3;49.90;marketplace
+P10061;5/5/2026;Calça jeans;VESTUARIO;1;129,90;site
+P10062;22-05-26;Óculos de sol;  acessorios ;1;149.00;loja
+P10063;16-06-26;Bermuda tactel;vestuario;4;69,90;loja
+P10064;13/1/2026;Tênis corrida;  calcados ;3;299.00;site
+P10065;2/4/2026;Boné aba reta;  acessorios ;2;59,90;site
+P10066;21/1/2026;Jaqueta corta-vento;vestuario;2;219.90;marketplace
+P10067;2026-06-17;Camiseta básica;  vestuario ;2;49,90;marketplace
+P10068;05/06/2026;Tênis corrida;calcados;1;299,00;loja
+P10069;15-06-26;Bermuda tactel;vestuario;3;69.90;marketplace
+P10019;13/02/2026;Mochila urbana;acessorios;3;189,00;loja
+P10070;28/5/2026;Boné aba reta;acessorios;2;R$ 59,90;loja
+P10071;2026-06-15;Boné aba reta;ACESSORIOS;5;59.90;marketplace
+P10072;15/2/2026;Calça jeans;vestuario;1;R$ 129,90;site
+P10073;16/3/2026;CALÇA JEANS;VESTUARIO;4;129.90;loja
+P10074;24/2/2026;Calça jeans;vestuario;5;129,90;loja
+P10075;9/5/2026;Bermuda tactel;vestuario;5;69,90;marketplace
+P10076;23/6/2026;Bermuda tactel;  vestuario ;1;69,90;site
+P10077;24-06-26;Mochila urbana;acessorios;4;R$ 189,00;site
+P10078;2026-04-21;Mochila urbana;acessorios;5;189,00;loja
+P10079;01-01-26;Meia kit 3;VESTUARIO;2;24.50;marketplace
+P10080;08-05-26;Tênis corrida;calcados;5;R$ 299,00;site
+P10081;2026-02-23;Meia kit 3;vestuario;5;R$ 24,50;site
+P10082;2026-02-01;Chinelo slide;calcados;2;R$ 39,90;site
+P10083;20/4/2026;Camiseta básica;VESTUARIO;5;49,90;site
+P10084;2026-03-08;Óculos de sol;acessorios;4;149.00;marketplace
+P10085;02/05/2026;Tênis corrida;calcados;1;299,00;site
+P10086;2026-06-26;Meia kit 3;  vestuario ;5;24.50;marketplace
+P10087;27-02-26;TÊNIS CORRIDA;calcados;2;299,00;marketplace
+P10088;2026-06-26;Óculos de sol;acessorios;1;149,00;loja
+P10089;14-05-26;Jaqueta corta-vento;vestuario;4;219,90;marketplace
+P10090;28/6/2026;Camiseta básica;vestuario;3;R$ 49,90;loja
+P10091;06/02/2026;Chinelo slide;calcados;3;R$ 39,90;site
+P10092;8/1/2026;Boné aba reta;acessorios;1;R$ 59,90;loja
+P10093;22/02/2026;Chinelo slide;calcados;2;39,90;marketplace
+P10094;10/05/2026;Calça jeans;  vestuario ;5;129,90;site
+P10095;2026-03-25;Camiseta básica;VESTUARIO;5;49,90;site
+P10096;2026-04-25;Boné aba reta;ACESSORIOS;2;59.90;loja
+P10097;21/5/2026;Bermuda tactel;vestuario;2;69,90;marketplace
+P10098;19/06/2026;Bermuda tactel;vestuario;5;69,90;site
+P10099;24/2/2026;Jaqueta corta-vento;vestuario;4;219,90;site
+P10100;8/3/2026;TÊNIS CORRIDA;calcados;3;299,00;site
+P10101;2026-03-09;Jaqueta corta-vento;vestuario;4;219.90;loja
+P10102;25/02/2026;Chinelo slide;calcados;5;R$ 39,90;loja
+P10103;10-03-26;Jaqueta corta-vento;vestuario;5;R$ 219,90;marketplace
+P10104;25/1/2026;Mochila urbana;acessorios;5;189.00;site
+P10105;14/03/2026;Camiseta básica;VESTUARIO;3;49.90;site
+P10106;27/05/2026;Óculos de sol
+P10107;07/01/2026;Óculos de sol;acessorios;1;149,00;marketplace
+P10108;2026-02-19;Mochila urbana;ACESSORIOS;4;189,00;site
+P10109;18/5/2026;Boné aba reta;ACESSORIOS;1;R$ 59,90;site
+P10110;04/06/2026;Bermuda tactel;VESTUARIO;2;69.90;site
+P10111;14/04/2026;Boné aba reta
+P10112;22/5/2026;Boné aba reta;acessorios;3;59,90;loja
+P10113;10/4/2026;Boné aba reta;acessorios;3;59.90;loja
+P10114;2026-03-02;Tênis corrida;calcados;4;ERRO_IMPORT;site
+P10115;2026-02-21;Camiseta básica;VESTUARIO;5;49.90;loja
+P10116;2026-03-04;Mochila urbana;acessorios;1;R$ 189,00;loja
+P10117;2026-04-27;Camiseta básica;vestuario;3;49,90;marketplace
+P10118;15/2/2026;Camiseta básica;VESTUARIO;2;49.90;site
+P10119;25/1/2026;Chinelo slide;calcados;4;R$ 39,90;site
+P10120;16/02/2026;Chinelo slide;calcados;1;R$ 39,90;site
+P10121;23/5/2026;Chinelo slide;calcados;3;39,90;marketplace
+P10122;2026-03-06;Mochila urbana;acessorios;5;189,00;marketplace
+P10123;2026-01-12;Camiseta básica;vestuario;5;49.90;marketplace
+P10124;19/2/2026;Bermuda tactel;vestuario;1;R$ 69,90;loja
+P10125;18/05/2026;Calça jeans
+P10126;23-04-26;Mochila urbana;ACESSORIOS;1;189,00;loja
+P10127;2026-04-14;Camiseta básica;vestuario;4;49.90;loja
+P10128;2026-04-26;Boné aba reta;acessorios;2;59,90;site
+P10129;2026-05-16;Calça jeans;vestuario;1;129.90;marketplace
+P10130;04-01-26;Óculos de sol;acessorios;1;R$ 149,00;loja
+P10131;16-02-26;Camiseta básica;vestuario;3;R$ 49,90;site
+P10132;13-04-26;Camiseta básica;vestuario;2;49.90;loja
+P10133;2026-02-20;Jaqueta corta-vento;  vestuario ;4;219.90;loja
+P10134;19/06/2026;Camiseta básica;vestuario;2;R$ 49,90;site
+P10135;2026-05-16;Camiseta básica;VESTUARIO;1;49,90;marketplace
+P10136;4/1/2026;Camiseta básica;vestuario;4;49,90;marketplace
+P10137;24-01-26;Bermuda tactel;vestuario;3;69,90;loja
+P10138;14/05/2026;Calça jeans;VESTUARIO;4;129.90;marketplace
+P10139;10/3/2026;Chinelo slide;calcados;5;39.90;loja
+P10140;06/01/2026;Camiseta básica;vestuario;4;49,90;loja
+P10141;03-02-26;Tênis corrida;CALCADOS;1;299,00;loja
+P10142;06-06-26;Calça jeans;vestuario;3;129.90;marketplace
+P10143;5/5/2026;MOCHILA URBANA;acessorios;1;189,00;loja
+P10144;17/4/2026;Mochila urbana;ACESSORIOS;5;189,00;loja
+P10145;28-03-26;Bermuda tactel;vestuario;5;69.90;marketplace
+P10146;03-06-26;CALÇA JEANS;vestuario;5;129.90;loja
+P10147;2026-02-14;Bermuda tactel;vestuario;1;69.90;loja
+P10148;03-05-26;Chinelo slide;calcados;1;39,90;site
+P10149;2026-01-28;MOCHILA URBANA;ACESSORIOS;4;189.00;site
+P10150;14/01/2026;Jaqueta corta-vento;vestuario;4;219,90;marketplace
+P10151;1/5/2026;Óculos de sol;acessorios;2;149,00;site
+P10152;02-05-26;Chinelo slide;calcados;5;R$ 39,90;marketplace
+P10153;20-01-26;CAMISETA BÁSICA;vestuario;3;R$ 49,90;marketplace
+P10154;20/03/2026;Óculos de sol;acessorios;1;149,00;site
+P10155;20/4/2026;Camiseta básica;vestuario;5;49.90;marketplace
+P10156;2026-02-08;Tênis corrida;calcados;5;R$ 299,00;site
+P10157;24/03/2026;Tênis corrida;CALCADOS;2;299,00;site
+P10158;16-04-26;Camiseta básica;vestuario;1;49,90;marketplace
+P10159;2026-05-17;Boné aba reta;acessorios;1;59,90;loja
+P10160;23-03-26;BERMUDA TACTEL;vestuario;2;69,90;site
+P10161;22/2/2026;MOCHILA URBANA;acessorios;5;189,00;loja
+P10162;2026-03-25;Óculos de sol;ACESSORIOS;2;149,00;site
+P10163;03/02/2026;Mochila urbana;acessorios;1;189,00;marketplace
+P10164;21/06/2026;Calça jeans;vestuario;3;129,90;site
+P10165;2026-04-16;Bermuda tactel;  vestuario ;4;69.90;site
+P10166;20-02-26;Tênis corrida;calcados;5;299,00;loja
+P10167;2026-06-17;Boné aba reta;  acessorios ;1;59,90;site
+P10168;4/1/2026;CAMISETA BÁSICA;vestuario;5;49,90;site
+P10169;11/04/2026;Bermuda tactel;vestuario;1;R$ 69,90;loja
+P10170;2026-01-17;CHINELO SLIDE;calcados;2;39,90;marketplace
+P10171;10/06/2026;Calça jeans;vestuario;2;129,90;loja
+P10172;25-06-26;Camiseta básica;VESTUARIO;2;49.90;loja
+P10173;2026-01-27;Meia kit 3;vestuario;3;ERRO_IMPORT;marketplace
+P10174;17/06/2026;Bermuda tactel;vestuario;1;69,90;loja
+P10175;05/06/2026;Jaqueta corta-vento;vestuario;4;219,90;loja
+P10176;2026-05-24;Óculos de sol;acessorios;2;ERRO_IMPORT;marketplace
+P10177;28/02/2026;Mochila urbana;acessorios;4;189,00;loja
+P10178;5/4/2026;Tênis corrida;calcados;1;299.00;site
+P10032;2026-06-17;Calça jeans;vestuario;4;129,90;site
+P10179;02/03/2026;Bermuda tactel;vestuario;5;69.90;marketplace
+P10180;2026-04-01;Bermuda tactel;  vestuario ;4;69,90;loja
+P10181;18/03/2026;CHINELO SLIDE;calcados;1;39.90;marketplace
+P10182;21/6/2026;Boné aba reta;acessorios;5;59,90;marketplace
+P10183;07-01-26;Chinelo slide;CALCADOS;3;39.90;marketplace
+
+P10184;20/03/2026;Boné aba reta;acessorios;5;59,90;site
+P10185;8/5/2026;CALÇA JEANS;vestuario;1;129.90;marketplace
+P10186;10/4/2026;BERMUDA TACTEL;vestuario;3;69,90;loja
+P10187;17-01-26;Boné aba reta;acessorios;1;59.90;marketplace
+P10188;10-06-26;Calça jeans;vestuario;2;129.90;site
+P10189;2026-02-22;Bermuda tactel;VESTUARIO;3;69.90;marketplace
+P10190;2026-05-22;TÊNIS CORRIDA;calcados;5;299,00;site
+P10191;2026-04-17;Óculos de sol;ACESSORIOS;4;149,00;marketplace
+P10192;20/6/2026;Meia kit 3;VESTUARIO;4;24.50;marketplace
+P10193;23/04/2026;Tênis corrida;calcados;4;299.00;loja
+P10194;15/02/2026;CAMISETA BÁSICA;vestuario;3;49,90;marketplace
+P10195;06-02-26;Camiseta básica;vestuario;4;R$ 49,90;marketplace
+P10196;12-05-26;Óculos de sol;acessorios;2;R$ 149,00;loja
+P10197;2026-02-13;Bermuda tactel;vestuario;4;R$ 69,90;site
+P10198;23/05/2026;Bermuda tactel;vestuario;5;69.90;site
+P10199;8/3/2026;Meia kit 3;VESTUARIO;1;24,50;loja
+P10200;2026-02-20;Jaqueta corta-vento;vestuario;5;219,90;loja
+P10201;02-04-26;Camiseta básica;vestuario;4;R$ 49,90;site
+P10202;10/04/2026;Mochila urbana;acessorios;5;R$ 189,00;marketplace
+P10203;03-02-26;Óculos de sol;acessorios;2;149.00;site
+P10204;13-03-26;Calça jeans;vestuario;1;R$ 129,90;marketplace
+P10205;26-05-26;Mochila urbana;ACESSORIOS;5;189.00;site
+P10206;19-01-26;CHINELO SLIDE;  calcados ;2;R$ 39,90;marketplace
+P10207;03/02/2026;Óculos de sol
+P10208;10/01/2026;Tênis corrida;calcados;4;299,00;marketplace
+P10209;27/02/2026;Bermuda tactel;vestuario;5;69,90;marketplace
+P10210;2026-04-01;Mochila urbana;acessorios;1;ERRO_IMPORT;site
+P10211;18/3/2026;Meia kit 3;vestuario;3;24,50;marketplace
+P10212;20/02/2026;Camiseta básica;vestuario;5;R$ 49,90;marketplace
+P10213;19/2/2026;Jaqueta corta-vento;vestuario;2;R$ 219,90;loja
+P10214;2026-03-24;Tênis corrida;CALCADOS;4;R$ 299,00;loja
+P10215;19/01/2026;Mochila urbana;acessorios;2;189,00;site
+P10216;20/5/2026;CALÇA JEANS;  vestuario ;1;129,90;marketplace
+P10217;18/06/2026;Óculos de sol;acessorios;4;R$ 149,00;loja
+P10218;03/03/2026;Tênis corrida;  calcados ;3;299.00;site
+P10219;01/05/2026;Tênis corrida;calcados;3;299.00;site
+P10109;18/5/2026;Boné aba reta;ACESSORIOS;1;R$ 59,90;site
+P10220;2026-03-04;Meia kit 3;vestuario;4;ERRO_IMPORT;loja
+P10221;05-05-26;Tênis corrida;calcados;4;299,00;marketplace
+P10222;03-06-26;Meia kit 3;vestuario;3;24.50;marketplace
+P10223;23-02-26;Mochila urbana;acessorios;4;189,00;marketplace
+P10224;22/06/2026;Tênis corrida;CALCADOS;4;299,00;site
+P10225;09-01-26;Boné aba reta;acessorios;1;R$ 59,90;loja
+P10226;25-06-26;Boné aba reta;acessorios;2;59.90;marketplace
+P10227;15-06-26;Boné aba reta;acessorios;1;R$ 59,90;marketplace
+P10228;2026-03-27;Mochila urbana;acessorios;2;189,00;marketplace
+P10229;18/6/2026;Mochila urbana;acessorios;1;189,00;site
+P10230;2026-02-06;Bermuda tactel;  vestuario ;3;69.90;marketplace
+P10231;20/06/2026;Boné aba reta;acessorios;3;59,90;site
+P10232;11/4/2026;Chinelo slide;calcados;1;R$ 39,90;site
+P10233;28/4/2026;Calça jeans;vestuario;3;129,90;marketplace
+P10234;27/05/2026;Jaqueta corta-vento;vestuario;2;219.90;site
+P10235;2026-01-04;Mochila urbana;ACESSORIOS;4;189,00;site
+P10236;2026-03-27;Mochila urbana;acessorios;4;189,00;site
+P10237;2026-05-02;Tênis corrida;  calcados ;5;299,00;loja
+P10238;2026-01-26;Tênis corrida;CALCADOS;5;299.00;marketplace
+P10239;16-01-26;Bermuda tactel;VESTUARIO;2;69,90;loja
+P10240;2026-06-22;Camiseta básica;vestuario;4;49.90;site
+P10241;24-02-26;Meia kit 3;vestuario;3;24.50;site
+P10242;11-04-26;BERMUDA TACTEL;VESTUARIO;4;69.90;site
+P10243;02-03-26;Óculos de sol;acessorios;4;149,00;loja
+P10244;22/01/2026;Jaqueta corta-vento;vestuario;5;R$ 219,90;loja
+P10245;26/01/2026;Jaqueta corta-vento;vestuario;1;R$ 219,90;marketplace
+P10246;02/05/2026;Calça jeans;  vestuario ;4;129,90;loja
+P10247;2026-02-25;Camiseta básica;vestuario;4;49,90;site
+P10248;17/05/2026;Óculos de sol;acessorios;5;149,00;loja
+P10249;17/2/2026;Mochila urbana;acessorios;1;R$ 189,00;marketplace
+P10250;22-04-26;Chinelo slide;calcados;1;39,90;loja
+P10251;7/2/2026;Óculos de sol;acessorios;2;149.00;marketplace
+P10252;2026-02-03;Jaqueta corta-vento;vestuario;1;ERRO_IMPORT;loja
+P10253;15/02/2026;Bermuda tactel;vestuario;1;69,90;site
+P10254;21-04-26;Bermuda tactel;vestuario;3;69.90;site
+P10255;14/1/2026;Tênis corrida;CALCADOS;3;299.00;loja
+P10256;2026-03-09;Calça jeans;VESTUARIO;4;129.90;site
+P10257;16/05/2026;Calça jeans
+P10258;27/06/2026;Jaqueta corta-vento
+P10259;26-02-26;Óculos de sol;acessorios;4;R$ 149,00;loja
+P10260;10/01/2026;Chinelo slide;CALCADOS;1;39.90;loja
+P10261;22/1/2026;Mochila urbana;acessorios;1;R$ 189,00;site
+P10262;23/6/2026;Mochila urbana;acessorios;3;189.00;loja
+P10263;2026-02-01;Bermuda tactel;vestuario;5;69,90;site
+P10264;6/5/2026;Óculos de sol;acessorios;2;149.00;site
+P10265;7/4/2026;Bermuda tactel;vestuario;5;69.90;loja
+P10266;2026-01-20;Camiseta básica;VESTUARIO;2;49,90;site
+P10267;2026-06-19;TÊNIS CORRIDA;calcados;1;299,00;loja
+P10268;3/2/2026;Calça jeans;vestuario;5;129,90;site
+P10269;2026-05-04;Óculos de sol;acessorios;1;149,00;marketplace
+P10270;28/02/2026;Óculos de sol;acessorios;2;149.00;site
+P10271;01/06/2026;Boné aba reta;ACESSORIOS;2;59.90;marketplace
+P10272;6/6/2026;BERMUDA TACTEL;VESTUARIO;4;R$ 69,90;loja
+P10273;22/05/2026;Tênis corrida;  calcados ;1;R$ 299,00;loja
+P10274;2026-03-21;Mochila urbana;acessorios;5;189,00;site
+P10275;2026-02-09;Jaqueta corta-vento;vestuario;4;R$ 219,90;site
+P10276;2026-02-16;Camiseta básica;vestuario;2;R$ 49,90;loja
+P10277;13/01/2026;Calça jeans
+P10278;06-04-26;Chinelo slide;CALCADOS;5;R$ 39,90;site
+P10279;07-05-26;Camiseta básica;vestuario;4;49,90;loja
+P10280;2026-05-14;Calça jeans;vestuario;4;129,90;marketplace
+P10281;2026-04-01;Meia kit 3;vestuario;3;24,50;marketplace
+P10282;18/06/2026;Jaqueta corta-vento;VESTUARIO;5;R$ 219,90;marketplace
+P10283;2026-01-07;Mochila urbana;acessorios;3;ERRO_IMPORT;loja
+P10284;16/3/2026;Jaqueta corta-vento;vestuario;3;219,90;loja
+P10285;2026-04-12;Meia kit 3;vestuario;2;24,50;loja
+P10286;09-06-26;Óculos de sol;acessorios;3;149,00;marketplace
+P10287;12-05-26;Tênis corrida;calcados;2;299.00;marketplace
+P10288;07/03/2026;Meia kit 3;vestuario;5;24,50;loja
+P10289;27/01/2026;Jaqueta corta-vento;vestuario;5;219.90;site
+P10290;23-03-26;Jaqueta corta-vento;vestuario;5;219,90;site
+P10291;14/04/2026;Jaqueta corta-vento;vestuario;4;R$ 219,90;marketplace
+P10292;14-06-26;Óculos de sol;acessorios;3;149,00;site
+P10293;11/06/2026;Meia kit 3;VESTUARIO;4;24.50;marketplace
+P10294;15/6/2026;Calça jeans;vestuario;5;129,90;site
+P10295;15/05/2026;Chinelo slide
+P10296;20/05/2026;Boné aba reta;  acessorios ;4;59,90;site
+P10297;8/4/2026;ÓCULOS DE SOL;acessorios;3;149,00;marketplace
+P10298;24/06/2026;Boné aba reta;acessorios;2;59,90;marketplace
+P10299;25-02-26;Chinelo slide;calcados;1;39.90;marketplace
+P10300;07/02/2026;Calça jeans;vestuario;1;129.90;marketplace
+P10301;20/3/2026;Bermuda tactel;vestuario;1;69,90;loja
+P10302;13/01/2026;MOCHILA URBANA;ACESSORIOS;4;189,00;loja
+P10044;16/3/2026;Boné aba reta;acessorios;2;R$ 59,90;site
+P10303;04/06/2026;Óculos de sol;acessorios;1;149,00;marketplace
+P10304;25/03/2026;Óculos de sol;acessorios;2;149,00;loja
+P10305;2026-02-02;Boné aba reta;acessorios;2;59,90;site
+P10306;10/02/2026;Tênis corrida;calcados;3;299,00;loja
+P10307;09-02-26;Jaqueta corta-vento;vestuario;4;219.90;loja
+P10308;2026-05-02;Mochila urbana;  acessorios ;3;189,00;marketplace
+P10309;2026-01-17;ÓCULOS DE SOL;acessorios;1;R$ 149,00;loja
+P10310;23/4/2026;Óculos de sol;  acessorios ;4;R$ 149,00;marketplace
+P10311;23/1/2026;Tênis corrida;calcados;5;299.00;marketplace
+P10312;18/5/2026;BONÉ ABA RETA;acessorios;3;59,90;site
+P10313;10/06/2026;Tênis corrida;CALCADOS;4;299,00;loja
+P10314;2026-01-17;Meia kit 3;vestuario;5;ERRO_IMPORT;loja
+P10315;2026-03-24;Chinelo slide;calcados;1;39.90;marketplace
+P10316;2026-01-17;MEIA KIT 3;VESTUARIO;1;24,50;loja
+P10317;27/02/2026;Meia kit 3
+P10318;15/4/2026;Calça jeans;vestuario;4;129,90;loja
+P10319;25/06/2026;Tênis corrida;calcados;5;R$ 299,00;site
+P10320;15/3/2026;Meia kit 3;VESTUARIO;4;24,50;site
+P10321;06-01-26;Meia kit 3;vestuario;5;R$ 24,50;loja
+P10322;02/03/2026;Jaqueta corta-vento;vestuario;2;219,90;loja
+P10323;14/4/2026;Camiseta básica;vestuario;4;49,90;site
+P10324;2026-02-02;Boné aba reta;acessorios;4;59,90;site
+P10325;13-06-26;Meia kit 3;VESTUARIO;2;24.50;marketplace
+P10326;17/02/2026;Bermuda tactel;vestuario;4;69,90;site
+P10327;24-02-26;JAQUETA CORTA-VENTO;vestuario;2;219,90;loja
+P10328;14-04-26;Meia kit 3;vestuario;1;R$ 24,50;loja
+P10329;20-01-26;Jaqueta corta-vento;vestuario;4;219,90;marketplace
+P10330;2026-05-22;Camiseta básica;vestuario;3;49,90;site
+P10331;02-03-26;Chinelo slide;CALCADOS;2;39,90;loja
+P10332;2026-03-17;Camiseta básica;vestuario;1;R$ 49,90;marketplace
+P10333;2026-06-08;Calça jeans;vestuario;3;129,90;marketplace
+P10334;19/6/2026;Jaqueta corta-vento;  vestuario ;1;219,90;site
+P10335;21/03/2026;Chinelo slide;calcados;5;39,90;loja
+P10336;5/2/2026;Camiseta básica;  vestuario ;3;R$ 49,90;site
+P10337;1/1/2026;Camiseta básica;vestuario;4;R$ 49,90;site
+P10338;3/3/2026;Calça jeans;vestuario;1;129.90;loja
+P10339;27-03-26;Calça jeans;vestuario;1;R$ 129,90;marketplace
+P10340;27-01-26;Bermuda tactel;VESTUARIO;4;69,90;site
+P10341;18/05/2026;Bermuda tactel;VESTUARIO;5;69,90;site
+P10342;2026-03-04;Boné aba reta;acessorios;2;59.90;marketplace
+P10343;11/5/2026;Mochila urbana;ACESSORIOS;5;189.00;loja
+P10092;8/1/2026;Boné aba reta;acessorios;1;R$ 59,90;loja
+P10344;01-04-26;Mochila urbana;acessorios;4;189,00;loja
+P10345;2026-02-23;Calça jeans;vestuario;2;129,90;marketplace
+P10346;2026-01-08;Camiseta básica;vestuario;4;49,90;site
+P10347;2026-01-20;Meia kit 3;vestuario;3;R$ 24,50;site
+P10348;5/5/2026;ÓCULOS DE SOL;acessorios;4;149,00;loja
+P10349;01-01-26;Bermuda tactel;vestuario;5;R$ 69,90;marketplace
+P10350;13-05-26;Mochila urbana;ACESSORIOS;3;189,00;marketplace
+P10351;3/6/2026;Calça jeans;vestuario;5;129,90;loja
+P10352;10-06-26;Tênis corrida;calcados;1;R$ 299,00;marketplace
+P10353;2026-06-09;Bermuda tactel;vestuario;3;69,90;site
+P10354;10/06/2026;Calça jeans;vestuario;5;129,90;loja
+P10355;12-04-26;Calça jeans;vestuario;3;129.90;loja
+P10356;13/02/2026;Calça jeans
+P10357;12/01/2026;Óculos de sol;acessorios;3;149.00;site
+P10358;16/02/2026;Camiseta básica;vestuario;3;49.90;marketplace
+P10359;2026-02-10;Mochila urbana;acessorios;3;R$ 189,00;marketplace
+P10360;06-02-26;Mochila urbana;acessorios;4;189.00;site
+P10361;20-02-26;Óculos de sol;acessorios;1;149,00;site
+P10362;2026-02-21;Calça jeans;VESTUARIO;4;R$ 129,90;site
+P10363;6/1/2026;Bermuda tactel;VESTUARIO;2;69,90;marketplace
+P10364;15/2/2026;Mochila urbana;acessorios;2;189.00;site
+P10365;25/02/2026;Meia kit 3;vestuario;4;24.50;loja
+P10366;2026-04-24;Meia kit 3;vestuario;3;24.50;loja
+P10367;08-06-26;Tênis corrida;calcados;5;299,00;loja
+P10368;21/06/2026;Chinelo slide;calcados;4;39.90;site
+P10369;23/5/2026;Boné aba reta;acessorios;5;59.90;loja
+P10370;2026-04-19;Bermuda tactel;vestuario;3;ERRO_IMPORT;marketplace
+P10371;13/4/2026;Camiseta básica;vestuario;5;R$ 49,90;marketplace
+P10372;22-06-26;Jaqueta corta-vento;vestuario;5;R$ 219,90;loja
+P10373;25/01/2026;Jaqueta corta-vento
+P10374;5/2/2026;Boné aba reta;ACESSORIOS;4;59.90;marketplace
+P10375;2026-01-01;Camiseta básica;  vestuario ;4;49.90;loja
+P10376;14/4/2026;Boné aba reta;acessorios;5;59,90;site
+P10377;21/6/2026;Meia kit 3;  vestuario ;3;R$ 24,50;marketplace
+P10378;24/5/2026;Jaqueta corta-vento;vestuario;2;219,90;site
+P10379;07-06-26;Chinelo slide;calcados;3;39,90;site
+P10380;10/4/2026;Bermuda tactel;  vestuario ;1;69,90;site
+P10381;1/2/2026;Meia kit 3;vestuario;1;R$ 24,50;marketplace
+P10382;10/3/2026;Tênis corrida;calcados;3;299.00;loja
+P10383;02/02/2026;Tênis corrida;calcados;5;299.00;site
+P10384;18/06/2026;Mochila urbana;acessorios;3;R$ 189,00;marketplace
+P10385;01/02/2026;Camiseta básica;vestuario;3;49,90;marketplace
+P10386;2026-05-28;Chinelo slide;calcados;2;39.90;loja
+P10387;04-05-26;BERMUDA TACTEL;vestuario;3;69.90;loja
+P10388;24/3/2026;Meia kit 3;vestuario;2;24,50;site
+P10389;02/01/2026;Meia kit 3;vestuario;5;24,50;loja
+P10390;1/1/2026;Meia kit 3;vestuario;5;R$ 24,50;loja
+P10391;09-04-26;Calça jeans;  vestuario ;2;129,90;loja
+P10392;19-05-26;Jaqueta corta-vento;vestuario;3;219.90;site
+P10393;2026-04-25;BERMUDA TACTEL;vestuario;3;69,90;loja
+P10394;25/5/2026;Bermuda tactel;vestuario;3;69.90;site
+P10395;2026-02-07;MOCHILA URBANA;ACESSORIOS;4;189.00;loja
+P10396;2026-06-15;Meia kit 3;vestuario;2;24,50;loja
+P10397;14/3/2026;Chinelo slide;calcados;5;R$ 39,90;loja
+P10398;20/02/2026;Calça jeans;vestuario;2;129,90;marketplace
+P10399;13/02/2026;Chinelo slide;calcados;4;R$ 39,90;marketplace
+P10400;25-02-26;Óculos de sol;acessorios;5;149,00;marketplace
+P10401;15/3/2026;Meia kit 3;vestuario;3;24,50;marketplace
+P10402;2026-05-21;Meia kit 3;vestuario;2;24,50;marketplace
+P10403;24-02-26;Tênis corrida;calcados;3;299,00;loja
+P10404;2026-01-12;Chinelo slide;calcados;3;39,90;site
+P10405;05/01/2026;Tênis corrida;calcados;2;299.00;site
+P10406;15-02-26;Meia kit 3;vestuario;3;24,50;loja
+P10407;27/4/2026;Mochila urbana;ACESSORIOS;3;189,00;site
+P10408;2026-02-21;Calça jeans;VESTUARIO;2;129,90;site
+P10409;12-01-26;Tênis corrida;calcados;2;299.00;marketplace
+P10410;15/5/2026;BERMUDA TACTEL;vestuario;5;69,90;site
+P10411;05-05-26;Tênis corrida;calcados;5;299.00;site
+P10412;18/05/2026;Bermuda tactel
+P10413;13-06-26;Chinelo slide;calcados;3;R$ 39,90;marketplace
+P10092;8/1/2026;Boné aba reta;acessorios;1;R$ 59,90;loja
+P10414;15-03-26;Boné aba reta;ACESSORIOS;5;R$ 59,90;loja
+P10415;16/4/2026;Mochila urbana;acessorios;2;189.00;site
+P10416;26/03/2026;Óculos de sol;acessorios;2;149,00;loja
+P10417;02-04-26;Camiseta básica;vestuario;2;49.90;site
+P10418;23/5/2026;Camiseta básica;VESTUARIO;2;49,90;loja
+P10419;5/2/2026;Meia kit 3;vestuario;5;24,50;loja
+P10420;17/06/2026;Tênis corrida;calcados;5;R$ 299,00;site
+P10421;2026-01-16;ÓCULOS DE SOL;  acessorios ;1;149,00;loja
+P10422;2026-02-23;ÓCULOS DE SOL;  acessorios ;5;R$ 149,00;loja
+P10423;2026-05-16;BONÉ ABA RETA;ACESSORIOS;4;59.90;marketplace
+P10424;2026-01-09;Óculos de sol;acessorios;4;149,00;site
+P10425;24/6/2026;Mochila urbana;  acessorios ;5;189.00;marketplace
+P10426;07/01/2026;MOCHILA URBANA;  acessorios ;1;R$ 189,00;site
+P10427;21/04/2026;Camiseta básica;vestuario;4;49,90;site
+P10428;27-02-26;Mochila urbana;acessorios;1;189,00;marketplace
+P10429;2026-01-02;Mochila urbana;  acessorios ;1;189.00;site
+P10430;2026-06-12;Jaqueta corta-vento;vestuario;5;219.90;marketplace
+P10431;19-06-26;Meia kit 3;vestuario;2;24,50;loja
+P10432;2026-06-23;Boné aba reta;acessorios;4;R$ 59,90;loja
+P10433;2026-05-11;Boné aba reta;acessorios;5;59,90;site
+P10434;28-06-26;Chinelo slide;calcados;1;39.90;marketplace
+P10435;2026-06-15;Chinelo slide;calcados;4;39,90;marketplace
+P10436;10-01-26;Óculos de sol;acessorios;2;R$ 149,00;marketplace
+P10156;2026-02-08;Tênis corrida;calcados;5;R$ 299,00;site
+P10437;17/2/2026;Óculos de sol;acessorios;5;149.00;loja
+P10438;18/04/2026;Meia kit 3;vestuario;4;24,50;marketplace
+P10439;2026-05-16;Óculos de sol;acessorios;1;149,00;loja
+P10440;17/03/2026;Meia kit 3;vestuario;1;24.50;site
+P10441;2026-04-05;Bermuda tactel;  vestuario ;3;R$ 69,90;loja
+P10442;9/5/2026;Boné aba reta;acessorios;1;59.90;site
+P10443;11/05/2026;Meia kit 3;vestuario;4;24,50;loja
+P10444;17-03-26;BERMUDA TACTEL;vestuario;3;69.90;site
+P10445;10/01/2026;Chinelo slide;calcados;2;39,90;site
+P10446;06-03-26;Chinelo slide;calcados;1;39.90;loja
+P10447;22/3/2026;Jaqueta corta-vento;vestuario;3;219.90;marketplace
+P10448;2026-01-21;Meia kit 3;vestuario;4;24,50;marketplace
+P10449;25/3/2026;Óculos de sol;acessorios;4;149,00;loja
+P10450;22-03-26;Meia kit 3;vestuario;5;R$ 24,50;marketplace
+P10451;18-06-26;Meia kit 3;vestuario;2;R$ 24,50;site
+P10452;05/01/2026;Chinelo slide;calcados;3;39.90;site
+P10453;2026-03-24;Jaqueta corta-vento;vestuario;1;219.90;marketplace
+P10454;02/03/2026;Bermuda tactel;vestuario;5;R$ 69,90;loja
+P10455;07-05-26;Tênis corrida;calcados;1;299,00;loja
+P10456;13-06-26;Mochila urbana;acessorios;3;189,00;loja
+P10457;26/3/2026;Camiseta básica;vestuario;2;49,90;loja
+P10458;08-03-26;BONÉ ABA RETA;acessorios;5;R$ 59,90;site
+P10459;22/1/2026;Chinelo slide;calcados;4;39,90;marketplace
+P10460;28/2/2026;Bermuda tactel;vestuario;4;69.90;marketplace
+P10461;2026-03-21;Tênis corrida;calcados;4;299,00;loja
+P10462;2026-04-05;Chinelo slide;calcados;5;39,90;marketplace
+P10201;02-04-26;Camiseta básica;vestuario;4;R$ 49,90;site
+P10463;09-05-26;Bermuda tactel;VESTUARIO;5;R$ 69,90;marketplace
+P10464;10/06/2026;Óculos de sol
+P10133;2026-02-20;Jaqueta corta-vento;  vestuario ;4;219.90;loja
+P10465;2026-05-12;Jaqueta corta-vento;vestuario;3;R$ 219,90;site
+P10466;2026-04-08;Chinelo slide;calcados;4;39,90;marketplace
+P10467;2026-02-01;Calça jeans;vestuario;4;129,90;marketplace
+P10468;23/03/2026;Mochila urbana;acessorios;1;189,00;marketplace
+P10469;2026-04-24;Tênis corrida;CALCADOS;5;299,00;site
+P10470;26-05-26;Bermuda tactel;vestuario;3;R$ 69,90;site
+P10471;2026-02-27;Calça jeans;  vestuario ;2;129.90;loja
+P10472;4/3/2026;BONÉ ABA RETA;acessorios;4;59,90;marketplace
+P10473;12/2/2026;Chinelo slide;CALCADOS;3;R$ 39,90;site
+P10474;7/2/2026;Mochila urbana;acessorios;5;R$ 189,00;marketplace
+P10475;2026-02-04;Chinelo slide;CALCADOS;2;39.90;loja
+P10476;26-06-26;Óculos de sol;  acessorios ;4;149.00;loja
+P10477;19/6/2026;Calça jeans;VESTUARIO;4;129.90;loja
+P10478;06/05/2026;Tênis corrida;calcados;3;299,00;loja
+P10291;14/04/2026;Jaqueta corta-vento;vestuario;4;R$ 219,90;marketplace
+P10479;05-04-26;Mochila urbana;acessorios;3;R$ 189,00;site
+P10480;21-03-26;Tênis corrida;calcados;5;299.00;marketplace
+P10481;02/05/2026;Tênis corrida;calcados;4;299,00;marketplace
+P10482;2026-03-05;Meia kit 3;VESTUARIO;4;R$ 24,50;loja
+P10483;11/05/2026;Óculos de sol;acessorios;5;149,00;site
+P10484;2026-01-28;Mochila urbana;acessorios;5;189,00;loja
+P10485;20/1/2026;Mochila urbana;acessorios;5;189,00;marketplace
+P10486;2026-01-09;Boné aba reta;acessorios;4;59.90;site
+P10487;06-04-26;Tênis corrida;calcados;5;299.00;marketplace
+P10488;2026-03-18;Tênis corrida;calcados;4;299,00;site
+P10489;21-01-26;Meia kit 3;vestuario;5;24,50;site
+P10490;13-03-26;Camiseta básica;vestuario;2;49,90;loja
+P10491;09/01/2026;Calça jeans;vestuario;2;129,90;marketplace
+P10492;2026-02-18;Meia kit 3;  vestuario ;2;24,50;site
+P10493;26/3/2026;Tênis corrida;  calcados ;2;299,00;site
+P10494;13-02-26;Chinelo slide;CALCADOS;4;R$ 39,90;site
+P10495;21-02-26;JAQUETA CORTA-VENTO;VESTUARIO;4;219,90;loja
+P10496;2026-05-13;Camiseta básica;vestuario;5;49,90;site
+P10497;14/3/2026;JAQUETA CORTA-VENTO;vestuario;2;219,90;marketplace
+P10498;1/1/2026;BERMUDA TACTEL;vestuario;4;R$ 69,90;loja
+P10499;23/01/2026;Mochila urbana;acessorios;4;189,00;loja
+P10500;19/06/2026;Mochila urbana;  acessorios ;2;189.00;loja
+P10501;17/02/2026;Camiseta básica;vestuario;3;R$ 49,90;loja
+P10502;09-03-26;Bermuda tactel;vestuario;2;69.90;site
+P10503;2026-03-04;Bermuda tactel;vestuario;4;69,90;marketplace
+P10504;1/4/2026;Calça jeans;vestuario;5;129,90;site
+P10505;01-01-26;Boné aba reta;acessorios;1;59,90;site
+P10506;14/02/2026;Mochila urbana;  acessorios ;1;189.00;loja
+P10507;2026-05-10;Bermuda tactel;VESTUARIO;2;69.90;loja
+P10508;26/4/2026;Óculos de sol;acessorios;2;149.00;site
+P10509;02/03/2026;Calça jeans;vestuario;3;129.90;marketplace
+P10510;14/05/2026;Óculos de sol
+P10511;05/03/2026;Calça jeans;  vestuario ;2;129.90;loja
+P10512;13/04/2026;Jaqueta corta-vento;vestuario;1;R$ 219,90;site
+P10513;28/03/2026;JAQUETA CORTA-VENTO;vestuario;3;219,90;marketplace
+P10514;14-02-26;Boné aba reta;  acessorios ;3;59,90;site
+P10515;26-03-26;Boné aba reta;ACESSORIOS;2;R$ 59,90;marketplace
+P10516;11/5/2026;Meia kit 3;vestuario;4;24,50;site
+P10517;1/5/2026;Boné aba reta;  acessorios ;4;59,90;site
+P10518;03/06/2026;Mochila urbana;acessorios;2;189,00;loja
+P10519;2026-04-24;Tênis corrida;calcados;1;299,00;loja
+P10520;17/06/2026;Jaqueta corta-vento
+P10521;2026-04-21;Camiseta básica;vestuario;2;49,90;site
+P10522;05-02-26;Tênis corrida;CALCADOS;3;299.00;marketplace
+P10523;24/02/2026;JAQUETA CORTA-VENTO;vestuario;4;219,90;site
+P10524;19-01-26;Calça jeans;VESTUARIO;2;R$ 129,90;marketplace
+P10525;06-02-26;Boné aba reta;acessorios;4;R$ 59,90;site
+P10526;25/03/2026;Meia kit 3;vestuario;4;24,50;loja
+P10527;2026-01-17;MOCHILA URBANA;acessorios;3;189,00;site
+P10528;2026-05-15;Tênis corrida;calcados;5;299,00;site
+P10529;11/02/2026;JAQUETA CORTA-VENTO;vestuario;1;219,90;site
+P10530;24/05/2026;Boné aba reta;acessorios;1;59,90;marketplace
+P10531;2026-02-12;CHINELO SLIDE;calcados;5;39,90;loja
+P10532;28/04/2026;Chinelo slide;calcados;1;39,90;site
+P10533;11/02/2026;Óculos de sol;acessorios;5;149,00;site
+P10534;2026-03-18;Jaqueta corta-vento;VESTUARIO;4;R$ 219,90;loja
+P10535;02/05/2026;Meia kit 3;vestuario;1;24,50;marketplace
+P10536;25/04/2026;Meia kit 3;vestuario;2;24,50;marketplace
+P10537;20-03-26;Bermuda tactel;vestuario;2;69.90;site
+P10538;20-01-26;Bermuda tactel;vestuario;2;69,90;loja
+P10539;10/03/2026;Calça jeans;vestuario;4;129.90;site
+P10540;2026-02-05;Chinelo slide;calcados;4;R$ 39,90;marketplace
+P10017;27/2/2026;Jaqueta corta-vento;  vestuario ;3;219,90;marketplace
+P10541;07/06/2026;Mochila urbana;  acessorios ;4;189.00;marketplace
+P10542;16-06-26;Tênis corrida;calcados;1;299,00;marketplace
+P10543;28-01-26;Bermuda tactel;vestuario;3;69,90;marketplace
+P10544;23/01/2026;Boné aba reta;ACESSORIOS;1;R$ 59,90;site
+P10545;2026-05-05;Chinelo slide;calcados;5;39,90;loja
+P10546;25/2/2026;Camiseta básica;vestuario;5;49,90;marketplace
+P10547;27/05/2026;Camiseta básica;vestuario;4;49.90;site
+P10548;4/2/2026;Óculos de sol;acessorios;3;R$ 149,00;site
+P10549;08/05/2026;Óculos de sol;ACESSORIOS;3;R$ 149,00;site
+P10550;2026-05-23;Mochila urbana;acessorios;4;189,00;marketplace
+P10551;2026-06-21;ÓCULOS DE SOL;ACESSORIOS;5;R$ 149,00;loja
+P10552;2026-02-27;Jaqueta corta-vento;VESTUARIO;2;219.90;marketplace
+P10553;2026-04-01;Chinelo slide;calcados;2;R$ 39,90;loja
+P10554;2026-04-01;Meia kit 3;vestuario;4;24,50;marketplace
+P10555;16/4/2026;Camiseta básica;vestuario;2;49,90;site
+P10556;2026-03-07;Bermuda tactel;vestuario;1;69,90;site
+P10557;22/1/2026;Camiseta básica;vestuario;1;49.90;site
+P10558;23/02/2026;Calça jeans;vestuario;1;129,90;marketplace
+P10559;2026-06-18;Boné aba reta;  acessorios ;5;R$ 59,90;loja
+P10560;26/06/2026;BONÉ ABA RETA;acessorios;2;59,90;marketplace
+P10561;7/2/2026;Jaqueta corta-vento;vestuario;5;219,90;loja
+P10562;26-02-26;Mochila urbana;acessorios;1;189,00;site
+P10563;23/03/2026;Meia kit 3;  vestuario ;5;24.50;marketplace
+P10564;05-04-26;Jaqueta corta-vento;vestuario;1;219.90;marketplace
+P10565;06/06/2026;Mochila urbana;acessorios;4;189,00;site
+P10566;02/03/2026;Mochila urbana;acessorios;2;189.00;marketplace
+P10567;2026-03-05;Calça jeans;vestuario;1;129,90;marketplace
+P10568;15/04/2026;Meia kit 3;vestuario;1;24.50;loja
+P10569;20/02/2026;Boné aba reta;  acessorios ;3;59.90;site
+P10570;26/5/2026;Chinelo slide;calcados;2;39.90;loja
+P10571;06/06/2026;CHINELO SLIDE;CALCADOS;1;39,90;site
+P10572;2026-03-22;Mochila urbana;ACESSORIOS;5;189,00;marketplace
+P10573;25-03-26;Boné aba reta;acessorios;3;59,90;site
+P10574;21/04/2026;Tênis corrida;calcados;1;299.00;site
+P10575;02-06-26;Camiseta básica;vestuario;5;49,90;marketplace
+P10576;24-05-26;Boné aba reta;acessorios;3;59,90;site
+P10577;2026-01-01;Meia kit 3;vestuario;5;24,50;loja
+P10578;25/03/2026;Calça jeans
+P10579;22/06/2026;Camiseta básica
+P10580;2026-05-19;Bermuda tactel;vestuario;3;69.90;marketplace
+P10148;03-05-26;Chinelo slide;calcados;1;39,90;site
+P10581;23-04-26;Chinelo slide;calcados;4;39,90;marketplace
+P10582;28/5/2026;Tênis corrida;calcados;3;R$ 299,00;marketplace
+P10583;03-04-26;Tênis corrida;calcados;4;R$ 299,00;loja
+P10584;13/2/2026;Mochila urbana;acessorios;2;189,00;site
+P10585;19-01-26;Meia kit 3;VESTUARIO;5;24,50;site
+P10586;2026-04-03;Mochila urbana;acessorios;1;R$ 189,00;loja
+P10587;21-03-26;Mochila urbana;acessorios;3;189,00;loja
+P10588;2026-06-11;Mochila urbana;acessorios;3;189.00;site
+P10589;09/01/2026;Mochila urbana;ACESSORIOS;3;189,00;loja
+P10590;2026-05-24;Óculos de sol;acessorios;5;149,00;marketplace
+P10591;23-05-26;Calça jeans;vestuario;3;129.90;marketplace
+P10592;2026-04-10;Óculos de sol;ACESSORIOS;3;149,00;loja
+P10593;28-05-26;CHINELO SLIDE;CALCADOS;1;R$ 39,90;marketplace
+P10594;22/04/2026;Mochila urbana;acessorios;5;189.00;site
+P10595;19/01/2026;Jaqueta corta-vento
+P10596;08/04/2026;Chinelo slide;calcados;3;R$ 39,90;marketplace
+P10597;16-04-26;Camiseta básica;vestuario;1;49,90;site
+P10598;04/05/2026;Mochila urbana;acessorios;5;189,00;site
+P10599;16/3/2026;Boné aba reta;acessorios;1;59.90;marketplace
+P10600;07-02-26;Chinelo slide;calcados;1;39,90;loja
+P10601;16/1/2026;Boné aba reta;  acessorios ;3;59,90;loja
+
+P10602;2026-02-07;Óculos de sol;acessorios;3;149,00;loja
+P10603;25/2/2026;Meia kit 3;vestuario;1;24,50;marketplace
+P10604;2/5/2026;Óculos de sol;acessorios;2;149,00;site
+P10605;04/04/2026;Boné aba reta;acessorios;3;59,90;marketplace
+P10606;14/06/2026;Calça jeans;  vestuario ;4;129,90;loja
+P10607;16-02-26;Tênis corrida;calcados;4;299,00;marketplace
+P10608;13-04-26;Chinelo slide;calcados;2;39,90;site
+P10609;26-02-26;Chinelo slide;CALCADOS;2;39,90;site
+P10610;10/01/2026;Meia kit 3;VESTUARIO;2;R$ 24,50;marketplace
+P10611;22/2/2026;Meia kit 3;vestuario;1;24,50;site
+P10612;26-04-26;Bermuda tactel;  vestuario ;1;69,90;loja
+P10613;2/2/2026;Chinelo slide;calcados;2;R$ 39,90;site
+P10614;15-02-26;Boné aba reta;acessorios;2;59.90;marketplace
+P10615;06-05-26;Calça jeans;vestuario;1;129,90;loja
+P10616;2026-06-05;BERMUDA TACTEL;VESTUARIO;1;R$ 69,90;loja
+P10617;26-02-26;Boné aba reta;acessorios;5;R$ 59,90;site
+P10618;2026-02-18;Meia kit 3;vestuario;1;24.50;site
+P10619;17/3/2026;Meia kit 3;vestuario;2;24,50;site
+P10620;03/03/2026;Mochila urbana;acessorios;5;189,00;site
+P10621;2026-01-19;Camiseta básica;vestuario;3;R$ 49,90;marketplace
+P10622;11-05-26;Mochila urbana;acessorios;5;189,00;site
+P10623;12/4/2026;MOCHILA URBANA;  acessorios ;2;R$ 189,00;site
+P10624;28/2/2026;Chinelo slide;calcados;2;39.90;site
+P10625;18/2/2026;Bermuda tactel;vestuario;5;69,90;site
+P10626;2026-05-11;Bermuda tactel;vestuario;3;69.90;marketplace
+P10627;23/04/2026;Jaqueta corta-vento;vestuario;5;219,90;site
+P10628;03-01-26;Camiseta básica;vestuario;2;49.90;site
+P10629;05/06/2026;Boné aba reta;acessorios;2;59,90;loja
+P10630;10/2/2026;Óculos de sol;acessorios;1;149,00;loja
+P10631;2026-04-25;Bermuda tactel;vestuario;4;69.90;loja
+P10632;17/02/2026;Camiseta básica;vestuario;3;49.90;marketplace
+P10633;2026-06-05;Calça jeans;  vestuario ;2;129,90;loja
+P10634;11-02-26;Jaqueta corta-vento;VESTUARIO;2;219.90;site
+P10635;23/05/2026;Camiseta básica
+P10636;2026-02-16;Chinelo slide;calcados;3;39,90;site
+P10637;2026-01-18;Mochila urbana;ACESSORIOS;4;189,00;site
+P10638;2026-05-15;Boné aba reta;acessorios;2;59,90;loja
+P10639;2026-01-16;Óculos de sol;  acessorios ;1;149,00;marketplace
+P10640;19/05/2026;Bermuda tactel;vestuario;3;69.90;loja
+P10641;1/1/2026;Óculos de sol;  acessorios ;3;149,00;loja
+P10642;2026-01-22;Óculos de sol;acessorios;1;149,00;marketplace
+P10643;07-06-26;Jaqueta corta-vento;VESTUARIO;5;219,90;site
+P10644;28/02/2026;Bermuda tactel;vestuario;2;69.90;marketplace
+P10645;2026-02-04;Jaqueta corta-vento;vestuario;2;219,90;loja
+P10646;2026-03-26;Meia kit 3;vestuario;2;24,50;site
+P10647;2026-01-23;Bermuda tactel;vestuario;2;R$ 69,90;marketplace
+P10648;2026-04-21;Camiseta básica;vestuario;2;49,90;loja
+P10649;3/2/2026;Jaqueta corta-vento;vestuario;3;219.90;loja
+P10650;12/02/2026;Jaqueta corta-vento;vestuario;4;219,90;site
+P10651;13/4/2026;Calça jeans;vestuario;1;129,90;loja
+P10566;02/03/2026;Mochila urbana;acessorios;2;189.00;marketplace
+P10652;9/6/2026;Meia kit 3;vestuario;2;24,50;marketplace
+P10653;10-04-26;Chinelo slide;CALCADOS;3;39,90;marketplace
+P10654;2026-02-13;Calça jeans;vestuario;2;129,90;site
+P10655;24/1/2026;Bermuda tactel;VESTUARIO;1;69,90;site
+P10656;2026-01-28;Jaqueta corta-vento;vestuario;3;219,90;site
+P10657;2026-01-07;Óculos de sol;acessorios;3;149,00;marketplace
+P10658;06/05/2026;Jaqueta corta-vento;  vestuario ;1;219,90;loja
+P10659;20/4/2026;Jaqueta corta-vento;vestuario;2;219,90;loja
+P10660;2026-04-15;Óculos de sol;acessorios;2;149,00;marketplace
+P10661;25/03/2026;Mochila urbana
+P10662;20/01/2026;Boné aba reta;acessorios;4;R$ 59,90;site
+P10663;21/2/2026;Chinelo slide;calcados;1;R$ 39,90;site
+P10664;2026-02-09;CHINELO SLIDE;CALCADOS;1;R$ 39,90;site
+P10665;26-02-26;Boné aba reta;acessorios;3;R$ 59,90;loja
+P10666;28/05/2026;MOCHILA URBANA;ACESSORIOS;2;189,00;loja
+P10667;24/02/2026;Tênis corrida;calcados;4;299.00;site
+P10668;01-05-26;MOCHILA URBANA;acessorios;3;189,00;marketplace
+P10669;24/1/2026;Calça jeans;vestuario;4;129,90;loja
+P10670;15-02-26;Camiseta básica;  vestuario ;5;49,90;loja
+P10671;22/1/2026;Camiseta básica;vestuario;3;49.90;marketplace
+P10672;10-04-26;Bermuda tactel;vestuario;2;R$ 69,90;marketplace
+P10673;2026-02-21;Tênis corrida;CALCADOS;4;299,00;site
+P10674;2026-06-04;Óculos de sol;acessorios;5;149.00;marketplace
+P10675;2026-01-09;Camiseta básica;vestuario;3;49,90;marketplace
+P10676;01/04/2026;Calça jeans;vestuario;5;R$ 129,90;site
+P10677;01-02-26;Calça jeans;vestuario;3;129,90;loja
+P10678;2026-02-17;Camiseta básica;VESTUARIO;2;R$ 49,90;site
+P10679;2026-05-25;CAMISETA BÁSICA;vestuario;5;49.90;site
+P10680;08-01-26;Tênis corrida;  calcados ;3;299,00;site
+P10681;26-04-26;Chinelo slide;calcados;3;R$ 39,90;marketplace
+P10682;2026-02-22;Óculos de sol;acessorios;3;R$ 149,00;site
+P10683;11/05/2026;Mochila urbana;acessorios;5;R$ 189,00;site
+P10684;6/6/2026;Camiseta básica;vestuario;3;49,90;site
+P10685;04/05/2026;Camiseta básica
+P10205;26-05-26;Mochila urbana;ACESSORIOS;5;189.00;site
+P10686;2026-03-08;Boné aba reta;acessorios;1;59,90;site
+P10687;17/02/2026;Jaqueta corta-vento;vestuario;1;219.90;marketplace
+P10688;3/4/2026;Boné aba reta;ACESSORIOS;2;59,90;marketplace
+P10689;14/5/2026;Boné aba reta;acessorios;2;59,90;loja
+P10690;17/3/2026;Boné aba reta;ACESSORIOS;1;59,90;site
+P10691;21-05-26;Mochila urbana;ACESSORIOS;2;189.00;loja
+P10692;24/2/2026;Chinelo slide;calcados;1;39.90;loja
+P10693;2026-03-17;Camiseta básica;vestuario;5;49.90;marketplace
+P10694;03-02-26;Calça jeans;vestuario;3;129,90;loja
+P10695;2026-03-28;Chinelo slide;calcados;2;39,90;marketplace
+P10696;15/02/2026;Meia kit 3;vestuario;1;24,50;marketplace
+P10697;9/3/2026;Chinelo slide;CALCADOS;3;R$ 39,90;loja
+P10698;15-01-26;Boné aba reta;ACESSORIOS;4;R$ 59,90;loja
+P10699;23-02-26;Óculos de sol;acessorios;2;149.00;loja
+P10700;2026-01-20;Camiseta básica;vestuario;3;49.90;marketplace
+P10701;28/1/2026;Bermuda tactel;vestuario;1;69,90;loja
+P10702;23-05-26;Camiseta básica;vestuario;3;49.90;loja
+P10703;23/6/2026;Mochila urbana;acessorios;3;189,00;loja
+P10704;2026-06-13;Calça jeans;vestuario;3;129,90;marketplace
+P10705;12/2/2026;Camiseta básica;vestuario;1;49,90;site
+P10706;2026-03-05;Tênis corrida;  calcados ;3;R$ 299,00;marketplace
+P10707;11/06/2026;Jaqueta corta-vento;vestuario;4;219,90;loja
+P10708;2026-04-08;Calça jeans;vestuario;1;R$ 129,90;site
+P10709;03-05-26;Jaqueta corta-vento;VESTUARIO;5;219,90;site
+P10710;2/4/2026;Bermuda tactel;vestuario;2;69.90;loja
+P10711;2026-04-27;Camiseta básica;VESTUARIO;5;49,90;marketplace
+P10712;18/4/2026;Camiseta básica;vestuario;1;49,90;site
+P10577;2026-01-01;Meia kit 3;vestuario;5;24,50;loja
+P10713;23/6/2026;Tênis corrida;CALCADOS;1;R$ 299,00;marketplace
+P10714;2026-01-22;Calça jeans;vestuario;4;129.90;loja
+P10715;04-05-26;Bermuda tactel;vestuario;5;69,90;site
+P10716;16-02-26;Chinelo slide;calcados;4;R$ 39,90;loja
+P10486;2026-01-09;Boné aba reta;acessorios;4;59.90;site
+P10717;4/3/2026;Óculos de sol;acessorios;3;149,00;loja
+P10718;10/05/2026;Chinelo slide;calcados;3;39,90;site
+P10719;2026-01-24;JAQUETA CORTA-VENTO;vestuario;2;219,90;site
+P10720;2026-01-12;TÊNIS CORRIDA;CALCADOS;3;299.00;marketplace
+P10721;2026-02-19;Jaqueta corta-vento;vestuario;3;219,90;site
+P10722;2026-03-28;Boné aba reta;acessorios;3;59,90;site
+P10723;09/05/2026;Calça jeans;vestuario;2;129.90;loja
+P10724;2026-01-13;Calça jeans;vestuario;5;129,90;site
+P10725;03/06/2026;Tênis corrida;CALCADOS;4;299,00;marketplace
+P10726;27-05-26;Calça jeans;vestuario;5;R$ 129,90;loja
+P10727;12/03/2026;Mochila urbana;acessorios;2;R$ 189,00;site
+
+P10334;19/6/2026;Jaqueta corta-vento;  vestuario ;1;219,90;site
+P10728;21-06-26;Camiseta básica;VESTUARIO;3;R$ 49,90;marketplace
+P10729;09/05/2026;Meia kit 3;  vestuario ;5;24,50;marketplace
+P10730;23/4/2026;Bermuda tactel;vestuario;2;69.90;site
+P10731;11/02/2026;Boné aba reta;acessorios;4;59,90;site
+
+P10732;2026-03-25;Chinelo slide;  calcados ;5;39,90;marketplace
+P10733;19/4/2026;Chinelo slide;calcados;5;R$ 39,90;marketplace
+P10734;2026-04-10;Mochila urbana;acessorios;5;189,00;marketplace
+P10735;2026-06-13;Calça jeans;vestuario;4;129,90;site
+P10736;12/06/2026;BONÉ ABA RETA;acessorios;2;R$ 59,90;loja
+P10737;2/6/2026;Boné aba reta;acessorios;1;59,90;loja
+P10738;01/04/2026;Meia kit 3;vestuario;4;R$ 24,50;loja
+P10739;01/04/2026;Bermuda tactel;vestuario;1;69,90;loja
+P10740;2026-04-02;Meia kit 3;vestuario;3;24,50;loja
+P10741;07-02-26;Boné aba reta;acessorios;1;59.90;marketplace
+P10742;13-02-26;Camiseta básica;vestuario;4;49,90;site
+P10743;16-01-26;Meia kit 3;VESTUARIO;1;24.50;marketplace
+P10744;2026-04-19;Óculos de sol;acessorios;2;149.00;loja
+P10745;02-05-26;Boné aba reta;  acessorios ;3;59.90;loja
+P10746;2026-02-18;Jaqueta corta-vento;vestuario;5;219.90;site
+P10747;12/5/2026;MEIA KIT 3;vestuario;3;24,50;loja
+P10748;21-01-26;Jaqueta corta-vento;VESTUARIO;3;219,90;marketplace
+P10749;08/04/2026;Boné aba reta;acessorios;5;R$ 59,90;site
+P10750;26-06-26;Mochila urbana;acessorios;3;189,00;site
+P10751;08-02-26;BONÉ ABA RETA;acessorios;3;R$ 59,90;site
+P10752;27/06/2026;Meia kit 3;vestuario;2;24.50;marketplace
+P10753;2026-02-24;Chinelo slide;calcados;3;R$ 39,90;loja
+P10754;2026-06-26;Chinelo slide;calcados;5;39.90;site
+P10755;10-03-26;Jaqueta corta-vento;vestuario;4;219,90;site
+P10756;20-05-26;Chinelo slide;calcados;1;39,90;site
+P10757;05/05/2026;Mochila urbana;  acessorios ;5;189,00;loja
+P10758;2026-03-18;Boné aba reta;acessorios;4;R$ 59,90;site
+P10759;28/02/2026;Bermuda tactel;vestuario;3;R$ 69,90;loja
+P10760;23/6/2026;Calça jeans;VESTUARIO;4;129,90;loja
+P10761;20/02/2026;Calça jeans;VESTUARIO;5;129.90;loja
+P10762;6/3/2026;Calça jeans;VESTUARIO;3;129,90;site
+P10763;20-01-26;Óculos de sol;acessorios;4;149,00;site
+P10764;02-05-26;Mochila urbana;ACESSORIOS;4;189,00;marketplace
+P10765;2026-05-17;Óculos de sol;acessorios;3;149.00;marketplace
+P10766;4/3/2026;Mochila urbana;acessorios;3;189,00;loja
+P10767;10/01/2026;Óculos de sol;acessorios;1;149,00;marketplace
+P10768;12/05/2026;Óculos de sol;acessorios;1;149,00;loja
+P10769;11/6/2026;MEIA KIT 3;vestuario;4;24,50;marketplace
+P10770;2026-01-08;Chinelo slide;calcados;3;ERRO_IMPORT;marketplace
+P10771;06-06-26;JAQUETA CORTA-VENTO;VESTUARIO;3;219,90;loja
+P10772;13/01/2026;Camiseta básica
+P10773;25/03/2026;Camiseta básica;vestuario;5;R$ 49,90;loja
+P10774;26-03-26;Boné aba reta;acessorios;1;59.90;site
+P10775;2026-05-04;Meia kit 3;  vestuario ;4;24,50;site
+P10776;5/4/2026;Camiseta básica;vestuario;3;49,90;marketplace
+P10777;17-03-26;Bermuda tactel;  vestuario ;5;69,90;loja
+P10778;12-01-26;Chinelo slide;calcados;3;39,90;site
+P10779;24-01-26;Mochila urbana;acessorios;2;189,00;site
+P10780;28-05-26;BERMUDA TACTEL;vestuario;1;69,90;site
+P10781;23/02/2026;Óculos de sol;  acessorios ;1;149,00;marketplace
+P10782;10/04/2026;Calça jeans;vestuario;1;129.90;loja
+P10783;14/3/2026;Bermuda tactel;vestuario;3;R$ 69,90;site
+P10784;2026-03-09;Tênis corrida;calcados;3;299.00;marketplace
+P10785;6/5/2026;Bermuda tactel;vestuario;2;69.90;marketplace
+P10786;17/02/2026;Boné aba reta;  acessorios ;3;59.90;loja
+P10787;22/02/2026;Camiseta básica
+P10788;10/04/2026;Chinelo slide;calcados;4;39.90;marketplace
+P10789;27/5/2026;Óculos de sol;acessorios;1;149.00;loja
+P10790;20-05-26;Boné aba reta;acessorios;5;59,90;site
+P10791;20/3/2026;Jaqueta corta-vento;VESTUARIO;2;219.90;marketplace
+P10792;20/06/2026;Boné aba reta;acessorios;2;59,90;marketplace
+P10793;12-05-26;Calça jeans;vestuario;3;129,90;site
+P10794;18/01/2026;Bermuda tactel;VESTUARIO;4;R$ 69,90;marketplace
+P10795;03-03-26;CAMISETA BÁSICA;vestuario;4;49.90;site
+P10796;13-06-26;Calça jeans;vestuario;1;R$ 129,90;loja
+P10797;9/5/2026;Boné aba reta;acessorios;3;59,90;loja
+P10798;2026-02-02;Mochila urbana;acessorios;4;189.00;site
+P10799;10/03/2026;Chinelo slide;calcados;4;39,90;site
+P10800;20/1/2026;Chinelo slide;calcados;5;39.90;site
+P10801;09-01-26;Tênis corrida;  calcados ;5;R$ 299,00;marketplace
+P10802;2026-02-15;ÓCULOS DE SOL;acessorios;2;149,00;loja
+P10803;2026-04-25;Chinelo slide;calcados;4;39,90;loja
+P10804;3/5/2026;Tênis corrida;calcados;1;R$ 299,00;marketplace
+P10805;11/5/2026;CALÇA JEANS;vestuario;4;129,90;site
+P10806;2026-01-09;Boné aba reta;acessorios;4;59,90;site
+P10807;12-05-26;Tênis corrida;calcados;2;299,00;loja
+P10808;15/6/2026;Meia kit 3;vestuario;2;R$ 24,50;site
+P10809;21/01/2026;Jaqueta corta-vento;  vestuario ;2;219,90;site
+P10810;3/3/2026;Chinelo slide;calcados;2;39.90;marketplace
+P10811;23/01/2026;Chinelo slide
+P10812;25/05/2026;Meia kit 3;vestuario;1;24,50;site
+P10813;12/06/2026;Boné aba reta;acessorios;1;R$ 59,90;site
+P10814;19/01/2026;Jaqueta corta-vento;vestuario;3;219,90;marketplace
+P10815;11/03/2026;Tênis corrida;calcados;3;299.00;marketplace
+P10816;20/01/2026;Chinelo slide;calcados;3;39.90;loja
+P10817;14-06-26;Meia kit 3;vestuario;2;R$ 24,50;loja
+P10818;4/4/2026;Jaqueta corta-vento;vestuario;2;219,90;site
+P10819;11/04/2026;MEIA KIT 3;vestuario;1;24.50;site
+P10820;2026-02-18;Tênis corrida;calcados;4;299,00;marketplace
+P10821;21/01/2026;Boné aba reta;acessorios;4;59,90;site
+P10822;04/03/2026;Tênis corrida;  calcados ;1;R$ 299,00;marketplace
+P10823;17-04-26;CHINELO SLIDE;  calcados ;5;R$ 39,90;marketplace
+P10824;20-04-26;Chinelo slide;CALCADOS;3;39.90;site
+P10825;2026-04-02;Bermuda tactel;vestuario;1;69.90;loja
+P10826;2026-03-21;Mochila urbana;acessorios;4;189,00;loja
+P10827;14/04/2026;Meia kit 3;vestuario;4;24.50;marketplace
+P10828;20/5/2026;Mochila urbana;acessorios;1;189,00;marketplace
+P10829;03/04/2026;Bermuda tactel;vestuario;5;69,90;loja
+P10830;6/5/2026;Camiseta básica;vestuario;2;R$ 49,90;site
+P10831;07-03-26;Jaqueta corta-vento;  vestuario ;4;219,90;loja
+P10832;26-03-26;Mochila urbana;acessorios;1;R$ 189,00;marketplace
+P10833;2026-05-04;Boné aba reta;acessorios;1;59,90;marketplace
+P10834;09/03/2026;Boné aba reta;acessorios;5;59,90;loja
+P10835;15/03/2026;Boné aba reta;acessorios;1;59,90;loja
+P10836;2026-01-07;Óculos de sol;acessorios;3;149,00;loja
+P10837;15/03/2026;Boné aba reta;acessorios;3;59.90;loja
+P10838;14/05/2026;Óculos de sol;acessorios;1;149.00;marketplace
+P10839;08/02/2026;Jaqueta corta-vento;vestuario;4;219.90;marketplace
+P10840;09-05-26;Calça jeans;  vestuario ;5;R$ 129,90;marketplace
+P10841;5/4/2026;Chinelo slide;calcados;5;39.90;marketplace
+P10842;23/5/2026;Meia kit 3;vestuario;4;24,50;marketplace
+P10843;17/05/2026;Boné aba reta;acessorios;4;R$ 59,90;loja
+P10844;2026-06-17;Jaqueta corta-vento;vestuario;3;219,90;site
+P10845;07/03/2026;Tênis corrida;calcados;5;299.00;loja
+P10846;10/01/2026;Tênis corrida;  calcados ;2;299,00;loja
+P10847;19/5/2026;Camiseta básica;vestuario;4;R$ 49,90;marketplace
+P10848;05-01-26;Chinelo slide;  calcados ;1;R$ 39,90;loja
+P10849;18/04/2026;Meia kit 3;  vestuario ;1;24,50;loja
+P10850;27-03-26;Jaqueta corta-vento;vestuario;2;219.90;marketplace
+P10851;2026-06-01;Boné aba reta;acessorios;1;R$ 59,90;marketplace
+P10852;2026-01-19;Óculos de sol;  acessorios ;4;149,00;loja
+P10853;2026-06-22;Boné aba reta;acessorios;2;59,90;site
+P10854;03/02/2026;Jaqueta corta-vento
+P10855;2026-04-18;Camiseta básica;vestuario;4;49.90;site
+P10856;15/06/2026;Jaqueta corta-vento;VESTUARIO;1;219,90;marketplace
+P10857;2026-06-16;TÊNIS CORRIDA;calcados;1;299.00;site
+P10858;2026-05-13;Bermuda tactel;vestuario;5;69.90;site
+P10859;07-03-26;Chinelo slide;calcados;1;39,90;site
+P10860;12/6/2026;Bermuda tactel;vestuario;4;R$ 69,90;site
+P10861;2026-05-14;Jaqueta corta-vento;vestuario;5;219,90;loja
+P10862;12-04-26;CHINELO SLIDE;calcados;5;39,90;loja
+P10863;26-02-26;Meia kit 3;vestuario;4;24,50;site
+P10864;2026-03-17;Óculos de sol;acessorios;4;R$ 149,00;site
+P10865;27/2/2026;Chinelo slide;calcados;1;39,90;loja
+P10866;10-06-26;Tênis corrida;CALCADOS;1;299,00;loja
+P10867;03-04-26;Tênis corrida;CALCADOS;2;299.00;loja
+P10868;2026-02-01;Chinelo slide;calcados;4;39,90;loja
+P10869;2026-01-11;Mochila urbana;acessorios;1;189,00;loja
+P10870;2026-04-06;Óculos de sol;acessorios;5;149,00;marketplace
+P10871;2026-06-22;Chinelo slide;CALCADOS;4;R$ 39,90;marketplace
+P10872;2026-05-26;Óculos de sol;acessorios;4;149.00;loja
+P10873;22/6/2026;Bermuda tactel;vestuario;2;69.90;loja
+P10874;2026-03-06;Mochila urbana;acessorios;1;ERRO_IMPORT;marketplace
+P10875;2026-03-02;Jaqueta corta-vento;  vestuario ;2;219.90;site
+P10876;2026-06-14;Bermuda tactel;vestuario;2;R$ 69,90;site
+P10877;22-06-26;ÓCULOS DE SOL;ACESSORIOS;2;R$ 149,00;site
+P10878;2026-01-06;Tênis corrida;calcados;2;299.00;site
+P10193;23/04/2026;Tênis corrida;calcados;4;299.00;loja
+P10879;10-01-26;Calça jeans;vestuario;3;129,90;site
+P10880;2026-01-07;Meia kit 3;vestuario;2;R$ 24,50;loja
+P10881;25/01/2026;Jaqueta corta-vento;vestuario;4;R$ 219,90;marketplace
+P10882;16/01/2026;Bermuda tactel;  vestuario ;3;69.90;site
+P10883;07/05/2026;Tênis corrida
+P10884;09/06/2026;Chinelo slide;calcados;5;39,90;marketplace
+P10885;14/05/2026;Meia kit 3
+P10886;2026-02-11;MEIA KIT 3;VESTUARIO;3;24.50;site
+P10887;25-01-26;Calça jeans;VESTUARIO;2;R$ 129,90;marketplace
+P10888;2026-02-05;Calça jeans;vestuario;5;129,90;marketplace
+P10889;02/01/2026;Boné aba reta;acessorios;3;59,90;marketplace
+P10890;28/03/2026;TÊNIS CORRIDA;calcados;1;299.00;marketplace
+P10891;16/5/2026;Meia kit 3;vestuario;3;24,50;site
+P10892;04/02/2026;Tênis corrida;calcados;1;R$ 299,00;loja
+P10893;28-01-26;Bermuda tactel;vestuario;2;R$ 69,90;marketplace
+P10894;10/4/2026;Meia kit 3;vestuario;2;24.50;loja
+P10895;25/05/2026;Camiseta básica;vestuario;2;49,90;loja
+P10896;7/1/2026;Bermuda tactel;vestuario;4;R$ 69,90;loja
+P10897;17/6/2026;Chinelo slide;calcados;4;39.90;loja
+P10898;05-01-26;Jaqueta corta-vento;  vestuario ;4;219.90;site
+P10899;12/04/2026;Boné aba reta;acessorios;1;59,90;loja
+P10900;15-02-26;CAMISETA BÁSICA;  vestuario ;3;49,90;site
+P10901;03-02-26;Bermuda tactel;vestuario;2;R$ 69,90;site
+P10902;9/1/2026;Óculos de sol;acessorios;5;149,00;site
+P10903;18-02-26;Chinelo slide;calcados;1;39,90;site
+P10904;12/02/2026;Mochila urbana;acessorios;5;R$ 189,00;loja
+P10905;7/1/2026;Óculos de sol;acessorios;4;149,00;marketplace
+P10906;2026-01-23;Tênis corrida;calcados;1;299,00;marketplace
+P10907;2026-03-08;Jaqueta corta-vento;vestuario;4;219,90;marketplace
+P10908;2026-04-16;Bermuda tactel;vestuario;5;R$ 69,90;loja
+P10909;15/03/2026;Meia kit 3;vestuario;5;24,50;marketplace
+P10910;25-01-26;Meia kit 3;  vestuario ;3;24,50;loja
+P10911;14/4/2026;Camiseta básica;vestuario;2;49.90;site
+P10912;04-05-26;Tênis corrida;CALCADOS;4;299,00;loja
+P10913;28/03/2026;Chinelo slide;calcados;2;39,90;marketplace
+P10914;15-01-26;Chinelo slide;calcados;5;39,90;site
+P10915;26/1/2026;Calça jeans;vestuario;1;129,90;loja
+P10916;06/05/2026;Calça jeans;vestuario;3;R$ 129,90;marketplace
+P10917;2026-01-28;Tênis corrida;CALCADOS;5;R$ 299,00;loja
+P10918;24-02-26;Boné aba reta;  acessorios ;2;59,90;loja
+P10919;2026-01-19;Óculos de sol;acessorios;3;R$ 149,00;loja
+P10920;19/4/2026;Chinelo slide;calcados;5;39,90;loja
+P10921;13/3/2026;Meia kit 3;vestuario;4;24,50;site
+P10922;18/04/2026;Jaqueta corta-vento;vestuario;2;219,90;marketplace
+P10923;20/3/2026;CHINELO SLIDE;calcados;5;39,90;loja
+P10924;10/5/2026;Meia kit 3;vestuario;3;R$ 24,50;site
+P10925;24/01/2026;Bermuda tactel;vestuario;1;R$ 69,90;marketplace
+P10926;6/3/2026;Calça jeans;vestuario;2;129,90;site
+P10927;22-06-26;Chinelo slide;calcados;1;39.90;site
+P10928;2026-01-14;Mochila urbana;ACESSORIOS;2;189,00;site
+P10929;6/4/2026;Tênis corrida;calcados;4;299,00;loja
+P10930;02-05-26;Chinelo slide;calcados;5;39,90;loja
+P10931;24-05-26;Calça jeans;vestuario;5;R$ 129,90;loja
+P10932;14/4/2026;Óculos de sol;acessorios;1;149,00;loja
+P10933;21-02-26;Bermuda tactel;VESTUARIO;3;69,90;marketplace
+P10934;21-01-26;Óculos de sol;acessorios;5;149.00;loja
+P10935;15/01/2026;Meia kit 3;VESTUARIO;3;24.50;site
+P10936;21/4/2026;Tênis corrida;calcados;5;R$ 299,00;loja
+P10937;25/2/2026;Camiseta básica;vestuario;4;49.90;site
+P10938;11/6/2026;Chinelo slide;  calcados ;1;39,90;marketplace
+P10939;13/6/2026;Óculos de sol;ACESSORIOS;2;149,00;marketplace
+P10491;09/01/2026;Calça jeans;vestuario;2;129,90;marketplace
+P10940;09-03-26;Óculos de sol;  acessorios ;4;R$ 149,00;site
+P10941;24/04/2026;Chinelo slide;  calcados ;4;39,90;marketplace
+P10942;8/5/2026;Chinelo slide;CALCADOS;5;39.90;loja
+
+P10943;06/02/2026;Óculos de sol;acessorios;2;149,00;site
+P10944;7/4/2026;Camiseta básica;vestuario;4;49,90;loja
+P10945;11-05-26;Tênis corrida;CALCADOS;3;R$ 299,00;site
+P10946;19/06/2026;JAQUETA CORTA-VENTO;VESTUARIO;3;219.90;site
+P10947;13/1/2026;Camiseta básica;VESTUARIO;4;49,90;loja
+P10948;22/01/2026;Meia kit 3;vestuario;2;24,50;marketplace
+P10949;7/1/2026;Tênis corrida;calcados;5;299,00;marketplace
+P10950;2026-03-03;Boné aba reta;  acessorios ;1;59.90;marketplace
+P10951;2026-02-28;Boné aba reta;acessorios;5;59,90;marketplace
+P10952;2026-01-12;Tênis corrida;CALCADOS;2;299.00;marketplace
+P10953;10-01-26;Camiseta básica;vestuario;3;49,90;site
+P10954;23/01/2026;Bermuda tactel;vestuario;5;R$ 69,90;marketplace
+P10955;2026-06-26;Boné aba reta;acessorios;3;59.90;loja
+P10956;2026-06-16;Mochila urbana;acessorios;4;189.00;marketplace
+P10957;1/4/2026;Tênis corrida;calcados;2;299,00;marketplace
+P10958;26/6/2026;TÊNIS CORRIDA;calcados;5;R$ 299,00;loja
+P10959;23/04/2026;Bermuda tactel;vestuario;4;69.90;loja
+P10960;20/1/2026;Tênis corrida;  calcados ;5;299,00;marketplace
+P10961;2026-04-19;Bermuda tactel;vestuario;2;69,90;loja
+P10962;2026-03-17;Chinelo slide;calcados;4;39,90;marketplace
+P10963;17/04/2026;Camiseta básica;vestuario;5;49,90;loja
+P10964;04-01-26;Meia kit 3;vestuario;4;24,50;site
+P10965;2026-04-17;Chinelo slide;calcados;5;39,90;loja
+P10966;01-06-26;Tênis corrida;calcados;4;299,00;site
+P10967;12/3/2026;Bermuda tactel;vestuario;5;69,90;site
+P10968;21/6/2026;Camiseta básica;vestuario;3;49,90;marketplace
+P10969;2026-03-03;Camiseta básica;vestuario;3;R$ 49,90;loja
+P10970;2026-01-14;Camiseta básica;vestuario;3;49,90;loja
+P10971;2026-03-14;Meia kit 3;vestuario;5;24.50;marketplace
+P10972;03-02-26;ÓCULOS DE SOL;acessorios;3;149.00;marketplace
+P10973;6/2/2026;Meia kit 3;vestuario;1;24.50;loja
+P10974;2026-03-04;TÊNIS CORRIDA;calcados;4;299.00;site
+P10975;13/5/2026;Meia kit 3;vestuario;3;24.50;marketplace
+P10976;2026-05-14;Mochila urbana;  acessorios ;2;R$ 189,00;loja
+P10977;15/5/2026;Bermuda tactel;VESTUARIO;1;69,90;site
+P10978;2026-03-07;Tênis corrida;calcados;2;R$ 299,00;loja
+P10979;09/06/2026;Boné aba reta;  acessorios ;4;59,90;loja
+P10980;2026-03-20;Chinelo slide;calcados;4;39.90;marketplace
+P10981;2026-05-27;Meia kit 3;vestuario;3;24,50;marketplace
+P10982;2026-06-17;Mochila urbana;acessorios;3;R$ 189,00;loja
+P10983;2026-03-22;Óculos de sol;acessorios;4;149.00;loja
+P10984;2/5/2026;Calça jeans;vestuario;3;129.90;marketplace
+P10985;7/5/2026;Boné aba reta;ACESSORIOS;5;59,90;marketplace
+P10986;15/4/2026;Calça jeans;vestuario;2;129.90;loja
+P10987;4/5/2026;Chinelo slide;CALCADOS;4;39,90;site
+P10988;18/05/2026;Tênis corrida;calcados;3;299.00;site
+P10989;20/02/2026;Meia kit 3;vestuario;1;24,50;site
+P10990;2026-03-23;Jaqueta corta-vento;vestuario;5;219.90;marketplace
+P10991;21/5/2026;Jaqueta corta-vento;vestuario;1;219,90;loja
+P10992;19-05-26;Jaqueta corta-vento;vestuario;5;219.90;marketplace
+P10993;2026-06-19;TÊNIS CORRIDA;calcados;3;299,00;site
+P10994;24/01/2026;Bermuda tactel;vestuario;1;69,90;site
+P10995;03-02-26;Chinelo slide;calcados;1;39,90;site
+P10996;18/5/2026;Camiseta básica;vestuario;3;49,90;site
+P10997;2026-05-27;Chinelo slide;calcados;2;39,90;marketplace
+P10998;2026-06-26;Boné aba reta;acessorios;4;59,90;site
+P10999;2026-03-24;Camiseta básica;VESTUARIO;4;49,90;site
+P11000;12/03/2026;Calça jeans;vestuario;2;129.90;loja
+P11001;20/4/2026;Bermuda tactel;vestuario;3;69.90;loja
+P11002;20/06/2026;Bermuda tactel;VESTUARIO;3;69,90;loja
+P11003;19-01-26;Bermuda tactel;VESTUARIO;5;69.90;loja
+P11004;15/01/2026;Camiseta básica;VESTUARIO;4;49,90;site
+P11005;24/5/2026;Mochila urbana;ACESSORIOS;3;R$ 189,00;loja
+P11006;7/3/2026;BERMUDA TACTEL;vestuario;1;69,90;loja
+P11007;02/06/2026;Jaqueta corta-vento;VESTUARIO;5;219,90;loja
+P11008;20-05-26;Tênis corrida;CALCADOS;4;299,00;site
+P11009;2026-02-22;Jaqueta corta-vento;vestuario;2;219,90;loja
+P11010;10/03/2026;Jaqueta corta-vento;vestuario;4;R$ 219,90;marketplace
+P11011;01-02-26;Mochila urbana;acessorios;5;189.00;loja
+P11012;25/02/2026;Chinelo slide
+P11013;01/04/2026;MOCHILA URBANA;acessorios;2;189.00;marketplace
+P11014;01-02-26;Calça jeans;vestuario;3;129.90;marketplace
+P11015;15/3/2026;Chinelo slide;CALCADOS;1;R$ 39,90;site
+P11016;12-02-26;Óculos de sol;acessorios;5;R$ 149,00;site
+P11017;23/05/2026;Mochila urbana
+P11018;22-04-26;Chinelo slide;calcados;1;R$ 39,90;loja
+P11019;27-05-26;Chinelo slide;calcados;5;39,90;site
+P11020;2026-01-13;Mochila urbana;acessorios;1;R$ 189,00;site
+P11021;19-06-26;Calça jeans;vestuario;5;R$ 129,90;loja
+P11022;24/4/2026;Boné aba reta;ACESSORIOS;1;59,90;site
+P11023;22-03-26;Óculos de sol;ACESSORIOS;4;149.00;loja
+P11024;2026-03-23;Meia kit 3;vestuario;3;24,50;marketplace
+P11025;17/02/2026;CHINELO SLIDE;  calcados ;5;R$ 39,90;loja
+P11026;17/03/2026;Bermuda tactel;  vestuario ;1;69,90;loja
+P11027;11/2/2026;Chinelo slide;calcados;2;39.90;loja
+P11028;2026-06-20;MOCHILA URBANA;ACESSORIOS;5;189.00;site
+P11029;2026-05-22;ÓCULOS DE SOL;acessorios;3;149,00;loja
+P11030;15/1/2026;Jaqueta corta-vento;vestuario;2;219,90;site
+P11031;2/6/2026;Chinelo slide;calcados;1;R$ 39,90;marketplace
+P11032;20/03/2026;Chinelo slide;calcados;2;39,90;site
+P11033;05/03/2026;Óculos de sol;acessorios;2;149.00;marketplace
+P11034;16/04/2026;Chinelo slide;CALCADOS;4;39.90;site
+P11035;07/06/2026;Tênis corrida;calcados;3;299.00;site
+P11036;04-06-26;Bermuda tactel;vestuario;1;69.90;marketplace
+P11037;2026-06-08;Camiseta básica;VESTUARIO;3;49.90;loja
+P11038;4/6/2026;Tênis corrida;calcados;4;299.00;site
+P11039;13/5/2026;Boné aba reta;acessorios;1;R$ 59,90;site
+P11040;09/02/2026;Meia kit 3;vestuario;2;R$ 24,50;loja
+P11041;3/4/2026;Calça jeans;vestuario;5;129.90;site
+P11042;21-01-26;Jaqueta corta-vento;  vestuario ;5;R$ 219,90;marketplace
+P11043;08-03-26;Camiseta básica;vestuario;5;49,90;site
+P11044;2026-06-18;Bermuda tactel;  vestuario ;2;69.90;marketplace
+P11045;2026-06-27;Tênis corrida;calcados;1;299,00;loja
+P11046;2026-02-22;Bermuda tactel;vestuario;4;R$ 69,90;site
+P11047;2026-03-18;Chinelo slide;calcados;3;39,90;loja
+P11048;18-05-26;Boné aba reta;acessorios;2;59,90;loja
+P11049;28/01/2026;Meia kit 3;VESTUARIO;2;24,50;loja
+P11050;2026-04-03;Jaqueta corta-vento;vestuario;2;219.90;site
+P11051;01/03/2026;Jaqueta corta-vento
+P11052;03-06-26;Meia kit 3;vestuario;2;R$ 24,50;loja
+P11053;26/01/2026;BERMUDA TACTEL;vestuario;3;69,90;marketplace
+P11054;02-05-26;Jaqueta corta-vento;vestuario;2;219,90;marketplace
+P11055;05/02/2026;Jaqueta corta-vento;vestuario;3;219,90;marketplace
+P11056;05-05-26;Mochila urbana;acessorios;4;189,00;loja
+P11057;11/05/2026;Jaqueta corta-vento;vestuario;1;R$ 219,90;marketplace
+P11058;17-03-26;Bermuda tactel;vestuario;3;R$ 69,90;marketplace
+P11059;28-02-26;JAQUETA CORTA-VENTO;vestuario;4;R$ 219,90;site
+P11060;20/05/2026;Meia kit 3;vestuario;5;R$ 24,50;loja
+P11061;25-03-26;Mochila urbana;acessorios;3;189.00;marketplace
+P11062;2026-05-03;Boné aba reta;acessorios;4;59,90;loja
+P11063;04-04-26;MOCHILA URBANA;acessorios;5;189,00;site
+P11064;15-02-26;Calça jeans;vestuario;5;129,90;loja
+P11065;21-04-26;Jaqueta corta-vento;  vestuario ;2;219.90;marketplace
+P11066;27-06-26;Boné aba reta;  acessorios ;4;59,90;marketplace
+P11067;02-01-26;Mochila urbana;ACESSORIOS;2;189.00;site
+P11068;2026-04-12;Meia kit 3;vestuario;4;R$ 24,50;site
+P11069;20-05-26;Chinelo slide;calcados;3;39,90;site
+P11070;24/05/2026;Tênis corrida;calcados;1;299,00;site
+P11071;25/3/2026;Calça jeans;vestuario;1;129,90;loja
+P11072;28-04-26;Calça jeans;vestuario;2;129.90;loja
+P11073;8/1/2026;Mochila urbana;acessorios;1;R$ 189,00;loja
+P11074;26/4/2026;Calça jeans;vestuario;1;129,90;site
+P11075;10-02-26;Camiseta básica;VESTUARIO;2;49,90;marketplace
+P11076;22/06/2026;Chinelo slide
+P11077;17-02-26;Chinelo slide;calcados;1;39.90;site
+P11078;09-05-26;Meia kit 3;vestuario;4;24,50;site
+P11079;11-05-26;Meia kit 3;vestuario;1;R$ 24,50;site
+P11080;2026-03-24;Calça jeans;vestuario;3;R$ 129,90;site
+P11081;12-04-26;Meia kit 3;vestuario;4;24,50;site
+P11082;2026-01-27;Óculos de sol;acessorios;1;149.00;loja
+P11083;24-03-26;Óculos de sol;ACESSORIOS;3;149,00;site
+P11084;21/02/2026;Óculos de sol;acessorios;4;R$ 149,00;marketplace
+P11085;3/3/2026;Jaqueta corta-vento;vestuario;4;219.90;marketplace
+P11086;9/4/2026;Tênis corrida;calcados;5;299,00;site
+P11087;2026-01-04;Calça jeans;vestuario;2;R$ 129,90;loja
+P11088;01/04/2026;Calça jeans;vestuario;5;R$ 129,90;loja
+P11089;10-04-26;MEIA KIT 3;vestuario;2;R$ 24,50;marketplace
+P11090;12-05-26;Mochila urbana;acessorios;4;189.00;marketplace
+P11091;18/2/2026;Mochila urbana;acessorios;4;189,00;site
+P11092;2026-04-25;CHINELO SLIDE;calcados;2;39,90;marketplace
+P11093;1/5/2026;Bermuda tactel;vestuario;1;69,90;marketplace
+P11094;03/02/2026;Bermuda tactel;vestuario;1;69.90;loja
+P11095;09/04/2026;Tênis corrida;calcados;4;299.00;loja
+P11096;24/02/2026;Meia kit 3;vestuario;3;R$ 24,50;loja
+P11097;22/5/2026;JAQUETA CORTA-VENTO;  vestuario ;4;R$ 219,90;marketplace
+P11098;19/03/2026;Meia kit 3;vestuario;3;24.50;loja
+P11099;2026-02-18;Mochila urbana;acessorios;5;189.00;marketplace
+P11100;2026-05-24;Mochila urbana;acessorios;2;189,00;marketplace
+P11101;23-03-26;Boné aba reta;acessorios;4;R$ 59,90;site
+P11102;10/4/2026;Óculos de sol;ACESSORIOS;5;149,00;site
+P11103;2026-02-16;Óculos de sol;ACESSORIOS;3;149.00;site
+P11104;27-04-26;Jaqueta corta-vento;vestuario;5;219,90;loja
+P11105;28/02/2026;Camiseta básica
+P11106;27-06-26;Bermuda tactel;vestuario;5;69,90;loja
+P11107;04/05/2026;Bermuda tactel
+P10293;11/06/2026;Meia kit 3;VESTUARIO;4;24.50;marketplace
+P11108;10/03/2026;Chinelo slide;calcados;5;R$ 39,90;site
+P11109;9/5/2026;Chinelo slide;calcados;2;39,90;loja
+P11110;12-03-26;Bermuda tactel;vestuario;3;69,90;site
+P10879;10-01-26;Calça jeans;vestuario;3;129,90;site
+P11111;03-03-26;CALÇA JEANS;  vestuario ;4;129.90;loja
+P11112;2026-02-10;Jaqueta corta-vento;vestuario;5;219.90;site
+P11113;17/5/2026;Calça jeans;vestuario;3;R$ 129,90;loja
+P11114;2026-03-11;Tênis corrida;calcados;2;R$ 299,00;marketplace
+P11115;26-06-26;Chinelo slide;calcados;1;39,90;site
+P11116;09/02/2026;Boné aba reta;acessorios;2;59.90;marketplace
+P11117;23/04/2026;Bermuda tactel;vestuario;3;R$ 69,90;site
+P11118;27-06-26;Óculos de sol;acessorios;1;R$ 149,00;marketplace
+P11119;2026-01-04;Mochila urbana;acessorios;2;189.00;marketplace
+P11120;20-01-26;Camiseta básica;vestuario;5;49,90;marketplace
+P11121;13/01/2026;Camiseta básica;vestuario;3;49.90;site
+P11122;11-03-26;MEIA KIT 3;vestuario;5;24.50;site
+P11123;17/6/2026;Tênis corrida;CALCADOS;4;299.00;site
+P11124;15/02/2026;Bermuda tactel;vestuario;2;R$ 69,90;site
+P11125;6/1/2026;Mochila urbana;acessorios;2;189,00;loja
+P11126;20/2/2026;MEIA KIT 3;vestuario;5;24,50;site
+P11127;2026-06-03;Tênis corrida;calcados;4;299,00;marketplace
+P11128;18-01-26;Camiseta básica;VESTUARIO;2;49.90;site
+P11129;05/04/2026;Meia kit 3
+P11130;13/04/2026;Jaqueta corta-vento;vestuario;5;R$ 219,90;marketplace
+P11131;08/04/2026;Mochila urbana;acessorios;2;R$ 189,00;site
+P11132;27/2/2026;Bermuda tactel;  vestuario ;4;R$ 69,90;loja
+P11133;2026-02-12;Calça jeans;  vestuario ;3;R$ 129,90;loja
+P11134;23/04/2026;BONÉ ABA RETA;acessorios;2;59,90;marketplace
+P11135;2026-01-08;Chinelo slide;calcados;2;39.90;marketplace
+P11136;06/01/2026;Chinelo slide;  calcados ;5;R$ 39,90;site
+P11137;11/01/2026;Camiseta básica;vestuario;2;49,90;site
+P11138;09-02-26;Chinelo slide;calcados;2;39,90;marketplace
+P11139;21/05/2026;Jaqueta corta-vento;vestuario;5;219.90;loja
+P11140;9/2/2026;Tênis corrida;calcados;4;299,00;marketplace
+P11141;08-01-26;Calça jeans;vestuario;1;129.90;site
+P11142;28/5/2026;Boné aba reta;acessorios;3;R$ 59,90;marketplace
+P11143;03/04/2026;Calça jeans;VESTUARIO;2;R$ 129,90;marketplace
+P11144;20/02/2026;Meia kit 3;VESTUARIO;3;R$ 24,50;site
+P11145;10/04/2026;Mochila urbana;acessorios;5;189.00;marketplace
+P11146;17/06/2026;Calça jeans;vestuario;4;129.90;marketplace
+P11147;19-05-26;Boné aba reta;acessorios;3;59,90;marketplace
+P11148;08-05-26;Tênis corrida;calcados;5;299,00;site
+P11149;19/2/2026;Mochila urbana;acessorios;3;R$ 189,00;loja
+P11150;03-06-26;CALÇA JEANS;vestuario;2;R$ 129,90;marketplace
+P11151;2026-03-05;Camiseta básica;VESTUARIO;1;49.90;marketplace
+P11152;12/06/2026;Camiseta básica;  vestuario ;5;49.90;marketplace
+P11153;6/6/2026;Camiseta básica;vestuario;1;49.90;marketplace
+P11154;6/3/2026;MEIA KIT 3;vestuario;1;24,50;site
+P11155;25/04/2026;Meia kit 3;vestuario;3;24,50;loja
+P11156;18/2/2026;Calça jeans;vestuario;2;129,90;loja
+P11157;13/6/2026;CHINELO SLIDE;calcados;5;39.90;site
+P11158;2026-02-22;Jaqueta corta-vento;vestuario;1;R$ 219,90;site
+P11159;08/04/2026;CAMISETA BÁSICA;vestuario;3;49.90;marketplace
+P11160;22/3/2026;Camiseta básica;vestuario;4;R$ 49,90;site
+P11161;2026-01-04;Chinelo slide;calcados;2;39.90;marketplace
+P11162;24/2/2026;Óculos de sol;acessorios;3;149.00;site
+P11163;2026-02-05;Camiseta básica;vestuario;5;R$ 49,90;marketplace
+P11164;8/4/2026;MEIA KIT 3;vestuario;3;24.50;site
+P11165;1/5/2026;Calça jeans;  vestuario ;1;R$ 129,90;site
+P11166;27/6/2026;Jaqueta corta-vento;vestuario;2;219,90;site
+P11167;19/5/2026;Óculos de sol;acessorios;1;149,00;site
+P11168;2026-05-04;Bermuda tactel;  vestuario ;2;R$ 69,90;marketplace
+P11169;21/04/2026;CHINELO SLIDE;CALCADOS;3;R$ 39,90;marketplace
+P11170;5/2/2026;Calça jeans;vestuario;4;R$ 129,90;marketplace
+P11171;2026-06-24;Camiseta básica;vestuario;3;49.90;loja
+P11172;01-02-26;Tênis corrida;calcados;5;299,00;marketplace
+P11173;27/04/2026;Tênis corrida;CALCADOS;2;299,00;site
+P11174;17/01/2026;Meia kit 3;  vestuario ;5;24,50;marketplace
+P11175;02/01/2026;Meia kit 3;vestuario;5;24,50;site
+P11176;18/02/2026;Óculos de sol;acessorios;1;149,00;site
+P11177;02-03-26;Jaqueta corta-vento;vestuario;3;219,90;loja
+P11178;16/05/2026;Jaqueta corta-vento;vestuario;5;219,90;marketplace
+P11179;2026-03-27;Mochila urbana;acessorios;2;189.00;site
+P11180;2/4/2026;Bermuda tactel;vestuario;2;69,90;site
+P11181;17/1/2026;Meia kit 3;vestuario;5;24,50;marketplace
+P11182;1/4/2026;Boné aba reta;ACESSORIOS;2;R$ 59,90;loja
+P11183;26/5/2026;Camiseta básica;vestuario;4;49,90;site
+P11184;21-02-26;Jaqueta corta-vento;vestuario;1;R$ 219,90;loja
+P11185;24/05/2026;Camiseta básica;VESTUARIO;2;49.90;site
+P11186;23-04-26;Meia kit 3;vestuario;3;R$ 24,50;site
+P11187;2026-01-22;Chinelo slide;calcados;4;39,90;marketplace
+P11188;12-02-26;Boné aba reta;acessorios;4;59.90;site
+P11189;2026-01-11;Óculos de sol;acessorios;2;149,00;loja
+P11190;2026-04-11;Calça jeans;vestuario;2;129,90;marketplace
+P11191;15/06/2026;Jaqueta corta-vento;vestuario;3;219.90;marketplace
+P11192;2026-02-28;Mochila urbana;acessorios;3;ERRO_IMPORT;marketplace
+P11193;20-02-26;Óculos de sol;acessorios;5;149,00;marketplace
+P11194;2026-01-21;Mochila urbana;  acessorios ;1;189,00;site
+P11195;2026-02-27;Boné aba reta;acessorios;3;59,90;site
+P11196;20/4/2026;MOCHILA URBANA;acessorios;5;189.00;marketplace
+P11197;2026-06-04;Óculos de sol;ACESSORIOS;3;R$ 149,00;site
+P11198;02-03-26;Tênis corrida;calcados;2;299.00;loja
+P11199;4/6/2026;Jaqueta corta-vento;vestuario;5;219,90;site
+P11200;23/5/2026;Tênis corrida;calcados;3;299.00;loja
+P11201;2026-05-26;CALÇA JEANS;VESTUARIO;2;129.90;marketplace
+P11202;14-03-26;Camiseta básica;vestuario;5;49,90;marketplace
+P11203;11/06/2026;Calça jeans;vestuario;5;R$ 129,90;site
+P11204;10/06/2026;Óculos de sol;acessorios;2;149,00;loja
+P11205;11-02-26;Calça jeans;vestuario;5;129,90;loja
+P11206;2026-06-05;Bermuda tactel;vestuario;5;69,90;marketplace
+P11207;2026-03-13;Chinelo slide;calcados;5;39,90;site
+P11208;20-03-26;CALÇA JEANS;vestuario;4;129.90;marketplace
+P11209;05/06/2026;Meia kit 3;vestuario;4;24,50;site
+P11210;16/01/2026;Boné aba reta
+P11211;02-03-26;Jaqueta corta-vento;vestuario;5;219,90;site
+P11212;10-04-26;Tênis corrida;calcados;3;R$ 299,00;marketplace
+P11213;18/03/2026;Calça jeans;VESTUARIO;5;129,90;site
+P11214;14/6/2026;Camiseta básica;  vestuario ;3;49,90;marketplace
+P11215;17/06/2026;Bermuda tactel;vestuario;3;R$ 69,90;site
+P11216;23-05-26;Bermuda tactel;  vestuario ;5;69.90;loja
+P11217;07-03-26;Camiseta básica;vestuario;3;49.90;loja
+P11218;7/2/2026;Boné aba reta;acessorios;5;59.90;site
+P11219;2026-03-09;Camiseta básica;vestuario;3;49.90;marketplace
+P11220;19/02/2026;Calça jeans;vestuario;3;129,90;site
+P11221;2026-05-11;Óculos de sol;acessorios;4;R$ 149,00;site
+P11222;2026-02-17;Mochila urbana;acessorios;1;189,00;loja
+P11223;2026-01-09;Jaqueta corta-vento;vestuario;2;219.90;marketplace
+P11224;2026-06-11;Calça jeans;vestuario;5;129,90;loja
+P11225;12-04-26;Bermuda tactel;vestuario;4;69,90;marketplace
+P11226;01/04/2026;Boné aba reta;acessorios;1;R$ 59,90;site
+P11227;20/05/2026;JAQUETA CORTA-VENTO;vestuario;3;219,90;marketplace
+P11228;10/6/2026;Calça jeans;vestuario;5;129.90;loja
+P11229;06-02-26;TÊNIS CORRIDA;calcados;4;299,00;loja
+P11230;2026-04-02;Chinelo slide;calcados;3;R$ 39,90;loja
+P11231;24-02-26;Jaqueta corta-vento;vestuario;1;219,90;loja
+P11232;19/1/2026;Tênis corrida;calcados;2;R$ 299,00;loja
+P11233;2026-05-14;Boné aba reta;acessorios;4;ERRO_IMPORT;marketplace
+P11234;2026-02-22;BONÉ ABA RETA;  acessorios ;5;59.90;loja
+P11235;24/01/2026;Camiseta básica;vestuario;3;49,90;marketplace
+P11236;15/01/2026;Camiseta básica
+P11237;12/4/2026;Óculos de sol;acessorios;4;149,00;loja
+P11238;2026-01-08;Calça jeans;vestuario;3;129,90;marketplace
+P11239;12/3/2026;Boné aba reta;acessorios;3;R$ 59,90;loja
+P11240;19/1/2026;Calça jeans;VESTUARIO;4;129.90;loja
+P11241;5/3/2026;Mochila urbana;acessorios;1;R$ 189,00;loja
+P11242;2026-04-15;Boné aba reta;acessorios;1;59.90;marketplace
+P11243;2026-04-27;Mochila urbana;  acessorios ;1;189.00;loja
+P11244;20/4/2026;Boné aba reta;acessorios;4;R$ 59,90;site
+P11245;2026-06-19;Meia kit 3;vestuario;3;24,50;loja
+P11246;23/03/2026;Óculos de sol;acessorios;1;149,00;loja
+P11247;23-02-26;Camiseta básica;  vestuario ;3;49,90;loja
+P11248;21/3/2026;MOCHILA URBANA;acessorios;3;R$ 189,00;site
+P11249;04-06-26;Boné aba reta;ACESSORIOS;1;R$ 59,90;marketplace
+P11250;2026-01-20;Meia kit 3;vestuario;3;24,50;marketplace
+P11251;2026-03-03;Boné aba reta;acessorios;3;59,90;loja
+P11252;09/01/2026;Chinelo slide;calcados;4;R$ 39,90;site
+P11253;2026-05-09;CALÇA JEANS;vestuario;2;129,90;site
+P11254;2026-06-03;Calça jeans;vestuario;5;129.90;loja
+P11255;28/3/2026;Camiseta básica;vestuario;4;49,90;marketplace
+P11256;14/01/2026;Camiseta básica;VESTUARIO;2;R$ 49,90;site
+P11257;21/06/2026;Calça jeans;vestuario;3;129.90;site
+P11258;22-04-26;Calça jeans;vestuario;4;R$ 129,90;loja
+P11259;2026-05-27;Óculos de sol;acessorios;2;149,00;loja
+P11260;23/02/2026;Tênis corrida;calcados;5;299,00;site
+P11261;16/5/2026;Bermuda tactel;vestuario;4;69,90;site
+P11262;12-01-26;Tênis corrida;calcados;1;299,00;loja
+P11263;2026-02-02;Óculos de sol;acessorios;3;149,00;marketplace
+P11264;26/03/2026;Calça jeans;vestuario;5;129,90;loja
+P10973;6/2/2026;Meia kit 3;vestuario;1;24.50;loja
+P11265;2026-04-16;Meia kit 3;vestuario;2;R$ 24,50;marketplace
+P11266;3/2/2026;Camiseta básica;vestuario;2;49,90;loja
+P11267;11-02-26;Jaqueta corta-vento;vestuario;3;219,90;loja
+P11268;2026-05-14;Chinelo slide;  calcados ;4;39.90;marketplace
+P11269;27/04/2026;Meia kit 3;vestuario;1;24,50;site
+P11270;27/1/2026;Bermuda tactel;vestuario;4;69,90;site
+P11271;8/6/2026;Óculos de sol;acessorios;1;149,00;marketplace
+P11272;16/1/2026;Camiseta básica;vestuario;1;49,90;site
+P11273;01/03/2026;Camiseta básica;vestuario;5;R$ 49,90;marketplace
+P11274;16/01/2026;CALÇA JEANS;VESTUARIO;2;129,90;marketplace
+P11275;10/03/2026;Bermuda tactel;VESTUARIO;5;69,90;loja
+P11276;28/1/2026;Mochila urbana;acessorios;3;R$ 189,00;loja
+P11277;03-05-26;Mochila urbana;acessorios;2;R$ 189,00;site
+P11278;12-01-26;Tênis corrida;calcados;1;299,00;loja
+P11279;2026-03-18;Bermuda tactel;vestuario;2;ERRO_IMPORT;site
+P11280;15/03/2026;Chinelo slide;calcados;1;R$ 39,90;site
+P11281;2026-05-07;Meia kit 3;vestuario;1;24,50;loja
+P11282;14/03/2026;Tênis corrida;calcados;2;299,00;site
+P11283;1/4/2026;CHINELO SLIDE;calcados;1;39.90;marketplace
+P11284;14-04-26;Chinelo slide;calcados;1;39,90;site
+P11285;17-03-26;Tênis corrida;calcados;4;299,00;site
+P11286;20/01/2026;Chinelo slide;CALCADOS;5;39,90;site
+P11287;2026-03-15;Chinelo slide;calcados;5;39.90;loja
+P11288;27-04-26;ÓCULOS DE SOL;acessorios;2;149,00;site
+P11289;27/2/2026;Óculos de sol;acessorios;4;R$ 149,00;marketplace
+P11290;17/03/2026;Óculos de sol;acessorios;3;149.00;marketplace
+P11291;15/05/2026;Bermuda tactel;vestuario;1;69,90;loja
+P10778;12-01-26;Chinelo slide;calcados;3;39,90;site
+P10146;03-06-26;CALÇA JEANS;vestuario;5;129.90;loja
+P11292;2026-05-15;Chinelo slide;calcados;4;39.90;site
+P11024;2026-03-23;Meia kit 3;vestuario;3;24,50;marketplace
+P11293;2026-02-03;Bermuda tactel;VESTUARIO;4;69.90;site
+P11294;1/2/2026;Bermuda tactel;VESTUARIO;2;R$ 69,90;site
+P11295;27-02-26;Camiseta básica;VESTUARIO;3;49.90;loja
+P11296;2026-05-08;Mochila urbana;acessorios;4;189.00;site
+P10654;2026-02-13;Calça jeans;vestuario;2;129,90;site
+
+P11297;14/06/2026;Bermuda tactel;vestuario;4;R$ 69,90;loja
+P11298;2026-03-21;Óculos de sol;acessorios;2;149,00;marketplace
+P11299;13/02/2026;BERMUDA TACTEL;vestuario;1;69,90;site
+P11300;24/3/2026;Meia kit 3;vestuario;3;24,50;marketplace
+P11301;2026-06-24;Bermuda tactel;vestuario;5;69,90;site
+P11302;01/01/2026;Meia kit 3;vestuario;2;24.50;loja
+P11303;26-03-26;Tênis corrida;CALCADOS;4;299,00;marketplace
+P11304;2026-01-01;Meia kit 3;vestuario;3;24,50;loja
+P11305;27/01/2026;Meia kit 3;vestuario;5;R$ 24,50;site
+P11306;13-03-26;Jaqueta corta-vento;vestuario;2;219.90;marketplace
+P11307;8/1/2026;Tênis corrida;calcados;4;299,00;site
+P11308;28/03/2026;Camiseta básica;vestuario;5;49,90;marketplace
+P11309;17-03-26;Boné aba reta;  acessorios ;3;R$ 59,90;marketplace
+P11310;21/4/2026;BERMUDA TACTEL;vestuario;3;69,90;loja
+P11311;25/02/2026;BERMUDA TACTEL;VESTUARIO;5;69,90;loja
+P11312;09/02/2026;Meia kit 3;vestuario;5;24,50;loja
+P11313;25/3/2026;Camiseta básica;  vestuario ;1;49,90;site
+P11314;2026-01-13;Calça jeans;vestuario;1;129.90;site
+P11315;22-01-26;Boné aba reta;acessorios;4;59,90;site
+P11316;22/4/2026;Camiseta básica;vestuario;4;49.90;loja
+P11317;2026-01-27;Calça jeans;vestuario;1;129,90;loja
+P11318;19/05/2026;Chinelo slide;calcados;5;39.90;loja
+P11319;2026-02-09;Camiseta básica;vestuario;5;49,90;loja
+P11320;20/5/2026;Boné aba reta;acessorios;4;59.90;loja
+P11321;2026-01-02;Calça jeans;vestuario;3;R$ 129,90;site
+P11322;2026-04-28;Tênis corrida;calcados;3;299,00;marketplace
+P11323;13/02/2026;Bermuda tactel;vestuario;4;69,90;loja
+P11324;02/01/2026;Bermuda tactel;vestuario;5;69.90;site
+P11325;25-03-26;Óculos de sol;acessorios;5;149.00;site
+P11326;2026-05-10;Jaqueta corta-vento;vestuario;5;R$ 219,90;marketplace
+P11327;2026-03-27;Camiseta básica;vestuario;4;ERRO_IMPORT;site
+P11328;17/4/2026;Meia kit 3;vestuario;2;24.50;loja
+P11329;10/3/2026;Bermuda tactel;vestuario;2;69,90;loja
+P11330;2026-06-03;Camiseta básica;vestuario;2;49,90;site
+P11331;2026-02-15;Boné aba reta;acessorios;3;R$ 59,90;site
+P11332;19-01-26;Calça jeans;vestuario;2;129.90;marketplace
+
+P11333;2026-01-21;Mochila urbana;acessorios;1;R$ 189,00;site
+P11334;17/5/2026;Chinelo slide;calcados;5;39,90;loja
+P11335;25/2/2026;Chinelo slide;calcados;2;39,90;site
+P11336;12/4/2026;Meia kit 3;vestuario;1;24.50;site
+P11337;25/3/2026;Bermuda tactel;vestuario;1;R$ 69,90;marketplace
+P11338;23/02/2026;CHINELO SLIDE;CALCADOS;3;39,90;loja
+P11339;2026-06-18;Jaqueta corta-vento;vestuario;3;219,90;marketplace
+P11340;2026-02-04;Tênis corrida;calcados;4;R$ 299,00;marketplace
+P11341;2026-01-24;Mochila urbana;acessorios;3;R$ 189,00;marketplace
+P11342;28/4/2026;Meia kit 3;  vestuario ;2;24,50;marketplace
+P11343;27/01/2026;Calça jeans;vestuario;3;129,90;site
+P11344;03-06-26;Óculos de sol;acessorios;2;149,00;loja
+P11345;10/02/2026;TÊNIS CORRIDA;calcados;1;R$ 299,00;loja
+P11346;2026-05-19;MEIA KIT 3;vestuario;1;24,50;site
+P11347;05-06-26;Óculos de sol;  acessorios ;2;149,00;marketplace
+P11348;2026-02-01;Tênis corrida;calcados;4;R$ 299,00;loja
+P11349;14-01-26;Tênis corrida;calcados;2;299,00;loja
+P11350;14/2/2026;Bermuda tactel;vestuario;1;69,90;marketplace
+P11351;10-01-26;Mochila urbana;acessorios;5;189.00;loja
+P11352;20-05-26;CALÇA JEANS;vestuario;3;129.90;site
+P11353;04-05-26;Boné aba reta;ACESSORIOS;4;59,90;site
+P11354;20/6/2026;Chinelo slide;  calcados ;5;39.90;site
+P11355;16/01/2026;JAQUETA CORTA-VENTO;vestuario;1;R$ 219,90;marketplace
+P11356;27-04-26;Mochila urbana;acessorios;1;189.00;marketplace
+P11357;13/05/2026;Bermuda tactel;VESTUARIO;4;R$ 69,90;marketplace
+P11358;05/05/2026;Camiseta básica;vestuario;2;49.90;site
+P11359;06-04-26;Tênis corrida;calcados;4;299.00;site
+P11360;07-02-26;Mochila urbana;acessorios;3;189,00;marketplace
+P11361;20/06/2026;ÓCULOS DE SOL;acessorios;2;149.00;marketplace
+P11362;2026-06-19;Camiseta básica;VESTUARIO;2;49,90;site
+P11363;2026-05-07;Bermuda tactel;vestuario;4;R$ 69,90;marketplace
+P11364;17/05/2026;Camiseta básica;vestuario;4;R$ 49,90;marketplace
+P11365;28/03/2026;MEIA KIT 3;vestuario;1;24,50;site
+P11151;2026-03-05;Camiseta básica;VESTUARIO;1;49.90;marketplace
+P11366;4/6/2026;Meia kit 3;VESTUARIO;4;24,50;site
+P11367;2/6/2026;Boné aba reta;acessorios;3;59,90;loja
+P11368;20/05/2026;Óculos de sol;acessorios;4;R$ 149,00;marketplace
+P11369;16/04/2026;TÊNIS CORRIDA;  calcados ;3;299,00;loja
+P11370;18/4/2026;Jaqueta corta-vento;vestuario;5;219,90;site
+P11371;2026-05-11;Calça jeans;VESTUARIO;2;129.90;loja
+P11372;2026-01-16;Meia kit 3;  vestuario ;5;24,50;loja
+P11373;2026-02-13;Chinelo slide;calcados;1;R$ 39,90;marketplace
+P11374;23/05/2026;Bermuda tactel;  vestuario ;5;69,90;marketplace
+P11375;06-05-26;Mochila urbana;acessorios;5;R$ 189,00;marketplace
+P11376;2026-04-23;Jaqueta corta-vento;vestuario;3;R$ 219,90;loja
+P11377;2026-02-13;Boné aba reta;acessorios;5;59,90;marketplace
+P11378;20-05-26;Jaqueta corta-vento;vestuario;2;219,90;site
+P11379;2026-02-03;Chinelo slide;calcados;1;39,90;marketplace
+P11380;11/02/2026;Mochila urbana;acessorios;2;R$ 189,00;loja
+P11381;23-04-26;TÊNIS CORRIDA;CALCADOS;4;R$ 299,00;marketplace
+P11382;13/2/2026;Boné aba reta;  acessorios ;3;59,90;site
+P11383;09/04/2026;Camiseta básica;VESTUARIO;1;R$ 49,90;loja
+P11384;03/02/2026;Boné aba reta;  acessorios ;3;59,90;loja
+P11385;2026-06-23;Chinelo slide;calcados;2;R$ 39,90;site
+P11386;16-01-26;Jaqueta corta-vento;vestuario;1;R$ 219,90;loja
+P11387;06-04-26;Meia kit 3;VESTUARIO;1;R$ 24,50;site
+P11388;2026-04-06;TÊNIS CORRIDA;calcados;1;299.00;loja
+P11389;10-01-26;Mochila urbana;acessorios;3;R$ 189,00;loja
+P11390;04/02/2026;Óculos de sol;acessorios;2;149,00;marketplace
+P11391;18/02/2026;Boné aba reta;acessorios;4;59,90;marketplace
+P11392;2026-04-02;Tênis corrida;CALCADOS;1;299,00;site
+P11393;04-05-26;Tênis corrida;CALCADOS;3;299,00;loja
+P11394;2026-01-02;Boné aba reta;ACESSORIOS;1;59,90;marketplace
+P11395;04/02/2026;Chinelo slide;CALCADOS;2;39.90;marketplace
+P11396;12/01/2026;BERMUDA TACTEL;vestuario;5;69,90;marketplace
+P11397;2026-05-05;Bermuda tactel;vestuario;2;R$ 69,90;site
+P11398;2026-03-27;Jaqueta corta-vento;vestuario;2;219,90;marketplace
+P11399;15/05/2026;Calça jeans;vestuario;2;129,90;loja
+P11400;4/5/2026;Meia kit 3;vestuario;4;24,50;loja
+P11401;2026-04-28;Jaqueta corta-vento;vestuario;2;219,90;marketplace
+P11402;24/5/2026;CALÇA JEANS;vestuario;2;R$ 129,90;marketplace
+P11403;8/2/2026;CALÇA JEANS;VESTUARIO;2;R$ 129,90;marketplace
+P11404;14/5/2026;Bermuda tactel;VESTUARIO;1;69,90;marketplace
+P11405;20/06/2026;Óculos de sol
+P11406;19/1/2026;Boné aba reta;acessorios;1;59.90;site
+P11407;27-03-26;Boné aba reta;ACESSORIOS;5;R$ 59,90;site
+P11408;2026-04-05;Boné aba reta;acessorios;4;R$ 59,90;loja
+P11409;2026-06-20;MEIA KIT 3;vestuario;2;24,50;loja
+P11410;2026-05-24;Chinelo slide;  calcados ;1;39.90;loja
+P11411;25/03/2026;Óculos de sol;acessorios;5;149,00;marketplace
+P11412;2026-01-20;Tênis corrida;  calcados ;1;299.00;marketplace
+P11413;17/5/2026;Óculos de sol;ACESSORIOS;2;149.00;loja
+P10103;10-03-26;Jaqueta corta-vento;vestuario;5;R$ 219,90;marketplace
+P11414;2026-04-09;Camiseta básica;vestuario;3;49,90;marketplace
+P11409;2026-06-20;MEIA KIT 3;vestuario;2;24,50;loja
+P11415;2/1/2026;CALÇA JEANS;vestuario;2;129.90;site
+P11416;2026-04-05;Mochila urbana;acessorios;3;189,00;loja
+P11417;2026-05-24;Meia kit 3;vestuario;1;24.50;site
+P11418;9/1/2026;Camiseta básica;vestuario;2;49.90;site
+P11419;08/02/2026;Boné aba reta;acessorios;4;59,90;site
+P11420;28-04-26;MEIA KIT 3;vestuario;3;R$ 24,50;site
+P11421;28/06/2026;Calça jeans;vestuario;5;129,90;loja
+P11422;2026-05-18;Camiseta básica;vestuario;4;49.90;site
+P11423;11/2/2026;Óculos de sol;acessorios;3;149.00;site
+P11424;12-01-26;Chinelo slide;calcados;5;39,90;site
+P11425;2026-06-23;Óculos de sol;acessorios;3;149.00;marketplace
+P11426;11-06-26;Chinelo slide;CALCADOS;1;39,90;site
+P11427;6/1/2026;BERMUDA TACTEL;vestuario;5;R$ 69,90;loja
+P11428;17/05/2026;Óculos de sol;acessorios;3;149,00;site
+P11429;15-04-26;Jaqueta corta-vento;vestuario;3;219,90;marketplace
+P11430;05/02/2026;CAMISETA BÁSICA;vestuario;1;R$ 49,90;marketplace
+P11431;7/2/2026;Meia kit 3;vestuario;1;24,50;marketplace
+P11432;24/05/2026;Boné aba reta;acessorios;2;R$ 59,90;site
+P11433;23/3/2026;Jaqueta corta-vento;vestuario;4;219,90;marketplace
+P11434;24/02/2026;Jaqueta corta-vento;VESTUARIO;1;219,90;site
+P11435;22/3/2026;Chinelo slide;calcados;1;R$ 39,90;marketplace
+P11436;14-04-26;Boné aba reta;acessorios;3;59,90;site
+P11437;18/05/2026;Calça jeans
+P11438;2026-02-05;Tênis corrida;calcados;4;299,00;marketplace
+P11439;25/2/2026;Mochila urbana;acessorios;4;189.00;loja
+P11440;23/2/2026;Óculos de sol;  acessorios ;1;149,00;marketplace
+P11441;04/02/2026;Chinelo slide;CALCADOS;5;39.90;site
+P11442;12/1/2026;Óculos de sol;acessorios;1;149,00;loja
+P11443;13-06-26;Óculos de sol;acessorios;3;R$ 149,00;site
+P11444;07-04-26;Óculos de sol;acessorios;1;149,00;loja
+P11445;09/06/2026;Tênis corrida;calcados;5;299,00;marketplace
+P11446;25/4/2026;Bermuda tactel;vestuario;4;69.90;marketplace
+P11447;2026-05-25;Bermuda tactel;vestuario;3;69,90;marketplace
+P11448;2026-05-21;CHINELO SLIDE;calcados;1;R$ 39,90;loja
+P11449;15/02/2026;BERMUDA TACTEL;vestuario;4;R$ 69,90;site
+P11450;15/02/2026;Bermuda tactel;vestuario;4;R$ 69,90;site
+P11451;12-01-26;Camiseta básica;vestuario;2;R$ 49,90;site
+P11452;01/01/2026;Boné aba reta;acessorios;4;59.90;site
+P11453;15/5/2026;Óculos de sol;acessorios;1;149,00;site
+P11454;14-05-26;Tênis corrida;  calcados ;3;R$ 299,00;loja
+P11455;24/01/2026;Boné aba reta;acessorios;1;59,90;loja
+P11456;2026-04-12;TÊNIS CORRIDA;calcados;2;299,00;marketplace
+P11457;22/1/2026;Meia kit 3;vestuario;2;R$ 24,50;loja
+P11458;20/04/2026;BERMUDA TACTEL;vestuario;3;69.90;marketplace
+P11459;14/02/2026;Meia kit 3;vestuario;5;R$ 24,50;loja
+P11460;09-04-26;Óculos de sol;ACESSORIOS;1;149.00;marketplace
+P11461;2026-01-21;Tênis corrida;calcados;5;R$ 299,00;site
+P11462;2026-04-25;Mochila urbana;acessorios;1;189,00;site

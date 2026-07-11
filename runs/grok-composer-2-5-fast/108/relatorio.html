@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Vendas — 1º Semestre 2026</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --card: #ffffff;
+      --text: #1a2332;
+      --muted: #5c6b7a;
+      --accent: #0f6cbd;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 2rem 1rem 3rem;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; }
+    header { margin-bottom: 2rem; }
+    h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .subtitle { color: var(--muted); font-size: 0.95rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .kpi {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .kpi-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    .kpi-value { font-size: 1.6rem; font-weight: 700; margin-top: 0.35rem; color: var(--accent); }
+    .kpi-value.small { font-size: 1.35rem; }
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 0.65rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+    th { font-size: 0.75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    tr:last-child td { border-bottom: none; }
+    .num { text-align: right; font-variant-numeric: tabular-nums; }
+    .rank { width: 3rem; color: var(--muted); }
+    .methodology { font-size: 0.9rem; color: var(--muted); }
+    .methodology ul { margin: 0.75rem 0 0 1.25rem; }
+    .methodology li { margin-bottom: 0.35rem; }
+    .breakdown { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+    .breakdown span { font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Relatório de Vendas</h1>
+      <p class="subtitle">1º semestre de 2026 · dados limpos a partir de vendas.csv</p>
+    </header>
+
+    <div class="grid">
+      <div class="kpi">
+        <div class="kpi-label">Receita total</div>
+        <div class="kpi-value">R$ 515.086,00</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Pedidos válidos</div>
+        <div class="kpi-value small">1.409</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Linhas descartadas</div>
+        <div class="kpi-value small">91</div>
+      </div>
+    </div>
+
+    <section>
+      <h2>Receita por categoria</h2>
+      <table>
+        <thead>
+          <tr><th>Categoria</th><th class="num">Receita</th><th class="num">Participação</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>Vestuário</td>
+          <td class="num">R$ 206.272,00</td>
+          <td class="num">40.0%</td>
+        </tr>
+        <tr>
+          <td>Acessórios</td>
+          <td class="num">R$ 159.637,90</td>
+          <td class="num">31.0%</td>
+        </tr>
+        <tr>
+          <td>Calçados</td>
+          <td class="num">R$ 149.176,10</td>
+          <td class="num">29.0%</td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Top 5 produtos por quantidade vendida</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Produto</th><th class="num">Quantidade</th></tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td class="rank">1º</td>
+          <td>Bermuda tactel</td>
+          <td class="num">465</td>
+        </tr>
+        <tr>
+          <td class="rank">2º</td>
+          <td>Camiseta básica</td>
+          <td class="num">453</td>
+        </tr>
+        <tr>
+          <td class="rank">3º</td>
+          <td>Chinelo slide</td>
+          <td class="num">449</td>
+        </tr>
+        <tr>
+          <td class="rank">4º</td>
+          <td>Tênis corrida</td>
+          <td class="num">439</td>
+        </tr>
+        <tr>
+          <td class="rank">5º</td>
+          <td>Mochila urbana</td>
+          <td class="num">429</td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="methodology">
+      <h2>Qualidade dos dados</h2>
+      <p>Foram processadas todas as linhas do arquivo exportado. Critérios aplicados:</p>
+      <ul>
+        <li><strong>Inválidas (62):</strong> linhas vazias, registros incompletos (campos faltando), valores com <code>ERRO_IMPORT</code>, quantidade inválida ou categoria desconhecida.</li>
+        <li><strong>Duplicatas (29):</strong> segundo registro em diante com o mesmo <code>pedido_id</code> (mantida apenas a primeira ocorrência).</li>
+        <li><strong>Normalização:</strong> categorias em minúsculas sem espaços extras; produtos com capitalização padronizada; valores monetários convertidos de formatos mistos (R$, vírgula ou ponto decimal).</li>
+      </ul>
+      <div class="breakdown">
+        <span>Inválidas: <strong>62</strong></span>
+        <span>Duplicatas: <strong>29</strong></span>
+        <span>Total descartado: <strong>91</strong></span>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

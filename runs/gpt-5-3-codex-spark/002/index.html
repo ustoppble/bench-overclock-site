@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apple — Página Inicial</title>
+  <style>
+    :root {
+      --cor-branco: #f5f5f7;
+      --cor-texto: #1d1d1f;
+      --cor-texto-suave: #6e6e73;
+      --cor-borda: #d2d2d7;
+      --cor-fundo-escuro: #1d1d1f;
+      --sombra-leve: 0 12px 30px rgba(0, 0, 0, 0.12);
+      --raio: 22px;
+      --easing: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+      background: var(--cor-branco);
+      color: var(--cor-texto);
+      font-family: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 400;
+      line-height: 1.35;
+    }
+
+    :where(a, button) {
+      font-family: inherit;
+    }
+
+    .topo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      backdrop-filter: saturate(180%) blur(24px);
+      background: rgba(245, 245, 247, 0.82);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+      transition: background 220ms var(--easing), box-shadow 220ms var(--easing);
+    }
+
+    .topo.menu-com-fundo {
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+    }
+
+    .barra {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      padding: 0 22px;
+    }
+
+    .logo {
+      font-size: 22px;
+      line-height: 1;
+      text-decoration: none;
+      color: #000;
+      transition: transform 180ms var(--easing);
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .menu-links {
+      display: flex;
+      align-items: center;
+      gap: 1.65rem;
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .menu-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .menu-links a {
+      text-decoration: none;
+      color: #1d1d1f;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.015em;
+      white-space: nowrap;
+      padding-bottom: 3px;
+      border-bottom: 2px solid transparent;
+      transition: border-color 180ms var(--easing), opacity 180ms var(--easing);
+      opacity: 0.88;
+    }
+
+    .menu-links a:hover {
+      opacity: 1;
+      border-bottom-color: #1d1d1f;
+    }
+
+    .menu-acoes {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding-left: 0.4rem;
+      border-left: 1px solid rgba(0, 0, 0, 0.14);
+    }
+
+    .menu-acoes button {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      display: grid;
+      place-items: center;
+      color: #1d1d1f;
+      cursor: pointer;
+      transition: background 180ms var(--easing), transform 180ms var(--easing);
+    }
+
+    .menu-acoes button:hover {
+      background: rgba(0, 0, 0, 0.08);
+      transform: scale(1.04);
+    }
+
+    .hero {
+      padding: calc(48px + 56px) 24px 74px;
+      text-align: center;
+      background:
+        radial-gradient(1200px 360px at 50% 0%, rgba(0, 136, 255, 0.15), transparent 55%),
+        linear-gradient(180deg, #fefefe 0%, #f5f5f7 100%);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      right: auto;
+      top: 40px;
+      width: 640px;
+      height: 640px;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 60%, rgba(255, 255, 255, 0.7), rgba(245, 245, 247, 0));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero span {
+      display: inline-block;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 14px;
+      color: var(--cor-texto-suave);
+      font-weight: 500;
+    }
+
+    .hero h1 {
+      margin: 0 auto 16px;
+      font-size: clamp(2.45rem, 6vw, 4.25rem);
+      letter-spacing: -0.03em;
+      font-weight: 700;
+      line-height: 1.05;
+      max-width: 12ch;
+    }
+
+    .hero p {
+      margin: 0 auto;
+      max-width: 66ch;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      color: var(--cor-texto-suave);
+      font-weight: 400;
+    }
+
+    .acoes {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.95rem;
+    }
+
+    .cta {
+      --cta-color: #000;
+      text-decoration: none;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--cta-color);
+      transition: transform 180ms var(--easing), opacity 180ms var(--easing);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.42rem;
+      border-bottom: 1px solid transparent;
+    }
+
+    .cta:hover {
+      opacity: 0.78;
+      transform: translateY(-1px);
+      border-color: currentColor;
+    }
+
+    .cta.secundaria {
+      --cta-color: #0066cc;
+      font-size: 21px;
+    }
+
+    .hero-art {
+      width: min(920px, 98vw);
+      aspect-ratio: 16 / 7;
+      margin: 36px auto 0;
+      border-radius: 44px;
+      background:
+        linear-gradient(150deg, #d2e6fb 0%, #eaf6ff 32%, #fffdf7 63%, #f8effd 100%);
+      position: relative;
+      box-shadow: var(--sombra-leve);
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      overflow: hidden;
+      transform: translateY(6px);
+      transition: transform 420ms var(--easing);
+    }
+
+    .hero-art:hover {
+      transform: translateY(0);
+    }
+
+    .hero-art::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 18%;
+      width: min(240px, 34%);
+      aspect-ratio: 9/18;
+      border-radius: 42px;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #0f0f11, #24242a 18%, #3a3f4b 100%);
+      box-shadow: inset 0 -6px 20px rgba(255, 255, 255, 0.15), inset 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    .hero-art::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(420px, 55%);
+      height: 24px;
+      transform: translate(-50%, -50%);
+      border-radius: 999px;
+      background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0));
+      filter: blur(1px);
+      opacity: 0.8;
+    }
+
+    .produto-grid {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 26px 18px 58px;
+      display: grid;
+      gap: 22px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .produto {
+      border-radius: var(--raio);
+      padding: clamp(2.1rem, 3vw, 3.15rem) 1.8rem 2.1rem;
+      min-height: 560px;
+      display: grid;
+      grid-template-rows: auto 1fr auto auto;
+      justify-items: center;
+      text-align: center;
+      border: 1px solid transparent;
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
+      transform: translateY(24px);
+      opacity: 0;
+      transition: transform 560ms var(--easing), opacity 560ms var(--easing);
+    }
+
+    .produto.is-visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .produto::before,
+    .produto::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 280ms var(--easing);
+      z-index: -1;
+    }
+
+    .produto::before {
+      background: radial-gradient(circle at 20% 10%, rgba(255, 255, 255, 0.35), transparent 55%);
+    }
+
+    .produto::after {
+      background: radial-gradient(circle at 80% 95%, rgba(0, 0, 0, 0.12), transparent 55%);
+    }
+
+    .produto:hover::before,
+    .produto:hover::after {
+      opacity: 1;
+    }
+
+    .produto h2 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 3rem);
+      line-height: 1.04;
+      letter-spacing: -0.028em;
+      font-weight: 700;
+    }
+
+    .produto p {
+      margin: 10px 0 0;
+      max-width: 36ch;
+      font-size: clamp(1rem, 1.8vw, 1.22rem);
+      color: inherit;
+      opacity: 0.86;
+      font-weight: 400;
+    }
+
+    .produto .acao-grupo {
+      margin-top: 1rem;
+      display: inline-flex;
+      gap: 1.05rem;
+    }
+
+    .produto .acao {
+      font-size: 21px;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: transform 180ms var(--easing), border-color 180ms var(--easing);
+    }
+
+    .produto .acao:hover {
+      transform: translateY(-1px);
+      border-bottom-color: currentColor;
+    }
+
+    .produto .arte {
+      width: min(460px, 86%);
+      margin: 14px auto 16px;
+      aspect-ratio: 16 / 10;
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14);
+      transition: transform 300ms var(--easing), box-shadow 300ms var(--easing);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+    }
+
+    .produto:hover .arte {
+      transform: translateY(-5px) scale(1.01);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.18);
+    }
+
+    .produto:nth-child(odd) {
+      background: #ffffff;
+      color: var(--cor-texto);
+      border-color: #e5e5ea;
+    }
+
+    .produto:nth-child(even) {
+      background: #121212;
+      color: #f5f5f7;
+      border-color: #3a3a3c;
+    }
+
+    .produto:nth-child(even) p {
+      color: rgba(245, 245, 247, 0.81);
+    }
+
+    .produto:nth-child(even) .acao {
+      color: #ffffff;
+    }
+
+    .arte--iphone {
+      background:
+        radial-gradient(115% 110% at 15% 20%, rgba(255, 255, 255, 0.35), transparent 40%),
+        linear-gradient(165deg, #f2f2f7, #d6d6e2 45%, #fafbff 80%);
+    }
+
+    .arte--iphone::before {
+      content: "";
+      position: absolute;
+      inset: 36px 56px 24px 56px;
+      border-radius: 40px;
+      background: linear-gradient(180deg, #0d0d0f, #191a20 18%, #2a2f3b 85%);
+      box-shadow: inset 0 8px 20px rgba(255, 255, 255, 0.15);
+    }
+
+    .arte--mac {
+      background:
+        radial-gradient(125% 100% at 85% 10%, rgba(255, 255, 255, 0.44), transparent 40%),
+        linear-gradient(140deg, #e6f1ff, #dde3fb 45%, #eef4ff 100%);
+    }
+
+    .arte--mac::before {
+      content: "";
+      position: absolute;
+      inset: 44px 40px 36px 40px;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #f7f8fa, #e5e8ef 55%, #cfd4dd);
+      box-shadow: inset 0 6px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .arte--ipad {
+      background:
+        radial-gradient(105% 105% at 10% 10%, rgba(255, 255, 255, 0.36), transparent 40%),
+        linear-gradient(145deg, #f0ecff, #efe4ff 50%, #fff3da 100%);
+    }
+
+    .arte--ipad::before {
+      content: "";
+      position: absolute;
+      inset: 34px;
+      border-radius: 18px;
+      border: 8px solid #121214;
+      background: linear-gradient(180deg, rgba(246, 246, 252, 0.5), rgba(225, 225, 235, 0.9));
+    }
+
+    .arte--watch {
+      background:
+        radial-gradient(120% 100% at 70% 0%, rgba(255, 255, 255, 0.35), transparent 45%),
+        linear-gradient(170deg, #f6d5df, #f0deff 45%, #e4ebff 100%);
+    }
+
+    .arte--watch::before {
+      content: "";
+      position: absolute;
+      inset: 58px 132px 68px 132px;
+      border-radius: 999px;
+      background: #111;
+      box-shadow: inset 0 4px 16px rgba(255, 255, 255, 0.16), inset 0 -4px 14px rgba(255, 255, 255, 0.1);
+    }
+
+    .arte--airpods {
+      background:
+        radial-gradient(120% 120% at 20% 14%, rgba(255, 255, 255, 0.46), transparent 42%),
+        linear-gradient(160deg, #fdf4f2, #fde4d5 60%, #ece6ff 100%);
+    }
+
+    .arte--airpods::before {
+      content: "";
+      position: absolute;
+      inset: 56px 110px 56px 70px;
+      border-radius: 999px 0 0 999px;
+      background: linear-gradient(90deg, #dadada 0%, #f8f8fa 60%);
+      transform: rotate(-8deg);
+      transform-origin: right center;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.18);
+    }
+
+    .arte--airpods::after {
+      content: "";
+      position: absolute;
+      inset: 56px 70px 56px 110px;
+      border-radius: 0 999px 999px 0;
+      background: linear-gradient(90deg, #f8f8fa 0%, #d5d5d5 70%);
+      transform: rotate(8deg);
+      transform-origin: left center;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.14);
+    }
+
+    .rodape {
+      text-align: center;
+      padding: 40px 20px 70px;
+      color: var(--cor-texto-suave);
+      font-size: 12px;
+    }
+
+    .reveal {
+      transform: translateY(18px);
+      opacity: 0;
+      transition: opacity 520ms var(--easing), transform 520ms var(--easing);
+    }
+
+    .reveal.is-visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    @media (max-width: 1024px) {
+      .produto-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .produto {
+        min-height: 520px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topo {
+        backdrop-filter: saturate(180%) blur(16px);
+      }
+
+      .barra {
+        gap: 0.5rem;
+        padding: 0 14px;
+      }
+
+      .menu-links {
+        gap: 1rem;
+      }
+
+      .menu-links a {
+        font-size: 11px;
+      }
+
+      .menu-acoes {
+        border-left: 0;
+      }
+
+      .hero {
+        padding-top: calc(48px + 40px);
+        padding-bottom: 48px;
+      }
+
+      .hero h1 {
+        font-size: 2.4rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .hero-art {
+        border-radius: 26px;
+      }
+
+      .produto {
+        padding: 2rem 1.15rem 1.8rem;
+        min-height: 470px;
+      }
+
+      .produto h2 {
+        font-size: 2rem;
+      }
+
+      .produto p,
+      .produto .acao {
+        font-size: 1rem;
+      }
+
+      .produto .acao-grupo {
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topo" id="topo">
+    <div class="barra">
+      <a href="#" class="logo" aria-label="Apple"></a>
+      <nav class="menu-links" aria-label="Navegação principal">
+        <a href="#">Loja</a>
+        <a href="#">Mac</a>
+        <a href="#">iPad</a>
+        <a href="#">iPhone</a>
+        <a href="#">Watch</a>
+        <a href="#">AirPods</a>
+        <a href="#">TV e Casa</a>
+        <a href="#">Entretenimento</a>
+        <a href="#">Acessórios</a>
+        <a href="#">Suporte</a>
+      </nav>
+      <div class="menu-acoes">
+        <button aria-label="Abrir busca">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15l.27.28v.79l4.25 4.24 1.26-1.25L15.5 14Zm-5 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9Z" stroke="currentColor" stroke-width="1.7" />
+          </svg>
+        </button>
+        <button aria-label="Abrir sacola">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+            <path d="M7 6h10l1 12.5H6L7 6Z" stroke="currentColor" stroke-width="1.7" />
+            <path d="M8 8V6.5a4 4 0 1 1 8 0V8" stroke="currentColor" stroke-width="1.7" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero reveal is-visible" aria-label="Destaque principal">
+      <div class="hero-inner">
+        <span>Nova experiência</span>
+        <h1>Conheça o iPhone 16 Pro</h1>
+        <p>
+          Potência, elegância e clareza em uma única linha de design. Mais fino, mais rápido,
+          pensado para ir mais longe em cada detalhe.
+        </p>
+        <div class="acoes">
+          <a href="#" class="cta" aria-label="Saiba mais sobre o iPhone 16 Pro">Saiba mais &rsaquo;</a>
+          <a href="#" class="cta secundaria" aria-label="Comprar iPhone 16 Pro">Comprar &rsaquo;</a>
+        </div>
+
+        <div class="hero-art" role="img" aria-label="Imagem de destaque do produto"></div>
+      </div>
+    </section>
+
+    <section class="produto-grid" aria-label="Produtos">
+      <article class="produto reveal">
+        <div class="arte arte--iphone" role="img" aria-label="Placeholder do iPhone"></div>
+        <h2>iPhone</h2>
+        <p>Uma experiência refinada em tudo: câmera mais precisa, bateria inteligente e conexão avançada.</p>
+        <div class="acao-grupo">
+          <a href="#" class="acao">Saiba mais &rsaquo;</a>
+          <a href="#" class="acao">Comprar &rsaquo;</a>
+        </div>
+      </article>
+
+      <article class="produto reveal">
+        <div class="arte arte--mac" role="img" aria-label="Placeholder do MacBook"></div>
+        <h2>Mac</h2>
+        <p>Hardware pensado para desempenho profissional com a fluidez que o seu dia precisa.</p>
+        <div class="acao-grupo">
+          <a href="#" class="acao">Saiba mais &rsaquo;</a>
+          <a href="#" class="acao">Comprar &rsaquo;</a>
+        </div>
+      </article>
+
+      <article class="produto reveal">
+        <div class="arte arte--ipad" role="img" aria-label="Placeholder do iPad"></div>
+        <h2>iPad</h2>
+        <p>Portátil como você, poderoso como você precisa. Criatividade e produtividade no mesmo formato.</p>
+        <div class="acao-grupo">
+          <a href="#" class="acao">Saiba mais &rsaquo;</a>
+          <a href="#" class="acao">Comprar &rsaquo;</a>
+        </div>
+      </article>
+
+      <article class="produto reveal">
+        <div class="arte arte--watch" role="img" aria-label="Placeholder do Apple Watch"></div>
+        <h2>Apple Watch</h2>
+        <p>Sua rotina em primeiro plano com monitoramento preciso, treino inteligente e bem-estar em tempo real.</p>
+        <div class="acao-grupo">
+          <a href="#" class="acao">Saiba mais &rsaquo;</a>
+          <a href="#" class="acao">Comprar &rsaquo;</a>
+        </div>
+      </article>
+
+      <article class="produto reveal">
+        <div class="arte arte--airpods" role="img" aria-label="Placeholder do AirPods"></div>
+        <h2>AirPods</h2>
+        <p>Áudio limpo, encaixe perfeito e bateria inteligente para o dia inteiro de som envolvente.</p>
+        <div class="acao-grupo">
+          <a href="#" class="acao">Saiba mais &rsaquo;</a>
+          <a href="#" class="acao">Comprar &rsaquo;</a>
+        </div>
+      </article>
+
+      <article class="produto reveal">
+        <div class="arte arte--iphone" role="img" aria-label="Placeholder do Apple TV"></div>
+        <h2>Apple TV</h2>
+        <p>Imagem, cor e som de cinema no centro da sua sala para maratonar, brincar e se conectar com mais presença.</p>
+        <div class="acao-grupo">
+          <a href="#" class="acao">Saiba mais &rsaquo;</a>
+          <a href="#" class="acao">Comprar &rsaquo;</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    Interface demonstrativa inspirada na identidade Apple. Feita em HTML único para estudo e prototipação.
+  </footer>
+
+  <script>
+    const topo = document.getElementById('topo');
+    const navScroll = () => {
+      const passou = window.scrollY > 12;
+      topo.classList.toggle('menu-com-fundo', passou);
+    };
+    navScroll();
+    window.addEventListener('scroll', navScroll, {passive: true});
+
+    const revealItems = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries, observer) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      }
+    }, {threshold: 0.2});
+
+    revealItems.forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>

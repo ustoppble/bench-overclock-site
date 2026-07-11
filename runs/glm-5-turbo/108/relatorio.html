@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatório de Vendas — 1º Semestre 2026</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e4e4e7;
+    --text-dim: #9ca3af;
+    --accent: #6366f1;
+    --accent-light: #818cf8;
+    --green: #22c55e;
+    --red: #ef4444;
+    --amber: #f59e0b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+  h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--accent-light);
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+  }
+  .card-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+  }
+  .card-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  .card-value.green { color: var(--green); }
+  .card-value.amber { color: var(--amber); }
+  .card-value.red { color: var(--red); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  th {
+    text-align: left;
+    padding: 0.75rem 1.25rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+  td {
+    padding: 0.65rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.95rem;
+  }
+  tr:last-child td { border-bottom: none; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--accent-light);
+  }
+  .note {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>📊 Relatório de Vendas</h1>
+  <p class="subtitle">1º Semestre 2026 — Dados limpos e validados</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-label">Receita Total</div>
+      <div class="card-value green">R$ 515,086.00</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Pedidos Válidos</div>
+      <div class="card-value">1409</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Linhas Descartadas</div>
+      <div class="card-value red">92</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Linhas Totais (com header)</div>
+      <div class="card-value amber">1501</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Receita por Categoria</h2>
+  <table>
+    <thead>
+      <tr><th>Categoria</th><th class="num">Receita</th><th class="num">Participação</th></tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>Vestuário</td>
+            <td class="num">R$ 206,272.00</td>
+            <td class="num">40.0%</td>
+        </tr>
+        <tr>
+            <td>Acessórios</td>
+            <td class="num">R$ 159,637.90</td>
+            <td class="num">31.0%</td>
+        </tr>
+        <tr>
+            <td>Calçados</td>
+            <td class="num">R$ 149,176.10</td>
+            <td class="num">29.0%</td>
+        </tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title">Top 5 Produtos por Quantidade Vendida</h2>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Produto</th><th class="num">Qtd. Total</th></tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>1</td>
+            <td>Camiseta básica</td>
+            <td class="num">421</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Bermuda tactel</td>
+            <td class="num">402</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Chinelo slide</td>
+            <td class="num">399</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Tênis corrida</td>
+            <td class="num">396</td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>Boné aba reta</td>
+            <td class="num">381</td>
+        </tr>
+    </tbody>
+  </table>
+
+  <h2 class="section-title">Linhas Descartadas (por motivo)</h2>
+  <table>
+    <thead>
+      <tr><th>Motivo</th><th class="num">Quantidade</th></tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+            <td>Duplicados</td>
+            <td class="num">29</td>
+        </tr>
+        <tr>
+            <td>Linha Quebrada</td>
+            <td class="num">39</td>
+        </tr>
+        <tr>
+            <td>Valor Invalido</td>
+            <td class="num">16</td>
+        </tr>
+        <tr>
+            <td>Vazio</td>
+            <td class="num">8</td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p class="note">
+    Limpezas aplicadas: remoção de &ldquo;R$&rdquo; dos valores, normalização de vírgula→ponto decimal,
+    padronização de datas (3 formatos → ISO), normalização de categorias e produtos (case + espaços),
+    remoção de duplicatas por pedido_id, descarte de linhas com &ldquo;ERRO_IMPORT&rdquo;, linhas quebradas e linhas vazias.
+  </p>
+
+</div>
+</body>
+</html>

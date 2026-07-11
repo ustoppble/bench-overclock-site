@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulação de Bolinhas — Física Interativa</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0b0e1a; }
+  canvas { display: block; cursor: crosshair; }
+
+  #ui {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    user-select: none;
+    z-index: 10;
+  }
+  button {
+    background: rgba(255,255,255,0.08);
+    color: #eef;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    transition: background .15s, transform .1s, border-color .15s;
+  }
+  button:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.3); }
+  button:active { transform: translateY(1px) scale(0.98); }
+
+  #hint {
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  #hint b { color: rgba(255,255,255,0.8); }
+
+  #fps {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    user-select: none;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+<div id="ui">
+  <button id="drop">+ Soltar 50 bolinhas</button>
+  <button id="clear">Limpar</button>
+  <span id="hint"><b>Segure</b> o mouse para atrair · <b>solte</b> para explodir</span>
+</div>
+<div id="fps">— fps</div>
+<canvas id="c"></canvas>
+
+<script>
+(() => {
+  "use strict";
+
+  const canvas = document.getElementById("c");
+  const ctx = canvas.getContext("2d", { alpha: false });
+
+  // ---- Parâmetros de física ----
+  const GRAVITY = 1400;          // px/s²
+  const RESTITUTION = 0.82;      // "quique" nas paredes/colisões (0-1)
+  const WALL_FRICTION = 0.98;    // atrito tangencial nas paredes
+  const AIR = 0.999;             // resistência do ar (por frame, ~60fps)
+  const ATTRACT_STRENGTH = 2600; // força de atração ao segurar o mouse
+  const ATTRACT_RADIUS = 320;    // alcance da atração
+  const EXPLODE_STRENGTH = 900;  // impulso da explosão ao soltar
+  const EXPLODE_RADIUS = 340;    // alcance da explosão
+  const MAX_BALLS = 600;         // limite p/ manter 60fps
+  const SUBSTEPS = 2;            // subpassos por frame p/ colisões estáveis
+
+  let W = 0, H = 0, DPR = 1;
+  const balls = [];
+
+  const HUES = () => Math.floor(Math.random() * 360);
+
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + "px";
+    canvas.style.height = H + "px";
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  // ---- Bolinha ----
+  function makeBall(x, y, r) {
+    r = r || (8 + Math.random() * 18);
+    const hue = HUES();
+    return {
+      x, y,
+      vx: (Math.random() - 0.5) * 200,
+      vy: (Math.random() - 0.5) * 200,
+      r,
+      m: r * r,            // massa proporcional à área
+      hue,
+      color: `hsl(${hue} 80% 60%)`,
+      light: `hsl(${hue} 90% 78%)`,
+    };
+  }
+
+  function spawn(n, x, y) {
+    for (let i = 0; i < n; i++) {
+      if (balls.length >= MAX_BALLS) break;
+      const px = x !== undefined ? x + (Math.random() - 0.5) * 120 : 60 + Math.random() * (W - 120);
+      const py = y !== undefined ? y + (Math.random() - 0.5) * 120 : 40 + Math.random() * (H * 0.4);
+      balls.push(makeBall(px, py));
+    }
+  }
+
+  // População inicial
+  spawn(40);
+
+  // ---- Entrada do mouse/toque ----
+  const mouse = { x: W / 2, y: H / 2, down: false };
+
+  function setPos(e) {
+    const t = e.touches ? e.touches[0] : e;
+    if (!t) return;
+    mouse.x = t.clientX;
+    mouse.y = t.clientY;
+  }
+
+  canvas.addEventListener("mousemove", setPos);
+  canvas.addEventListener("mousedown", (e) => { setPos(e); mouse.down = true; });
+  window.addEventListener("mouseup", (e) => {
+    if (mouse.down) { setPos(e); explode(mouse.x, mouse.y); }
+    mouse.down = false;
+  });
+
+  // Toque: segurar atrai, soltar explode
+  canvas.addEventListener("touchstart", (e) => { e.preventDefault(); setPos(e); mouse.down = true; }, { passive: false });
+  canvas.addEventListener("touchmove", (e) => { e.preventDefault(); setPos(e); }, { passive: false });
+  window.addEventListener("touchend", () => {
+    if (mouse.down) explode(mouse.x, mouse.y);
+    mouse.down = false;
+  });
+
+  function explode(cx, cy) {
+    for (const b of balls) {
+      const dx = b.x - cx, dy = b.y - cy;
+      const d = Math.hypot(dx, dy) || 0.0001;
+      if (d < EXPLODE_RADIUS) {
+        const falloff = 1 - d / EXPLODE_RADIUS;
+        const imp = EXPLODE_STRENGTH * falloff;
+        b.vx += (dx / d) * imp;
+        b.vy += (dy / d) * imp;
+      }
+    }
+  }
+
+  // ---- Botões ----
+  document.getElementById("drop").addEventListener("click", () => spawn(50));
+  document.getElementById("clear").addEventListener("click", () => { balls.length = 0; });
+
+  // ---- Colisão entre bolinhas (broadphase por grade uniforme) ----
+  function collide() {
+    const cell = 48; // ~2x raio médio
+    const cols = Math.max(1, Math.ceil(W / cell));
+    const rows = Math.max(1, Math.ceil(H / cell));
+    const grid = new Map();
+
+    const key = (cx, cy) => cx + cy * cols;
+    for (let i = 0; i < balls.length; i++) {
+      const b = balls[i];
+      const cx = Math.min(cols - 1, Math.max(0, (b.x / cell) | 0));
+      const cy = Math.min(rows - 1, Math.max(0, (b.y / cell) | 0));
+      const k = key(cx, cy);
+      let arr = grid.get(k);
+      if (!arr) grid.set(k, (arr = []));
+      arr.push(i);
+      b._cx = cx; b._cy = cy;
+    }
+
+    for (let i = 0; i < balls.length; i++) {
+      const a = balls[i];
+      for (let ox = -1; ox <= 1; ox++) {
+        for (let oy = -1; oy <= 1; oy++) {
+          const nx = a._cx + ox, ny = a._cy + oy;
+          if (nx < 0 || ny < 0 || nx >= cols || ny >= rows) continue;
+          const bucket = grid.get(key(nx, ny));
+          if (!bucket) continue;
+          for (const j of bucket) {
+            if (j <= i) continue; // cada par uma vez
+            resolvePair(a, balls[j]);
+          }
+        }
+      }
+    }
+  }
+
+  function resolvePair(a, b) {
+    let dx = b.x - a.x, dy = b.y - a.y;
+    const minDist = a.r + b.r;
+    let dist = Math.hypot(dx, dy);
+    if (dist === 0) { dx = 0.01; dy = 0.01; dist = 0.0141; }
+    if (dist >= minDist) return;
+
+    const nx = dx / dist, ny = dy / dist;
+
+    // Separação posicional proporcional à massa
+    const overlap = minDist - dist;
+    const totalM = a.m + b.m;
+    const aPush = (b.m / totalM) * overlap;
+    const bPush = (a.m / totalM) * overlap;
+    a.x -= nx * aPush; a.y -= ny * aPush;
+    b.x += nx * bPush; b.y += ny * bPush;
+
+    // Velocidade relativa ao longo da normal
+    const rvx = b.vx - a.vx, rvy = b.vy - a.vy;
+    const velN = rvx * nx + rvy * ny;
+    if (velN > 0) return; // já se afastando
+
+    const imp = -(1 + RESTITUTION) * velN / (1 / a.m + 1 / b.m);
+    const ix = imp * nx, iy = imp * ny;
+    a.vx -= ix / a.m; a.vy -= iy / a.m;
+    b.vx += ix / b.m; b.vy += iy / b.m;
+  }
+
+  // ---- Passo de física ----
+  function physics(dt) {
+    // Atração enquanto o mouse está pressionado
+    if (mouse.down) {
+      for (const b of balls) {
+        const dx = mouse.x - b.x, dy = mouse.y - b.y;
+        const d = Math.hypot(dx, dy);
+        if (d < ATTRACT_RADIUS && d > 1) {
+          const f = ATTRACT_STRENGTH * (1 - d / ATTRACT_RADIUS) / d;
+          b.vx += dx * f * dt;
+          b.vy += dy * f * dt;
+        }
+      }
+    }
+
+    for (const b of balls) {
+      b.vy += GRAVITY * dt;
+      b.vx *= AIR;
+      b.vy *= AIR;
+      b.x += b.vx * dt;
+      b.y += b.vy * dt;
+
+      // Paredes
+      if (b.x - b.r < 0) { b.x = b.r; b.vx = -b.vx * RESTITUTION; b.vy *= WALL_FRICTION; }
+      else if (b.x + b.r > W) { b.x = W - b.r; b.vx = -b.vx * RESTITUTION; b.vy *= WALL_FRICTION; }
+      if (b.y - b.r < 0) { b.y = b.r; b.vy = -b.vy * RESTITUTION; b.vx *= WALL_FRICTION; }
+      else if (b.y + b.r > H) { b.y = H - b.r; b.vy = -b.vy * RESTITUTION; b.vx *= WALL_FRICTION; }
+    }
+
+    collide();
+  }
+
+  // ---- Render ----
+  function draw() {
+    // Fundo com leve rastro para suavidade
+    ctx.fillStyle = "#0b0e1a";
+    ctx.fillRect(0, 0, W, H);
+
+    // Halo de interação
+    if (mouse.down) {
+      const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, ATTRACT_RADIUS);
+      g.addColorStop(0, "rgba(120,170,255,0.16)");
+      g.addColorStop(1, "rgba(120,170,255,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(mouse.x, mouse.y, ATTRACT_RADIUS, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    for (const b of balls) {
+      const g = ctx.createRadialGradient(
+        b.x - b.r * 0.35, b.y - b.r * 0.35, b.r * 0.1,
+        b.x, b.y, b.r
+      );
+      g.addColorStop(0, b.light);
+      g.addColorStop(1, b.color);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  // ---- Loop principal (dt fixo com acumulador) ----
+  let last = performance.now();
+  let acc = 0;
+  const STEP = 1 / 120; // integra em passos pequenos = estável e suave
+
+  let fpsEl = document.getElementById("fps");
+  let fpsAcc = 0, fpsCount = 0, fpsTimer = 0;
+
+  function frame(now) {
+    let dt = (now - last) / 1000;
+    last = now;
+    if (dt > 0.05) dt = 0.05; // evita "explosão" após aba inativa
+
+    acc += dt;
+    let steps = 0;
+    while (acc >= STEP && steps < 8) {
+      for (let s = 0; s < SUBSTEPS; s++) physics(STEP / SUBSTEPS);
+      acc -= STEP;
+      steps++;
+    }
+
+    draw();
+
+    // Contador de FPS
+    fpsAcc += dt; fpsCount++; fpsTimer += dt;
+    if (fpsTimer >= 0.5) {
+      const fps = Math.round(fpsCount / fpsAcc);
+      fpsEl.textContent = fps + " fps · " + balls.length + " bolinhas";
+      fpsAcc = 0; fpsCount = 0; fpsTimer = 0;
+    }
+
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

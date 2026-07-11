@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Simulacao de Bolinhas</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-0: #070a12;
+      --bg-1: #0d1323;
+      --panel: rgba(10, 16, 32, 0.58);
+      --panel-border: rgba(255, 255, 255, 0.12);
+      --text: rgba(244, 247, 255, 0.94);
+      --muted: rgba(244, 247, 255, 0.72);
+      --accent-0: #7cf2c1;
+      --accent-1: #58a8ff;
+      --accent-2: #ffcf5c;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top, rgba(60, 120, 255, 0.18), transparent 40%),
+        radial-gradient(circle at bottom right, rgba(124, 242, 193, 0.08), transparent 35%),
+        linear-gradient(180deg, var(--bg-0), var(--bg-1));
+      font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    }
+
+    #world {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .ui {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 2;
+      width: min(340px, calc(100vw - 36px));
+      box-sizing: border-box;
+      padding: 16px 16px 14px;
+      border: 1px solid var(--panel-border);
+      border-radius: 18px;
+      background: var(--panel);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.35);
+      color: var(--text);
+      user-select: none;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+    }
+
+    .desc {
+      margin: 8px 0 0;
+      font-size: 13px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 14px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 15px;
+      font: inherit;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: #05111c;
+      background: linear-gradient(135deg, var(--accent-0), var(--accent-1));
+      box-shadow: 0 12px 28px rgba(56, 158, 255, 0.28);
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+    }
+
+    button:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 14px 32px rgba(56, 158, 255, 0.34);
+    }
+
+    button:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.84);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent-2);
+      box-shadow: 0 0 14px rgba(255, 207, 92, 0.55);
+      flex: 0 0 auto;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 12px;
+      line-height: 1.4;
+      color: rgba(244, 247, 255, 0.6);
+    }
+
+    @media (max-width: 520px) {
+      .ui {
+        left: 12px;
+        top: 12px;
+        width: calc(100vw - 24px);
+        padding: 14px;
+        border-radius: 16px;
+      }
+
+      .title {
+        font-size: 16px;
+      }
+
+      .desc, .hint {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="world"></canvas>
+
+  <section class="ui" aria-label="Controles da simulacao">
+    <h1 class="title">Fisica de bolinhas</h1>
+    <p class="desc">Segure o mouse para atrair as bolinhas perto do cursor. Clique rapido para disparar uma explosao de repulsao.</p>
+    <div class="row">
+      <button id="spawn" type="button">Soltar 50 bolinhas novas</button>
+      <span class="badge"><span class="dot"></span><span id="count">0</span> bolinhas ativas</span>
+    </div>
+    <div class="hint">Colisoes entre bolinhas e bordas com resposta elastica, atualizada em tempo real.</div>
+  </section>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById('world');
+      const ctx = canvas.getContext('2d', { alpha: false });
+      const spawnButton = document.getElementById('spawn');
+      const countEl = document.getElementById('count');
+
+      const TAU = Math.PI * 2;
+      const dprCap = 2;
+      const state = {
+        w: 0,
+        h: 0,
+        dpr: Math.min(window.devicePixelRatio || 1, dprCap),
+        balls: [],
+        bg: null,
+        pointer: {
+          x: 0,
+          y: 0,
+          down: false,
+          downTime: 0,
+          downX: 0,
+          downY: 0,
+          clickCandidate: false
+        }
+      };
+
+      const settings = {
+        gravity: 1350,
+        airDrag: 0.999,
+        restitution: 0.9,
+        wallRestitution: 0.84,
+        wallFriction: 0.992,
+        cellSize: 72,
+        substepTarget: 0.008,
+        maxFrameDt: 0.033,
+        pointerRadius: 235,
+        pointerStrength: 6200,
+        blastRadius: 260,
+        blastStrength: 3400,
+        maxSpeed: 1800
+      };
+
+      function rand(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function updateCount() {
+        countEl.textContent = String(state.balls.length);
+      }
+
+      function makeBall(x, y, r) {
+        const hue = Math.floor(rand(0, 360));
+        const light = Math.floor(rand(52, 64));
+        return {
+          x,
+          y,
+          vx: rand(-70, 70),
+          vy: rand(-20, 40),
+          r,
+          mass: r * r,
+          invMass: 1 / (r * r),
+          color: `hsl(${hue} 90% ${light}%)`
+        };
+      }
+
+      function addBalls(count) {
+        const margin = 24;
+        for (let i = 0; i < count; i += 1) {
+          const r = rand(9, 18);
+          const x = rand(margin + r, Math.max(margin + r + 1, state.w - margin - r));
+          const y = rand(-120, 40);
+          state.balls.push(makeBall(x, y, r));
+        }
+        updateCount();
+      }
+
+      function resize() {
+        state.dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+        state.w = window.innerWidth;
+        state.h = window.innerHeight;
+        canvas.width = Math.max(1, Math.floor(state.w * state.dpr));
+        canvas.height = Math.max(1, Math.floor(state.h * state.dpr));
+        canvas.style.width = state.w + 'px';
+        canvas.style.height = state.h + 'px';
+        ctx.setTransform(state.dpr, 0, 0, state.dpr, 0, 0);
+
+        const g = ctx.createLinearGradient(0, 0, 0, state.h);
+        g.addColorStop(0, '#0b1020');
+        g.addColorStop(0.55, '#0a1220');
+        g.addColorStop(1, '#050810');
+        state.bg = g;
+      }
+
+      function pointerFromEvent(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: (e.clientX - rect.left) * (state.w / rect.width),
+          y: (e.clientY - rect.top) * (state.h / rect.height)
+        };
+      }
+
+      function burstAt(x, y) {
+        const radius = settings.blastRadius;
+        const radiusSq = radius * radius;
+
+        for (const ball of state.balls) {
+          const dx = ball.x - x;
+          const dy = ball.y - y;
+          const distSq = dx * dx + dy * dy;
+          if (distSq >= radiusSq) continue;
+
+          const dist = Math.sqrt(distSq) || 0.001;
+          const falloff = 1 - dist / radius;
+          const impulse = settings.blastStrength * falloff * falloff;
+          const nx = dx / dist;
+          const ny = dy / dist;
+
+          ball.vx += nx * impulse + rand(-45, 45) * falloff;
+          ball.vy += ny * impulse + rand(-45, 45) * falloff;
+        }
+      }
+
+      canvas.addEventListener('pointerdown', (e) => {
+        const p = pointerFromEvent(e);
+        state.pointer.x = p.x;
+        state.pointer.y = p.y;
+        state.pointer.down = true;
+        state.pointer.downTime = performance.now();
+        state.pointer.downX = p.x;
+        state.pointer.downY = p.y;
+        state.pointer.clickCandidate = true;
+        canvas.setPointerCapture(e.pointerId);
+      });
+
+      canvas.addEventListener('pointermove', (e) => {
+        const p = pointerFromEvent(e);
+        state.pointer.x = p.x;
+        state.pointer.y = p.y;
+
+        if (state.pointer.down) {
+          const dx = p.x - state.pointer.downX;
+          const dy = p.y - state.pointer.downY;
+          if (dx * dx + dy * dy > 100) {
+            state.pointer.clickCandidate = false;
+          }
+        }
+      });
+
+      function finishPointer(e) {
+        const p = pointerFromEvent(e);
+        state.pointer.x = p.x;
+        state.pointer.y = p.y;
+
+        const heldFor = performance.now() - state.pointer.downTime;
+        if (state.pointer.down && state.pointer.clickCandidate && heldFor < 260) {
+          burstAt(p.x, p.y);
+        }
+
+        state.pointer.down = false;
+        state.pointer.clickCandidate = false;
+      }
+
+      canvas.addEventListener('pointerup', finishPointer);
+      canvas.addEventListener('pointercancel', () => {
+        state.pointer.down = false;
+        state.pointer.clickCandidate = false;
+      });
+
+      spawnButton.addEventListener('click', () => addBalls(50));
+
+      function stepPhysics(dt) {
+        const balls = state.balls;
+        const pointer = state.pointer;
+        const drag = Math.pow(settings.airDrag, dt * 60);
+
+        for (const ball of balls) {
+          ball.vy += settings.gravity * dt;
+
+          if (pointer.down) {
+            const dx = pointer.x - ball.x;
+            const dy = pointer.y - ball.y;
+            const distSq = dx * dx + dy * dy;
+            const radius = settings.pointerRadius;
+
+            if (distSq < radius * radius) {
+              const dist = Math.sqrt(distSq) || 0.001;
+              const falloff = 1 - dist / radius;
+              const accel = settings.pointerStrength * falloff * falloff;
+              const nx = dx / dist;
+              const ny = dy / dist;
+              ball.vx += nx * accel * dt;
+              ball.vy += ny * accel * dt;
+            }
+          }
+
+          ball.vx *= drag;
+          ball.vy *= drag;
+
+          ball.x += ball.vx * dt;
+          ball.y += ball.vy * dt;
+
+          const left = ball.r;
+          const right = state.w - ball.r;
+          const top = ball.r;
+          const bottom = state.h - ball.r;
+
+          if (ball.x < left) {
+            ball.x = left;
+            if (ball.vx < 0) ball.vx = -ball.vx * settings.wallRestitution;
+            ball.vy *= settings.wallFriction;
+          } else if (ball.x > right) {
+            ball.x = right;
+            if (ball.vx > 0) ball.vx = -ball.vx * settings.wallRestitution;
+            ball.vy *= settings.wallFriction;
+          }
+
+          if (ball.y < top) {
+            ball.y = top;
+            if (ball.vy < 0) ball.vy = -ball.vy * settings.wallRestitution;
+            ball.vx *= settings.wallFriction;
+          } else if (ball.y > bottom) {
+            ball.y = bottom;
+            if (ball.vy > 0) ball.vy = -ball.vy * settings.wallRestitution;
+            ball.vx *= settings.wallFriction;
+            if (Math.abs(ball.vy) < 18) {
+              ball.vy = 0;
+            }
+          }
+
+          ball.vx = clamp(ball.vx, -settings.maxSpeed, settings.maxSpeed);
+          ball.vy = clamp(ball.vy, -settings.maxSpeed, settings.maxSpeed);
+        }
+
+        const cellSize = settings.cellSize;
+        for (let pass = 0; pass < 2; pass += 1) {
+          const buckets = new Map();
+
+          for (let i = 0; i < balls.length; i += 1) {
+            const ball = balls[i];
+            const cx = Math.floor(ball.x / cellSize);
+            const cy = Math.floor(ball.y / cellSize);
+            const key = cx + cy * 1024;
+            let bucket = buckets.get(key);
+            if (!bucket) {
+              bucket = [];
+              buckets.set(key, bucket);
+            }
+            bucket.push(i);
+          }
+
+          for (let i = 0; i < balls.length; i += 1) {
+            const a = balls[i];
+            const ax = Math.floor(a.x / cellSize);
+            const ay = Math.floor(a.y / cellSize);
+
+            for (let oy = -1; oy <= 1; oy += 1) {
+              for (let ox = -1; ox <= 1; ox += 1) {
+                const bucket = buckets.get(ax + ox + (ay + oy) * 1024);
+                if (!bucket) continue;
+
+                for (let bIndex = 0; bIndex < bucket.length; bIndex += 1) {
+                  const j = bucket[bIndex];
+                  if (j <= i) continue;
+
+                  const b = balls[j];
+                  const dx = b.x - a.x;
+                  const dy = b.y - a.y;
+                  const minDist = a.r + b.r;
+                  const distSq = dx * dx + dy * dy;
+
+                  if (distSq >= minDist * minDist || distSq === 0) {
+                    if (distSq === 0) {
+                      const angle = rand(0, TAU);
+                      const overlap = minDist;
+                      const nx = Math.cos(angle);
+                      const ny = Math.sin(angle);
+                      const totalInvMass = a.invMass + b.invMass;
+                      const moveA = overlap * (a.invMass / totalInvMass) * 0.5;
+                      const moveB = overlap * (b.invMass / totalInvMass) * 0.5;
+                      a.x -= nx * moveA;
+                      a.y -= ny * moveA;
+                      b.x += nx * moveB;
+                      b.y += ny * moveB;
+                    }
+                    continue;
+                  }
+
+                  const dist = Math.sqrt(distSq);
+                  const nx = dx / dist;
+                  const ny = dy / dist;
+                  const overlap = minDist - dist;
+                  const totalInvMass = a.invMass + b.invMass;
+
+                  const correction = Math.max(overlap - 0.01, 0) / totalInvMass * 0.82;
+                  a.x -= nx * correction * a.invMass;
+                  a.y -= ny * correction * a.invMass;
+                  b.x += nx * correction * b.invMass;
+                  b.y += ny * correction * b.invMass;
+
+                  const rvx = b.vx - a.vx;
+                  const rvy = b.vy - a.vy;
+                  const velAlongNormal = rvx * nx + rvy * ny;
+
+                  if (velAlongNormal > 0) continue;
+
+                  const jImpulse = -(1 + settings.restitution) * velAlongNormal / totalInvMass;
+                  const impulseX = jImpulse * nx;
+                  const impulseY = jImpulse * ny;
+
+                  a.vx -= impulseX * a.invMass;
+                  a.vy -= impulseY * a.invMass;
+                  b.vx += impulseX * b.invMass;
+                  b.vy += impulseY * b.invMass;
+
+                  const tx = -ny;
+                  const ty = nx;
+                  const velAlongTangent = rvx * tx + rvy * ty;
+                  let jt = -velAlongTangent / totalInvMass;
+                  const maxFriction = jImpulse * 0.08;
+                  jt = clamp(jt, -maxFriction, maxFriction);
+                  const frictionX = jt * tx;
+                  const frictionY = jt * ty;
+
+                  a.vx -= frictionX * a.invMass;
+                  a.vy -= frictionY * a.invMass;
+                  b.vx += frictionX * b.invMass;
+                  b.vy += frictionY * b.invMass;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      function draw() {
+        ctx.fillStyle = state.bg;
+        ctx.fillRect(0, 0, state.w, state.h);
+
+        if (state.pointer.down) {
+          const glow = ctx.createRadialGradient(
+            state.pointer.x,
+            state.pointer.y,
+            0,
+            state.pointer.x,
+            state.pointer.y,
+            settings.pointerRadius
+          );
+          glow.addColorStop(0, 'rgba(120, 220, 255, 0.18)');
+          glow.addColorStop(0.55, 'rgba(120, 220, 255, 0.08)');
+          glow.addColorStop(1, 'rgba(120, 220, 255, 0)');
+          ctx.fillStyle = glow;
+          ctx.fillRect(
+            state.pointer.x - settings.pointerRadius,
+            state.pointer.y - settings.pointerRadius,
+            settings.pointerRadius * 2,
+            settings.pointerRadius * 2
+          );
+        }
+
+        for (const ball of state.balls) {
+          ctx.beginPath();
+          ctx.arc(ball.x, ball.y, ball.r, 0, TAU);
+          ctx.fillStyle = ball.color;
+          ctx.fill();
+        }
+
+        ctx.fillStyle = 'rgba(255,255,255,0.04)';
+        ctx.fillRect(0, 0, state.w, state.h);
+      }
+
+      let lastTime = performance.now();
+
+      function frame(now) {
+        let dt = (now - lastTime) / 1000;
+        lastTime = now;
+        dt = Math.min(dt, settings.maxFrameDt);
+
+        const steps = Math.max(1, Math.min(3, Math.ceil(dt / settings.substepTarget)));
+        const stepDt = dt / steps;
+
+        for (let i = 0; i < steps; i += 1) {
+          stepPhysics(stepDt);
+        }
+
+        draw();
+        requestAnimationFrame(frame);
+      }
+
+      window.addEventListener('resize', resize, { passive: true });
+
+      resize();
+      addBalls(70);
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>

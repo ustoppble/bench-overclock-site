@@ -1,0 +1,447 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulação de Bolinhas com Física</title>
+  <style>
+    :root {
+      --bg-a: #0f1220;
+      --bg-b: #1c2142;
+      --panel: rgba(255, 255, 255, 0.08);
+      --text: #eef1ff;
+      --accent: #7ce1ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(circle at 20% 10%, #242a55, var(--bg-a) 45%, var(--bg-b) 100%);
+      color: var(--text);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    }
+
+    #stage {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+
+    #hud {
+      position: fixed;
+      left: 14px;
+      top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      background: var(--panel);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      z-index: 10;
+    }
+
+    #spawn {
+      border: 0;
+      background: linear-gradient(135deg, #5ce0ff, #8d73ff);
+      color: #0f1020;
+      font-weight: 700;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #hud strong {
+      font-size: 0.95rem;
+    }
+
+    #hud span {
+      opacity: 0.9;
+      font-size: 0.9rem;
+    }
+
+    .hint {
+      position: fixed;
+      bottom: 14px;
+      left: 14px;
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      backdrop-filter: blur(8px);
+      opacity: 0.9;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+
+  <div id="hud">
+    <button id="spawn">Soltar 50 bolinhas</button>
+    <strong id="count">0</strong>
+    <span>pontos</span>
+  </div>
+
+  <div class="hint">Segure o botão do mouse para atrair bolinhas. Clique para explosão repulsiva.</div>
+
+  <script>
+    const canvas = document.getElementById('stage');
+    const ctx = canvas.getContext('2d');
+
+    let width = 0;
+    let height = 0;
+    let dpr = Math.max(1, window.devicePixelRatio || 1);
+
+    const balls = [];
+    const GRAVITY = 1200; // px/s²
+    const WALL_BOUNCE = 0.9;
+    const BALL_BOUNCE = 0.94;
+    const GRID = 110;
+
+    const mouse = {
+      x: 0,
+      y: 0,
+      down: false,
+    };
+
+    class Ball {
+      constructor(x, y, r, vx, vy, color) {
+        this.x = x;
+        this.y = y;
+        this.r = r;
+        this.vx = vx;
+        this.vy = vy;
+        this.mass = r * r * Math.PI;
+        this.invMass = 1 / this.mass;
+        this.color = color;
+      }
+    }
+
+    const toRad = Math.PI / 180;
+
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function randomColor() {
+      const h = Math.floor(rand(0, 360));
+      const s = Math.floor(rand(65, 90));
+      const l = Math.floor(rand(52, 68));
+      return `hsl(${h}, ${s}%, ${l}%)`;
+    }
+
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      dpr = Math.max(1, window.devicePixelRatio || 1);
+
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function spawnBalls(n) {
+      for (let i = 0; i < n; i++) {
+        const r = rand(6, 18);
+        const x = rand(r, width - r);
+        const y = rand(-height * 0.2, 40);
+        const vx = rand(-120, 120);
+        const vy = rand(40, 240);
+        balls.push(new Ball(x, y, r, vx, vy, randomColor()));
+      }
+      refreshCount();
+    }
+
+    function refreshCount() {
+      document.getElementById('count').textContent = balls.length;
+    }
+
+    function setMousePosition(event) {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = event.clientX - rect.left;
+      mouse.y = event.clientY - rect.top;
+    }
+
+    function applyForces(dt) {
+      if (!mouse.down) return;
+      const radius = 220;
+      const radiusSq = radius * radius;
+      const strength = 26000;
+
+      for (let i = 0; i < balls.length; i++) {
+        const b = balls[i];
+        const dx = mouse.x - b.x;
+        const dy = mouse.y - b.y;
+        const d2 = dx * dx + dy * dy;
+
+        if (d2 > radiusSq) continue;
+
+        const d = Math.sqrt(d2) + 0.0001;
+        const force = strength * (1 - d / radius) / (d2 + 1200);
+
+        b.vx += dx * force * dt;
+        b.vy += dy * force * dt;
+      }
+    }
+
+    function explode(cx, cy) {
+      const radius = 260;
+      const radiusSq = radius * radius;
+      const power = 650000;
+
+      for (let i = 0; i < balls.length; i++) {
+        const b = balls[i];
+        const dx = b.x - cx;
+        const dy = b.y - cy;
+        const d2 = dx * dx + dy * dy;
+
+        if (d2 > radiusSq) continue;
+
+        const d = Math.sqrt(d2) + 0.0001;
+        const falloff = 1 - d / radius;
+        const impulse = (power * falloff) / (d + 30);
+
+        b.vx += (dx / d) * impulse * b.invMass * 0.02;
+        b.vy += (dy / d) * impulse * b.invMass * 0.02;
+      }
+    }
+
+    function resolveWallCollisions() {
+      const damping = 0.995;
+
+      for (let i = 0; i < balls.length; i++) {
+        const b = balls[i];
+
+        if (b.x - b.r < 0) {
+          b.x = b.r;
+          b.vx = Math.abs(b.vx) * WALL_BOUNCE;
+        }
+
+        if (b.x + b.r > width) {
+          b.x = width - b.r;
+          b.vx = -Math.abs(b.vx) * WALL_BOUNCE;
+        }
+
+        if (b.y - b.r < 0) {
+          b.y = b.r;
+          b.vy = Math.abs(b.vy) * WALL_BOUNCE;
+        }
+
+        if (b.y + b.r > height) {
+          b.y = height - b.r;
+          b.vy = -Math.abs(b.vy) * WALL_BOUNCE;
+        }
+
+        b.vx *= damping;
+        b.vy *= damping;
+      }
+    }
+
+    function resolvePair(a, b) {
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const distSq = dx * dx + dy * dy;
+      const minDist = a.r + b.r;
+      const minDistSq = minDist * minDist;
+      const invMassA = a.invMass;
+      const invMassB = b.invMass;
+
+      if (distSq >= minDistSq) return;
+
+      const dist = Math.sqrt(distSq) + 0.0001;
+      const nx = dx / dist;
+      const ny = dy / dist;
+      const rvx = b.vx - a.vx;
+      const rvy = b.vy - a.vy;
+      const relVel = rvx * nx + rvy * ny;
+
+      if (relVel < 0) {
+        const j = (-(1 + BALL_BOUNCE) * relVel) / (invMassA + invMassB);
+        const px = j * nx;
+        const py = j * ny;
+
+        a.vx -= px * invMassA;
+        a.vy -= py * invMassA;
+        b.vx += px * invMassB;
+        b.vy += py * invMassB;
+
+        // Pequena fricção tangencial para reduzir tremores artificiais
+        const tx = -ny;
+        const ty = nx;
+        const rt = rvx * tx + rvy * ty;
+        const friction = 0.03;
+        const jt = -rt * friction;
+        a.vx += -tx * jt * invMassA;
+        a.vy += -ty * jt * invMassA;
+        b.vx += tx * jt * invMassB;
+        b.vy += ty * jt * invMassB;
+      }
+
+      // Correção de sobreposição para evitar grudar umas nas outras
+      const penetration = minDist - dist;
+      const correction = Math.max(penetration - 0.05, 0) / (invMassA + invMassB);
+      const corrX = nx * correction * 0.85;
+      const corrY = ny * correction * 0.85;
+
+      a.x -= corrX * invMassA;
+      a.y -= corrY * invMassA;
+      b.x += corrX * invMassB;
+      b.y += corrY * invMassB;
+    }
+
+    function resolveCollisions() {
+      const grid = new Map();
+
+      for (let i = 0; i < balls.length; i++) {
+        const b = balls[i];
+        const gx = Math.floor(b.x / GRID);
+        const gy = Math.floor(b.y / GRID);
+        const key = `${gx},${gy}`;
+
+        if (!grid.has(key)) grid.set(key, []);
+        grid.get(key).push(i);
+      }
+
+      for (let i = 0; i < balls.length; i++) {
+        const a = balls[i];
+        const gx = Math.floor(a.x / GRID);
+        const gy = Math.floor(a.y / GRID);
+
+        for (let ox = -1; ox <= 1; ox++) {
+          for (let oy = -1; oy <= 1; oy++) {
+            const key = `${gx + ox},${gy + oy}`;
+            const bucket = grid.get(key);
+            if (!bucket) continue;
+
+            for (let n = 0; n < bucket.length; n++) {
+              const j = bucket[n];
+              if (j <= i) continue;
+              resolvePair(a, balls[j]);
+            }
+          }
+        }
+      }
+    }
+
+    function step(dt) {
+      applyForces(dt);
+
+      for (let i = 0; i < balls.length; i++) {
+        const b = balls[i];
+
+        b.vy += GRAVITY * dt;
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+      }
+
+      resolveWallCollisions();
+      resolveCollisions();
+    }
+
+    function draw() {
+      const grad = ctx.createLinearGradient(0, 0, 0, height);
+      grad.addColorStop(0, 'rgba(26, 32, 65, 0.2)');
+      grad.addColorStop(1, 'rgba(10, 12, 24, 0.2)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, width, height);
+
+      for (let i = 0; i < balls.length; i++) {
+        const b = balls[i];
+        const g = ctx.createRadialGradient(
+          b.x - b.r * 0.35,
+          b.y - b.r * 0.35,
+          b.r * 0.15,
+          b.x,
+          b.y,
+          b.r,
+        );
+        const hslMatch = b.color.match(/hsl\((\d+),\s*(\d+)%?,\s*(\d+)%?\)/);
+
+        if (hslMatch) {
+          const h = Number(hslMatch[1]);
+          const s = Number(hslMatch[2]);
+          const l = Number(hslMatch[3]);
+          g.addColorStop(0, `hsla(${h}, ${s}%, ${Math.min(l + 24, 92)}%, 0.98)`);
+          g.addColorStop(1, `hsla(${h}, ${s}%, ${Math.max(l - 8, 14)}%, 0.98)`);
+          ctx.fillStyle = g;
+        } else {
+          ctx.fillStyle = b.color;
+        }
+
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function animate(now) {
+      const dt = Math.min((now - last) / 1000, 1 / 24);
+      last = now;
+      step(dt);
+      draw();
+      requestAnimationFrame(animate);
+    }
+
+    const spawnBtn = document.getElementById('spawn');
+
+    spawnBtn.addEventListener('click', () => spawnBalls(50));
+
+    canvas.addEventListener('pointerdown', (event) => {
+      mouse.down = true;
+      setMousePosition(event);
+      canvas.setPointerCapture(event.pointerId);
+      canvas.style.cursor = 'grabbing';
+    });
+
+    canvas.addEventListener('pointerup', (event) => {
+      mouse.down = false;
+      canvas.releasePointerCapture(event.pointerId);
+      canvas.style.cursor = 'grab';
+    });
+
+    canvas.addEventListener('pointercancel', () => {
+      mouse.down = false;
+      canvas.style.cursor = 'grab';
+    });
+
+    canvas.addEventListener('pointermove', setMousePosition);
+    canvas.addEventListener('click', (event) => {
+      setMousePosition(event);
+      explode(mouse.x, mouse.y);
+    });
+
+    window.addEventListener('resize', () => {
+      resize();
+      // Reposicionar bolinhas fora da tela, se houver
+      for (let i = 0; i < balls.length; i++) {
+        const b = balls[i];
+        b.x = Math.min(Math.max(b.r, b.x), width - b.r);
+        b.y = Math.min(Math.max(b.r, b.y), height - b.r);
+      }
+    });
+
+    let last = performance.now();
+    resize();
+    spawnBalls(60);
+    requestAnimationFrame((time) => {
+      last = time;
+      requestAnimationFrame(animate);
+    });
+  </script>
+</body>
+</html>

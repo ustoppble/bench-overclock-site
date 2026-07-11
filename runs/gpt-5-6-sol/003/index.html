@@ -1,0 +1,1032 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090d1d">
+  <title>Gravidade em Cores</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --panel: rgba(13, 18, 39, 0.72);
+      --panel-border: rgba(255, 255, 255, 0.12);
+      --text: #f7f8ff;
+      --muted: #a9b0ca;
+      --accent-a: #7c5cff;
+      --accent-b: #35d9ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 18% 15%, rgba(76, 73, 180, 0.22), transparent 34%),
+        radial-gradient(circle at 82% 28%, rgba(13, 165, 187, 0.13), transparent 30%),
+        linear-gradient(155deg, #10152d 0%, #090d1d 48%, #050814 100%);
+      color: var(--text);
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.65), transparent 75%);
+      pointer-events: none;
+      content: "";
+    }
+
+    #world {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    #world.is-attracting {
+      cursor: grabbing;
+    }
+
+    #world:focus-visible {
+      outline: 2px solid rgba(102, 224, 255, 0.75);
+      outline-offset: -5px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .hud {
+      position: fixed;
+      top: max(18px, env(safe-area-inset-top));
+      left: max(18px, env(safe-area-inset-left));
+      right: max(18px, env(safe-area-inset-right));
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 12px 12px 12px 16px;
+      border: 1px solid var(--panel-border);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28), inset 0 1px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(18px) saturate(135%);
+      -webkit-backdrop-filter: blur(18px) saturate(135%);
+      pointer-events: auto;
+    }
+
+    .brand {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #75f1ff, #7c5cff 58%, #ff4fa3);
+      box-shadow: 0 0 22px rgba(103, 108, 255, 0.5);
+    }
+
+    .brand-mark::after {
+      position: absolute;
+      top: 7px;
+      left: 8px;
+      width: 9px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.78);
+      transform: rotate(-28deg);
+      content: "";
+    }
+
+    .title-block {
+      min-width: 0;
+    }
+
+    h1 {
+      margin: 0;
+      overflow: hidden;
+      font-size: 15px;
+      font-weight: 720;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .count {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+    }
+
+    .hint {
+      flex: 1 1 auto;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .hint strong {
+      color: #e6e8f6;
+      font-weight: 650;
+    }
+
+    .mobile-hint {
+      display: none;
+    }
+
+    #add-balls {
+      min-height: 44px;
+      flex: 0 0 auto;
+      padding: 0 17px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--accent-a), #637cff 52%, var(--accent-b));
+      box-shadow: 0 8px 24px rgba(72, 91, 255, 0.32), inset 0 1px rgba(255, 255, 255, 0.28);
+      color: white;
+      cursor: pointer;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 720;
+      letter-spacing: -0.01em;
+      transition: transform 150ms ease, filter 150ms ease, box-shadow 150ms ease;
+      pointer-events: auto;
+    }
+
+    #add-balls:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+      box-shadow: 0 11px 28px rgba(72, 91, 255, 0.4), inset 0 1px rgba(255, 255, 255, 0.3);
+    }
+
+    #add-balls:active {
+      transform: translateY(1px) scale(0.98);
+    }
+
+    #add-balls:focus-visible {
+      outline: 3px solid rgba(102, 224, 255, 0.72);
+      outline-offset: 3px;
+    }
+
+    #add-balls:disabled {
+      background: rgba(255, 255, 255, 0.09);
+      box-shadow: none;
+      color: rgba(255, 255, 255, 0.55);
+      cursor: not-allowed;
+      filter: none;
+      transform: none;
+    }
+
+    .gesture-note {
+      position: fixed;
+      right: max(18px, env(safe-area-inset-right));
+      bottom: max(16px, env(safe-area-inset-bottom));
+      z-index: 2;
+      margin: 0;
+      color: rgba(213, 218, 239, 0.68);
+      font-size: 12px;
+      letter-spacing: 0.01em;
+      pointer-events: none;
+    }
+
+    @media (max-width: 640px) {
+      .hud {
+        top: max(10px, env(safe-area-inset-top));
+        left: max(10px, env(safe-area-inset-left));
+        right: max(10px, env(safe-area-inset-right));
+        flex-wrap: wrap;
+        gap: 10px 12px;
+        padding: 10px;
+      }
+
+      .brand {
+        flex: 1 1 auto;
+      }
+
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+      }
+
+      .hint {
+        order: 3;
+        flex-basis: 100%;
+        padding-bottom: 2px;
+        text-align: left;
+        white-space: normal;
+      }
+
+      .desktop-hint {
+        display: none;
+      }
+
+      .mobile-hint {
+        display: inline;
+      }
+
+      #add-balls {
+        min-height: 44px;
+        padding-inline: 14px;
+      }
+
+      .gesture-note {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #add-balls {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas
+    id="world"
+    role="application"
+    tabindex="0"
+    aria-describedby="interaction-help"
+    aria-keyshortcuts="Space Enter"
+    aria-label="Simulação interativa de bolinhas coloridas com gravidade e colisões"
+  >Seu navegador precisa oferecer suporte ao elemento Canvas.</canvas>
+
+  <p id="interaction-help" class="sr-only">
+    Segure ou mantenha o toque para atrair as bolinhas. Clique ou toque rapidamente para afastá-las.
+    Com a simulação em foco, Espaço explode e Enter atrai no centro da tela.
+  </p>
+
+  <header class="hud" aria-label="Controles da simulação">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <div class="title-block">
+        <h1>Gravidade em cores</h1>
+        <span id="ball-count" class="count" aria-live="polite">0 bolinhas</span>
+      </div>
+    </div>
+
+    <div class="hint">
+      <span class="desktop-hint">
+        <strong>Segure</strong> para atrair&nbsp;&nbsp;•&nbsp;&nbsp;<strong>Clique</strong> para explodir
+      </span>
+      <span class="mobile-hint">
+        <strong>Mantenha pressionado</strong> para atrair&nbsp;&nbsp;•&nbsp;&nbsp;<strong>Toque</strong> para explodir
+      </span>
+    </div>
+
+    <button id="add-balls" type="button" aria-label="Soltar 50 bolinhas novas">
+      + Soltar 50
+    </button>
+  </header>
+
+  <p class="gesture-note">Também funciona com toque e caneta</p>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const canvas = document.querySelector("#world");
+      const ctx = canvas.getContext("2d", { alpha: true });
+      const addButton = document.querySelector("#add-balls");
+      const countLabel = document.querySelector("#ball-count");
+
+      const INITIAL_BALLS = 60;
+      const MAX_BALLS = 560;
+      const FIXED_STEP = 1 / 120;
+      const MAX_STEPS_PER_FRAME = 4;
+      const GRAVITY = 980;
+      const AIR_DRAG = 0.055;
+      const WALL_BOUNCE = 0.78;
+      const FLOOR_FRICTION = 1.65;
+      const CELL_SIZE = 30;
+      const MAX_SPEED = 780;
+      const ATTRACTION_STRENGTH = 2450;
+      const EXPLOSION_SPEED = 1180;
+      const SHORT_CLICK_MS = 210;
+      const SHORT_CLICK_DISTANCE = 8;
+      const hues = [190, 221, 252, 278, 318, 345, 12, 39, 63, 157];
+
+      const balls = [];
+      const waves = [];
+      const spriteCache = new Map();
+      const collisionGrid = new Map();
+      const pointer = {
+        x: 0,
+        y: 0,
+        startX: 0,
+        startY: 0,
+        startClientX: 0,
+        startClientY: 0,
+        startTime: 0,
+        id: null,
+        down: false,
+        attracting: false,
+        inside: false
+      };
+
+      let width = 1;
+      let height = 1;
+      let dpr = 1;
+      let nextBallId = 1;
+      let accumulator = 0;
+      let previousTime = performance.now();
+      let reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      window.matchMedia("(prefers-reduced-motion: reduce)").addEventListener?.("change", (event) => {
+        reducedMotion = event.matches;
+      });
+
+      const randomBetween = (min, max) => min + Math.random() * (max - min);
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+      function resizeCanvas() {
+        const oldWidth = width;
+        const oldHeight = height;
+        width = Math.max(1, window.innerWidth);
+        height = Math.max(1, window.innerHeight);
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const scaleX = oldWidth > 1 ? width / oldWidth : 1;
+        const scaleY = oldHeight > 1 ? height / oldHeight : 1;
+
+        for (const ball of balls) {
+          ball.x *= scaleX;
+          ball.y *= scaleY;
+          ball.vx *= scaleX;
+          ball.vy *= scaleY;
+          ball.x = clamp(ball.x, ball.radius, Math.max(ball.radius, width - ball.radius));
+          if (ball.entered) {
+            ball.y = clamp(ball.y, ball.radius, Math.max(ball.radius, height - ball.radius));
+          } else {
+            ball.y = Math.min(ball.y, height - ball.radius);
+          }
+          ball.previousX = ball.x;
+          ball.previousY = ball.y;
+        }
+      }
+
+      function makeBall(x, y, entered = true, radius = Math.round(randomBetween(7, 13))) {
+        const hue = hues[Math.floor(Math.random() * hues.length)];
+        const mass = radius * radius;
+
+        return {
+          id: nextBallId++,
+          x,
+          y,
+          previousX: x,
+          previousY: y,
+          vx: randomBetween(-75, 75),
+          vy: randomBetween(-20, 55),
+          radius,
+          mass,
+          inverseMass: 1 / mass,
+          restitution: randomBetween(0.82, 0.9),
+          hue,
+          entered
+        };
+      }
+
+      function isPositionFree(x, y, radius) {
+        for (const other of balls) {
+          const dx = other.x - x;
+          const dy = other.y - y;
+          const distance = radius + other.radius + 3;
+          if (dx * dx + dy * dy < distance * distance) return false;
+        }
+        return true;
+      }
+
+      function seedBalls(amount) {
+        const topPadding = Math.min(130, height * 0.2);
+        const availableBottom = Math.max(topPadding + 30, height * 0.64);
+
+        for (let i = 0; i < amount; i++) {
+          let candidate = null;
+
+          for (let attempt = 0; attempt < 35; attempt++) {
+            const radius = Math.round(randomBetween(7, 13));
+            const x = randomBetween(radius + 4, Math.max(radius + 5, width - radius - 4));
+            const y = randomBetween(topPadding, Math.max(topPadding + 1, availableBottom));
+            if (isPositionFree(x, y, radius)) {
+              candidate = { x, y, radius };
+              break;
+            }
+          }
+
+          const x = candidate?.x ?? randomBetween(14, Math.max(15, width - 14));
+          const y = candidate?.y ?? randomBetween(topPadding, Math.max(topPadding + 1, availableBottom));
+          const ball = makeBall(x, y, true, candidate?.radius);
+          ball.vy = randomBetween(-25, 90);
+          balls.push(ball);
+        }
+
+        updateCounter();
+      }
+
+      function dropBalls(amount) {
+        if (balls.length + amount > MAX_BALLS) return;
+
+        const columns = clamp(Math.floor(width / 42), 5, 12);
+        const spacingX = width / columns;
+        let spawnTop = -24;
+
+        for (const ball of balls) {
+          if (!ball.entered) {
+            spawnTop = Math.min(spawnTop, ball.y - ball.radius - 22);
+          }
+        }
+
+        for (let i = 0; i < amount; i++) {
+          const column = i % columns;
+          const row = Math.floor(i / columns);
+          const x = clamp(
+            (column + 0.5) * spacingX + randomBetween(-5, 5),
+            14,
+            Math.max(14, width - 14)
+          );
+          const y = spawnTop - row * 31 - randomBetween(0, 8);
+          const ball = makeBall(x, y, false);
+          ball.vx = randomBetween(-35, 35);
+          ball.vy = randomBetween(35, 105);
+          balls.push(ball);
+        }
+
+        updateCounter();
+      }
+
+      function updateCounter() {
+        countLabel.textContent = `${balls.length} bolinhas`;
+        const reachedLimit = balls.length >= MAX_BALLS;
+        addButton.disabled = reachedLimit;
+        if (reachedLimit) {
+          addButton.textContent = "Limite atingido";
+          addButton.setAttribute("aria-label", `Limite de ${MAX_BALLS} bolinhas atingido`);
+        }
+      }
+
+      function pointerPosition(event) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: clamp(event.clientX - rect.left, 0, width),
+          y: clamp(event.clientY - rect.top, 0, height)
+        };
+      }
+
+      function attractionRadius() {
+        return clamp(Math.min(width, height) * 0.34, 190, 275);
+      }
+
+      function explosionRadius() {
+        return clamp(Math.min(width, height) * 0.42, 225, 330);
+      }
+
+      function explode(x, y) {
+        const radius = explosionRadius();
+
+        for (const ball of balls) {
+          let dx = ball.x - x;
+          let dy = ball.y - y;
+          let distance = Math.hypot(dx, dy);
+          if (distance >= radius) continue;
+
+          if (distance < 0.001) {
+            const angle = Math.random() * Math.PI * 2;
+            dx = Math.cos(angle);
+            dy = Math.sin(angle);
+            distance = 1;
+          }
+
+          const falloff = 1 - distance / radius;
+          const impulse = EXPLOSION_SPEED * Math.pow(falloff, 1.45);
+          ball.vx += (dx / distance) * impulse;
+          ball.vy += (dy / distance) * impulse;
+          limitVelocity(ball);
+        }
+
+        waves.push({ x, y, age: 0, duration: reducedMotion ? 0.28 : 0.52 });
+      }
+
+      function applyAttraction(ball, dt) {
+        if (!pointer.attracting) return;
+
+        let dx = pointer.x - ball.x;
+        let dy = pointer.y - ball.y;
+        const distance = Math.hypot(dx, dy);
+        const radius = attractionRadius();
+        if (distance >= radius || distance < 0.001) return;
+
+        const falloff = 1 - distance / radius;
+        const acceleration = ATTRACTION_STRENGTH * falloff * falloff;
+        dx /= distance;
+        dy /= distance;
+        ball.vx += dx * acceleration * dt;
+        ball.vy += dy * acceleration * dt;
+
+        const localDamping = Math.max(0, 1 - falloff * 0.5 * dt);
+        ball.vx *= localDamping;
+        ball.vy *= localDamping;
+      }
+
+      function limitVelocity(ball) {
+        const speedSquared = ball.vx * ball.vx + ball.vy * ball.vy;
+        if (speedSquared <= MAX_SPEED * MAX_SPEED) return;
+
+        const scale = MAX_SPEED / Math.sqrt(speedSquared);
+        ball.vx *= scale;
+        ball.vy *= scale;
+      }
+
+      function integrate(ball, dt) {
+        ball.previousX = ball.x;
+        ball.previousY = ball.y;
+
+        applyAttraction(ball, dt);
+        ball.vy += GRAVITY * dt;
+
+        const damping = Math.exp(-AIR_DRAG * dt);
+        ball.vx *= damping;
+        ball.vy *= damping;
+        limitVelocity(ball);
+
+        ball.x += ball.vx * dt;
+        ball.y += ball.vy * dt;
+
+        if (!ball.entered && ball.y >= ball.radius) {
+          ball.entered = true;
+        }
+      }
+
+      function solvePair(a, b) {
+        let dx = b.x - a.x;
+        let dy = b.y - a.y;
+        const minimumDistance = a.radius + b.radius;
+        const distanceSquared = dx * dx + dy * dy;
+        if (distanceSquared >= minimumDistance * minimumDistance) return;
+
+        let distance = Math.sqrt(distanceSquared);
+        if (distance < 0.0001) {
+          const angle = ((a.id * 47 + b.id * 31) % 360) * Math.PI / 180;
+          dx = Math.cos(angle);
+          dy = Math.sin(angle);
+          distance = 1;
+        }
+
+        const normalX = dx / distance;
+        const normalY = dy / distance;
+        const inverseMassSum = a.inverseMass + b.inverseMass;
+        const penetration = minimumDistance - distance;
+        const correction = Math.max(penetration - 0.01, 0) * 0.82 / inverseMassSum;
+
+        a.x -= normalX * correction * a.inverseMass;
+        a.y -= normalY * correction * a.inverseMass;
+        b.x += normalX * correction * b.inverseMass;
+        b.y += normalY * correction * b.inverseMass;
+
+        let relativeX = b.vx - a.vx;
+        let relativeY = b.vy - a.vy;
+        const velocityAlongNormal = relativeX * normalX + relativeY * normalY;
+        if (velocityAlongNormal >= 0) return;
+
+        const restitution = Math.abs(velocityAlongNormal) < 42
+          ? 0
+          : Math.min(a.restitution, b.restitution);
+        const normalImpulse = -(1 + restitution) * velocityAlongNormal / inverseMassSum;
+        const impulseX = normalImpulse * normalX;
+        const impulseY = normalImpulse * normalY;
+
+        a.vx -= impulseX * a.inverseMass;
+        a.vy -= impulseY * a.inverseMass;
+        b.vx += impulseX * b.inverseMass;
+        b.vy += impulseY * b.inverseMass;
+
+        relativeX = b.vx - a.vx;
+        relativeY = b.vy - a.vy;
+        const updatedNormalVelocity = relativeX * normalX + relativeY * normalY;
+        let tangentX = relativeX - updatedNormalVelocity * normalX;
+        let tangentY = relativeY - updatedNormalVelocity * normalY;
+        const tangentLength = Math.hypot(tangentX, tangentY);
+
+        if (tangentLength > 0.0001) {
+          tangentX /= tangentLength;
+          tangentY /= tangentLength;
+          let frictionImpulse = -(relativeX * tangentX + relativeY * tangentY) / inverseMassSum;
+          const maximumFriction = normalImpulse * 0.075;
+          frictionImpulse = clamp(frictionImpulse, -maximumFriction, maximumFriction);
+
+          a.vx -= tangentX * frictionImpulse * a.inverseMass;
+          a.vy -= tangentY * frictionImpulse * a.inverseMass;
+          b.vx += tangentX * frictionImpulse * b.inverseMass;
+          b.vy += tangentY * frictionImpulse * b.inverseMass;
+        }
+      }
+
+      function cellKey(x, y) {
+        const positiveX = x >= 0 ? x * 2 : -x * 2 - 1;
+        const positiveY = y >= 0 ? y * 2 : -y * 2 - 1;
+        const sum = positiveX + positiveY;
+        return sum * (sum + 1) / 2 + positiveY;
+      }
+
+      function solveBallCollisions() {
+        collisionGrid.clear();
+
+        for (const ball of balls) {
+          const cellX = Math.floor(ball.x / CELL_SIZE);
+          const cellY = Math.floor(ball.y / CELL_SIZE);
+
+          for (let offsetY = -1; offsetY <= 1; offsetY++) {
+            for (let offsetX = -1; offsetX <= 1; offsetX++) {
+              const neighbors = collisionGrid.get(cellKey(cellX + offsetX, cellY + offsetY));
+              if (!neighbors) continue;
+              for (const other of neighbors) solvePair(other, ball);
+            }
+          }
+
+          const finalCellX = Math.floor(ball.x / CELL_SIZE);
+          const finalCellY = Math.floor(ball.y / CELL_SIZE);
+          const key = cellKey(finalCellX, finalCellY);
+          const bucket = collisionGrid.get(key);
+          if (bucket) bucket.push(ball);
+          else collisionGrid.set(key, [ball]);
+        }
+      }
+
+      function solveWalls(ball, dt) {
+        const radius = ball.radius;
+
+        if (ball.x - radius < 0) {
+          ball.x = radius;
+          if (ball.vx < 0) ball.vx = -ball.vx * WALL_BOUNCE;
+          ball.vy *= 0.995;
+        } else if (ball.x + radius > width) {
+          ball.x = width - radius;
+          if (ball.vx > 0) ball.vx = -ball.vx * WALL_BOUNCE;
+          ball.vy *= 0.995;
+        }
+
+        if (ball.entered && ball.y - radius < 0) {
+          ball.y = radius;
+          if (ball.vy < 0) ball.vy = -ball.vy * WALL_BOUNCE;
+          ball.vx *= 0.995;
+        }
+
+        if (ball.y + radius > height) {
+          ball.y = height - radius;
+          if (ball.vy > 0) {
+            ball.vy = Math.abs(ball.vy) < 42 ? 0 : -ball.vy * WALL_BOUNCE;
+          }
+          ball.vx *= Math.exp(-FLOOR_FRICTION * dt);
+        }
+      }
+
+      function simulate(dt) {
+        for (const ball of balls) integrate(ball, dt);
+
+        for (let iteration = 0; iteration < 2; iteration++) {
+          solveBallCollisions();
+          for (const ball of balls) solveWalls(ball, dt);
+        }
+
+        for (let i = waves.length - 1; i >= 0; i--) {
+          waves[i].age += dt;
+          if (waves[i].age >= waves[i].duration) waves.splice(i, 1);
+        }
+      }
+
+      function ballSprite(radius, hue) {
+        const key = `${radius}-${hue}`;
+        if (spriteCache.has(key)) return spriteCache.get(key);
+
+        const resolution = 2;
+        const padding = 4;
+        const logicalSize = radius * 2 + padding * 2;
+        const sprite = document.createElement("canvas");
+        sprite.width = logicalSize * resolution;
+        sprite.height = logicalSize * resolution;
+        const spriteContext = sprite.getContext("2d");
+        spriteContext.scale(resolution, resolution);
+
+        const center = radius + padding;
+        const gradient = spriteContext.createRadialGradient(
+          center - radius * 0.36,
+          center - radius * 0.42,
+          radius * 0.08,
+          center,
+          center,
+          radius * 1.1
+        );
+        gradient.addColorStop(0, `hsl(${hue} 100% 84%)`);
+        gradient.addColorStop(0.28, `hsl(${hue} 92% 65%)`);
+        gradient.addColorStop(0.72, `hsl(${hue} 86% 53%)`);
+        gradient.addColorStop(1, `hsl(${hue} 78% 34%)`);
+
+        spriteContext.beginPath();
+        spriteContext.arc(center, center, radius, 0, Math.PI * 2);
+        spriteContext.fillStyle = gradient;
+        spriteContext.fill();
+        spriteContext.strokeStyle = "rgba(255, 255, 255, 0.26)";
+        spriteContext.lineWidth = 0.8;
+        spriteContext.stroke();
+
+        spriteContext.beginPath();
+        spriteContext.ellipse(
+          center - radius * 0.32,
+          center - radius * 0.38,
+          radius * 0.19,
+          radius * 0.11,
+          -0.55,
+          0,
+          Math.PI * 2
+        );
+        spriteContext.fillStyle = "rgba(255, 255, 255, 0.58)";
+        spriteContext.fill();
+
+        const result = { canvas: sprite, size: logicalSize, offset: radius + padding };
+        spriteCache.set(key, result);
+        return result;
+      }
+
+      function drawWaves() {
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+
+        for (const wave of waves) {
+          const progress = clamp(wave.age / wave.duration, 0, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const radius = 18 + eased * explosionRadius();
+          const opacity = (1 - progress) * (reducedMotion ? 0.38 : 0.62);
+
+          ctx.beginPath();
+          ctx.arc(wave.x, wave.y, radius, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(112, 220, 255, ${opacity})`;
+          ctx.lineWidth = Math.max(1, 6 * (1 - progress));
+          ctx.stroke();
+
+          if (!reducedMotion) {
+            ctx.beginPath();
+            ctx.arc(wave.x, wave.y, radius * 0.72, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(173, 100, 255, ${opacity * 0.58})`;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+        }
+
+        ctx.restore();
+      }
+
+      function drawPointer(time) {
+        if (!pointer.inside && !pointer.down) return;
+
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+
+        if (pointer.attracting) {
+          const pulse = reducedMotion ? 0 : Math.sin(time * 0.008) * 4;
+          const radius = attractionRadius();
+
+          ctx.beginPath();
+          ctx.arc(pointer.x, pointer.y, radius, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(109, 202, 255, 0.11)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(pointer.x, pointer.y, 24 + pulse, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(105, 119, 255, 0.09)";
+          ctx.fill();
+          ctx.strokeStyle = "rgba(119, 221, 255, 0.72)";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        } else if (pointer.down) {
+          const progress = clamp((time - pointer.startTime) / SHORT_CLICK_MS, 0, 1);
+          ctx.beginPath();
+          ctx.arc(pointer.x, pointer.y, 16, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
+          ctx.strokeStyle = "rgba(119, 221, 255, 0.72)";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(pointer.x, pointer.y, 4, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(218, 246, 255, 0.82)";
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.arc(pointer.x, pointer.y, 5, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(218, 246, 255, 0.72)";
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(pointer.x, pointer.y, 13, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(175, 217, 255, 0.25)";
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        ctx.restore();
+      }
+
+      function draw(interpolation, time) {
+        ctx.clearRect(0, 0, width, height);
+        drawWaves();
+
+        for (const ball of balls) {
+          const x = ball.previousX + (ball.x - ball.previousX) * interpolation;
+          const y = ball.previousY + (ball.y - ball.previousY) * interpolation;
+          const sprite = ballSprite(ball.radius, ball.hue);
+
+          ctx.drawImage(
+            sprite.canvas,
+            x - sprite.offset,
+            y - sprite.offset,
+            sprite.size,
+            sprite.size
+          );
+        }
+
+        drawPointer(time);
+      }
+
+      function frame(time) {
+        const elapsed = Math.min((time - previousTime) / 1000, 1 / 30);
+        previousTime = time;
+        accumulator += Math.max(0, elapsed);
+
+        if (pointer.down && !pointer.attracting && time - pointer.startTime > SHORT_CLICK_MS) {
+          pointer.attracting = true;
+          canvas.classList.add("is-attracting");
+        }
+
+        let steps = 0;
+        while (accumulator >= FIXED_STEP && steps < MAX_STEPS_PER_FRAME) {
+          simulate(FIXED_STEP);
+          accumulator -= FIXED_STEP;
+          steps++;
+        }
+
+        if (steps === MAX_STEPS_PER_FRAME && accumulator >= FIXED_STEP) {
+          accumulator = 0;
+        }
+
+        draw(accumulator / FIXED_STEP, time);
+        requestAnimationFrame(frame);
+      }
+
+      canvas.addEventListener("pointerenter", (event) => {
+        pointer.inside = true;
+        const position = pointerPosition(event);
+        pointer.x = position.x;
+        pointer.y = position.y;
+      });
+
+      canvas.addEventListener("pointermove", (event) => {
+        if (pointer.down && event.pointerId !== pointer.id) return;
+        const position = pointerPosition(event);
+        pointer.x = position.x;
+        pointer.y = position.y;
+        pointer.inside = true;
+      });
+
+      canvas.addEventListener("pointerdown", (event) => {
+        if (pointer.down || !event.isPrimary || event.button !== 0) return;
+        event.preventDefault();
+        const position = pointerPosition(event);
+        pointer.x = position.x;
+        pointer.y = position.y;
+        pointer.startX = position.x;
+        pointer.startY = position.y;
+        pointer.startClientX = event.clientX;
+        pointer.startClientY = event.clientY;
+        pointer.startTime = performance.now();
+        pointer.id = event.pointerId;
+        pointer.down = true;
+        pointer.attracting = false;
+        pointer.inside = true;
+        canvas.setPointerCapture?.(event.pointerId);
+      });
+
+      function clearPointerGesture() {
+        pointer.down = false;
+        pointer.attracting = false;
+        pointer.id = null;
+        canvas.classList.remove("is-attracting");
+      }
+
+      function finishPointer(event, cancelled = false) {
+        if (!pointer.down || event.pointerId !== pointer.id) return;
+        const position = pointerPosition(event);
+        pointer.x = position.x;
+        pointer.y = position.y;
+
+        const duration = performance.now() - pointer.startTime;
+        const movement = Math.hypot(
+          event.clientX - pointer.startClientX,
+          event.clientY - pointer.startClientY
+        );
+        const isShortClick = !cancelled && duration <= SHORT_CLICK_MS && movement <= SHORT_CLICK_DISTANCE;
+
+        clearPointerGesture();
+        if (isShortClick) explode(pointer.x, pointer.y);
+        if (event.pointerType === "touch") pointer.inside = false;
+      }
+
+      canvas.addEventListener("pointerup", (event) => finishPointer(event));
+      canvas.addEventListener("pointercancel", (event) => finishPointer(event, true));
+      canvas.addEventListener("lostpointercapture", (event) => {
+        if (pointer.down && event.pointerId === pointer.id) clearPointerGesture();
+      });
+      canvas.addEventListener("contextmenu", (event) => event.preventDefault());
+      canvas.addEventListener("pointerleave", () => {
+        if (!pointer.down) pointer.inside = false;
+      });
+
+      canvas.addEventListener("keydown", (event) => {
+        if (event.code !== "Space" && event.code !== "Enter") return;
+        event.preventDefault();
+
+        if (!pointer.inside) {
+          pointer.x = width / 2;
+          pointer.y = height / 2;
+          pointer.inside = true;
+        }
+
+        if (event.code === "Space" && !event.repeat) {
+          explode(pointer.x, pointer.y);
+        } else if (event.code === "Enter" && !event.repeat && !pointer.down) {
+          pointer.id = "keyboard";
+          pointer.down = true;
+          pointer.attracting = true;
+          pointer.startTime = performance.now();
+          canvas.classList.add("is-attracting");
+        }
+      });
+
+      canvas.addEventListener("keyup", (event) => {
+        if (event.code === "Enter" && pointer.id === "keyboard") {
+          event.preventDefault();
+          clearPointerGesture();
+        }
+      });
+
+      canvas.addEventListener("blur", () => {
+        if (pointer.id === "keyboard") clearPointerGesture();
+      });
+
+      addButton.addEventListener("click", () => dropBalls(50));
+      window.addEventListener("resize", resizeCanvas, { passive: true });
+      window.addEventListener("blur", () => {
+        clearPointerGesture();
+      });
+
+      resizeCanvas();
+      seedBalls(INITIAL_BALLS);
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fafafc">
+  <meta name="description" content="Uma experiência de produtos inspirada no design da Apple.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231d1d1f'/%3E%3Ccircle cx='16' cy='17' r='8' fill='white'/%3E%3Cellipse cx='20' cy='7' rx='4' ry='2' transform='rotate(-35 20 7)' fill='white'/%3E%3C/svg%3E">
+  <title>Apple — Inovação para todos</title>
+  <script>document.documentElement.classList.add('js');</script>
+  <style>
+    :root {
+      --nav-height: 44px;
+      --ink: #1d1d1f;
+      --muted: #6e6e73;
+      --blue: #06c;
+      --blue-hover: #0077ed;
+      --hairline: rgba(0, 0, 0, .14);
+      --page: #fff;
+      --footer: #f5f5f7;
+      color-scheme: light;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--nav-height) + 12px);
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background: var(--page);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    body.overlay-open { overflow: hidden; }
+
+    button, input { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    a { color: inherit; }
+
+    .visually-hidden {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      padding: 0 !important;
+      margin: -1px !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .skip-link {
+      position: fixed;
+      z-index: 2000;
+      top: 8px;
+      left: 50%;
+      padding: 8px 14px;
+      border-radius: 999px;
+      color: #fff;
+      background: #1d1d1f;
+      font-size: 13px;
+      text-decoration: none;
+      transform: translate(-50%, -70px);
+      transition: transform .2s ease;
+    }
+
+    .skip-link:focus { transform: translate(-50%, 0); }
+
+    /* Global navigation */
+    .global-nav {
+      position: fixed;
+      z-index: 1000;
+      inset: 0 0 auto;
+      height: var(--nav-height);
+      color: rgba(0, 0, 0, .82);
+      background: rgba(250, 250, 252, .82);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid transparent;
+      transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .global-nav.is-scrolled {
+      background: rgba(250, 250, 252, .92);
+      border-bottom-color: rgba(0, 0, 0, .06);
+      box-shadow: 0 1px 10px rgba(0, 0, 0, .025);
+    }
+
+    .nav-content {
+      position: relative;
+      max-width: 1024px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-link,
+    .icon-button,
+    .menu-button {
+      position: relative;
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .brand-link { width: 32px; }
+    .brand-link svg { width: 17px; height: 21px; display: block; }
+
+    .nav-links {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+
+    .nav-link {
+      padding: 0 9px;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -.01em;
+      opacity: .84;
+      transition: opacity .2s ease;
+    }
+
+    .nav-link:hover { opacity: 1; }
+
+    .nav-actions { display: flex; align-items: center; }
+    .icon-button { width: 36px; }
+    .icon-button svg { width: 17px; height: 17px; display: block; }
+
+    .bag-count {
+      position: absolute;
+      top: 4px;
+      right: 0;
+      min-width: 14px;
+      height: 14px;
+      padding: 0 3px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      border-radius: 99px;
+      background: #1d1d1f;
+      color: #fff;
+      font-size: 9px;
+      line-height: 1;
+    }
+
+    .bag-count.has-items { display: inline-flex; }
+
+    .menu-button {
+      width: 38px;
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .menu-button span {
+      width: 15px;
+      height: 1px;
+      border-radius: 1px;
+      background: currentColor;
+      transform-origin: center;
+      transition: transform .25s ease, opacity .2s ease;
+    }
+
+    .menu-button[aria-expanded="true"] span:first-child { transform: translateY(3px) rotate(45deg); }
+    .menu-button[aria-expanded="true"] span:last-child { transform: translateY(-3px) rotate(-45deg); }
+
+    .nav-link:focus-visible,
+    .icon-button:focus-visible,
+    .menu-button:focus-visible,
+    .cta:focus-visible,
+    .mobile-link:focus-visible,
+    .footer-link:focus-visible,
+    .drawer-action:focus-visible,
+    .close-button:focus-visible {
+      outline: 2px solid #0071e3;
+      outline-offset: 2px;
+      border-radius: 5px;
+    }
+
+    /* Search and bag overlays */
+    .page-scrim {
+      position: fixed;
+      z-index: 800;
+      inset: var(--nav-height) 0 0;
+      background: rgba(0, 0, 0, .36);
+      -webkit-backdrop-filter: blur(3px);
+      backdrop-filter: blur(3px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .28s ease, visibility 0s linear .28s;
+    }
+
+    .page-scrim.is-open {
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
+    .search-panel {
+      position: fixed;
+      z-index: 900;
+      top: var(--nav-height);
+      left: 0;
+      right: 0;
+      background: #fff;
+      transform: translateY(-110%);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform .35s cubic-bezier(.22, 1, .36, 1), opacity .25s ease, visibility 0s linear .35s;
+    }
+
+    .search-panel.is-open {
+      transform: translateY(0);
+      opacity: 1;
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
+    .search-inner {
+      width: min(680px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 34px 0 46px;
+    }
+
+    .search-field-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .search-field-wrap svg { flex: 0 0 auto; width: 24px; height: 24px; color: #6e6e73; }
+
+    .search-input {
+      width: 100%;
+      padding: 4px 0 7px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: clamp(24px, 4vw, 32px);
+      font-weight: 600;
+      letter-spacing: -.035em;
+    }
+
+    .search-input::placeholder { color: #86868b; opacity: 1; }
+
+    .quick-links { margin: 26px 0 0 38px; }
+    .quick-label { margin: 0 0 10px; color: #6e6e73; font-size: 12px; }
+    .quick-links a {
+      display: block;
+      width: max-content;
+      padding: 5px 0;
+      color: #333336;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .quick-links a:hover { color: var(--blue); }
+
+    .bag-panel {
+      position: fixed;
+      z-index: 910;
+      top: calc(var(--nav-height) + 8px);
+      right: max(16px, calc((100vw - 1024px) / 2));
+      width: min(360px, calc(100vw - 24px));
+      padding: 28px;
+      border: 1px solid rgba(0, 0, 0, .09);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .98);
+      box-shadow: 0 18px 60px rgba(0, 0, 0, .16);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-12px) scale(.98);
+      transform-origin: top right;
+      transition: opacity .22s ease, transform .3s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .3s;
+    }
+
+    .bag-panel.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+      transition-delay: 0s;
+    }
+
+    .bag-panel h2 { margin: 0; font-size: 24px; letter-spacing: -.035em; }
+    .bag-panel p { margin: 12px 0 22px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .drawer-action {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 0;
+      color: #424245;
+      font-size: 14px;
+      text-decoration: none;
+      border-top: 1px solid #e8e8ed;
+    }
+    .drawer-action svg { width: 17px; height: 17px; color: #86868b; }
+    .drawer-action span { color: var(--blue); text-decoration: underline; text-underline-offset: 2px; }
+
+    .mobile-menu {
+      position: fixed;
+      z-index: 920;
+      inset: var(--nav-height) 0 0;
+      padding: 28px 46px 48px;
+      overflow-y: auto;
+      background: #fafafc;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-18px);
+      transition: opacity .22s ease, transform .32s cubic-bezier(.22, 1, .36, 1), visibility 0s linear .32s;
+    }
+
+    .mobile-menu.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+      transition-delay: 0s;
+    }
+
+    .mobile-link {
+      display: block;
+      width: max-content;
+      padding: 7px 0;
+      color: #1d1d1f;
+      font-size: 27px;
+      font-weight: 600;
+      letter-spacing: -.03em;
+      text-decoration: none;
+    }
+
+    main { padding-top: var(--nav-height); }
+
+    .announcement {
+      position: relative;
+      z-index: 1;
+      min-height: 46px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #fff;
+      color: #1d1d1f;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .announcement a {
+      color: var(--blue);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .announcement a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      height: min(790px, calc(100svh - var(--nav-height)));
+      min-height: 680px;
+      overflow: hidden;
+      isolation: isolate;
+      background:
+        radial-gradient(circle at 50% 76%, rgba(178, 200, 255, .52) 0, rgba(230, 235, 255, .33) 28%, transparent 55%),
+        linear-gradient(180deg, #f7f7fa 0%, #f3f3f8 45%, #fcfcff 100%);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      width: 560px;
+      height: 560px;
+      left: 50%;
+      bottom: -300px;
+      border-radius: 50%;
+      background: rgba(88, 110, 255, .18);
+      filter: blur(70px);
+      transform: translateX(-50%);
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 3;
+      padding: 64px 20px 0;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: #6e6e73;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: .005em;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(48px, 6vw, 72px);
+      line-height: .98;
+      font-weight: 600;
+      letter-spacing: -.045em;
+    }
+
+    .hero-subtitle {
+      margin: 17px auto 0;
+      color: #3a3a3c;
+      font-size: clamp(21px, 2.2vw, 28px);
+      line-height: 1.14;
+      font-weight: 400;
+      letter-spacing: -.025em;
+    }
+
+    .cta-row {
+      margin-top: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      margin-block: -8px;
+      padding-block: 8px;
+      color: var(--blue);
+      font-size: 21px;
+      line-height: 1.35;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .cta .chevron {
+      margin-left: 5px;
+      font-size: .86em;
+      transition: transform .22s ease;
+    }
+
+    .cta:hover { color: var(--blue-hover); text-decoration: underline; text-underline-offset: 4px; }
+    .cta:hover .chevron { transform: translateX(3px); }
+
+    .hero-art {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: -14px;
+      width: min(1060px, 116vw);
+      height: auto;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 34px 36px rgba(30, 32, 76, .16));
+      transition: transform .9s cubic-bezier(.2, .75, .25, 1), filter .6s ease;
+    }
+
+    .hero:hover .hero-art {
+      transform: translateX(-50%) translateY(-5px) scale(1.008);
+      filter: drop-shadow(0 39px 44px rgba(30, 32, 76, .21));
+    }
+
+    /* Product grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    .product-card {
+      position: relative;
+      height: 600px;
+      overflow: hidden;
+      isolation: isolate;
+      background: #f5f5f7;
+    }
+
+    .product-card.dark { color: #f5f5f7; background: #000; }
+
+    .card-copy {
+      position: relative;
+      z-index: 4;
+      padding: 49px 24px 0;
+      text-align: center;
+    }
+
+    .product-card h2 {
+      margin: 0;
+      font-size: clamp(34px, 3.1vw, 44px);
+      line-height: 1.05;
+      font-weight: 600;
+      letter-spacing: -.045em;
+    }
+
+    .product-card .brand-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .product-card .brand-title svg { width: 31px; height: 37px; }
+
+    .product-card .kicker {
+      margin-top: 5px;
+      color: #e54d15;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .product-card .subtitle {
+      margin: 10px auto 0;
+      max-width: 510px;
+      color: #3a3a3c;
+      font-size: clamp(18px, 1.55vw, 21px);
+      line-height: 1.25;
+      letter-spacing: -.02em;
+    }
+
+    .product-card.dark .subtitle { color: #f5f5f7; }
+    .product-card.dark .cta { color: #2997ff; }
+    .product-card.dark .cta:hover { color: #6cb7ff; }
+    .product-card .cta-row { margin-top: 14px; gap: 24px; }
+    .product-card .cta { font-size: 17px; }
+
+    .card-art {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      bottom: 0;
+      width: 100%;
+      height: 64%;
+      transform: translateX(-50%);
+      transition: transform .75s cubic-bezier(.2, .75, .25, 1), filter .55s ease;
+    }
+
+    .product-card:hover .card-art { transform: translateX(-50%) translateY(-4px) scale(1.015); }
+
+    .card-copy a { position: relative; z-index: 5; }
+
+    /* Per-product art direction */
+    .mac-card {
+      background:
+        radial-gradient(circle at 50% 78%, rgba(128, 193, 255, .23), transparent 42%),
+        linear-gradient(180deg, #f5fbff 0%, #f2f8fc 100%);
+    }
+    .mac-card .card-art { bottom: -8px; height: 62%; width: 96%; }
+
+    .watch-card {
+      background:
+        radial-gradient(circle at 50% 67%, rgba(113, 62, 188, .42), transparent 40%),
+        linear-gradient(160deg, #08070b 0%, #15111d 56%, #050506 100%);
+    }
+    .watch-card .card-art { height: 65%; }
+
+    .ipad-card {
+      background:
+        radial-gradient(circle at 50% 76%, rgba(29, 86, 255, .34), transparent 42%),
+        linear-gradient(180deg, #030306 0%, #0a0710 100%);
+    }
+    .ipad-card .card-art { width: 96%; height: 63%; bottom: -3px; }
+
+    .airpods-card {
+      background:
+        radial-gradient(circle at 50% 72%, rgba(188, 204, 222, .5), transparent 43%),
+        linear-gradient(180deg, #fbfbfd, #eef1f5);
+    }
+    .airpods-card .card-art { height: 62%; width: 94%; }
+
+    .ultra-card {
+      background:
+        radial-gradient(circle at 50% 78%, rgba(255, 115, 35, .26), transparent 42%),
+        linear-gradient(145deg, #0b0b0c 0%, #191714 58%, #080808 100%);
+    }
+    .ultra-card .card-art { height: 64%; }
+
+    .trade-card {
+      background:
+        radial-gradient(circle at 50% 72%, rgba(76, 201, 133, .23), transparent 42%),
+        linear-gradient(180deg, #f7fbf8 0%, #eef7f1 100%);
+    }
+    .trade-card .card-art { height: 61%; }
+
+    /* Reveal animation */
+    .js .reveal {
+      opacity: 1;
+      transform: translateY(22px);
+      filter: saturate(.94);
+      transition: transform .8s cubic-bezier(.2, .75, .25, 1), filter .8s ease;
+    }
+
+    .js .reveal.is-visible { transform: translateY(0); filter: saturate(1); }
+    .js .product-card:nth-child(even).reveal { transition-delay: .08s; }
+
+    /* Footer */
+    .site-footer {
+      padding: 0 20px;
+      background: var(--footer);
+      color: #6e6e73;
+      font-size: 12px;
+      line-height: 1.42;
+    }
+
+    .footer-inner { max-width: 980px; margin: 0 auto; }
+
+    .footer-notes {
+      margin: 0;
+      padding: 18px 0 12px 18px;
+      border-bottom: 1px solid #d2d2d7;
+    }
+
+    .footer-notes li { margin-bottom: 7px; padding-left: 2px; }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 24px;
+      padding: 20px 0 24px;
+    }
+
+    .footer-column h3 {
+      margin: 0 0 9px;
+      color: #1d1d1f;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .footer-heading {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      color: inherit;
+      background: transparent;
+      font: inherit;
+      text-align: left;
+    }
+
+    .footer-heading:disabled {
+      color: inherit;
+      opacity: 1;
+      cursor: default;
+    }
+
+    .footer-list { margin: 0 0 21px; padding: 0; list-style: none; }
+    .footer-list li { margin: 0 0 8px; }
+    .footer-link { color: #424245; text-decoration: none; }
+    .footer-link:hover { text-decoration: underline; }
+
+    .footer-shop {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #d2d2d7;
+    }
+    .footer-shop a { color: var(--blue); }
+
+    .footer-legal {
+      padding: 10px 0 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 26px;
+      color: #6e6e73;
+    }
+
+    .legal-links { display: flex; flex-wrap: wrap; gap: 0; }
+    .legal-links a {
+      padding: 0 10px;
+      border-right: 1px solid #b7b7bb;
+      color: #424245;
+      text-decoration: none;
+    }
+    .legal-links a:first-child { padding-left: 0; }
+    .legal-links a:last-child { border-right: 0; }
+    .legal-links a:hover { text-decoration: underline; }
+    .region { margin-left: auto; color: #424245; text-decoration: none; white-space: nowrap; }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      z-index: 1200;
+      left: 50%;
+      bottom: 28px;
+      padding: 11px 18px;
+      border-radius: 999px;
+      color: #fff;
+      background: rgba(29, 29, 31, .92);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .18);
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 12px);
+      transition: opacity .24s ease, transform .28s ease;
+    }
+    .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 1068px) {
+      .hero { min-height: 650px; height: 720px; }
+      .hero-copy { padding-top: 56px; }
+      .hero-art { width: 1080px; bottom: -20px; }
+      .product-card { height: 560px; }
+      .card-copy { padding-top: 43px; }
+    }
+
+    @media (max-width: 820px) {
+      :root { --nav-height: 48px; }
+
+      .nav-content { padding: 0 11px 0 16px; }
+      .nav-links { display: none; }
+      .brand-link { margin-right: auto; justify-content: flex-start; }
+      .icon-button { width: 40px; }
+      .menu-button { display: inline-flex; }
+
+      .announcement { padding: 11px 30px; font-size: 13px; }
+
+      .hero { height: 700px; min-height: 640px; }
+      .hero-copy { padding-top: 49px; }
+      .hero-art { width: 900px; bottom: -2px; }
+
+      .product-grid { grid-template-columns: 1fr; gap: 10px; padding: 10px 0; }
+      .product-card { height: 570px; }
+      .product-card h2 { font-size: 40px; }
+
+      .footer-columns { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .footer-legal { flex-wrap: wrap; gap: 8px 18px; }
+      .region { margin-left: 0; order: -1; flex: 0 0 100%; }
+    }
+
+    @media (max-width: 560px) {
+      .announcement { min-height: 64px; padding-inline: 36px; }
+      .hero { height: 650px; min-height: 620px; }
+      .hero-copy { padding: 42px 18px 0; }
+      .eyebrow { font-size: 16px; }
+      .hero h1 { font-size: 47px; }
+      .hero-subtitle { max-width: 320px; margin-top: 12px; font-size: 21px; }
+      .hero .cta-row { margin-top: 18px; }
+      .cta-row { gap: 22px; }
+      .cta { font-size: 18px; }
+      .hero-art { width: 760px; bottom: 4px; }
+
+      .product-card { height: 520px; }
+      .card-copy { padding: 37px 16px 0; }
+      .product-card h2 { font-size: 34px; }
+      .product-card .brand-title svg { width: 24px; height: 29px; }
+      .product-card .subtitle { max-width: 340px; margin-top: 7px; font-size: 18px; }
+      .product-card .cta-row { margin-top: 12px; }
+      .product-card .cta { font-size: 16px; }
+      .card-art { height: 61%; }
+      .mac-card .card-art { width: 118%; height: 60%; }
+      .ipad-card .card-art { width: 112%; }
+      .airpods-card .card-art { width: 112%; }
+
+      .search-inner { width: calc(100% - 34px); padding-top: 25px; }
+      .quick-links { margin-left: 38px; }
+      .bag-panel { top: calc(var(--nav-height) + 5px); right: 8px; width: calc(100vw - 16px); }
+
+      .site-footer { padding-inline: 16px; }
+      .footer-columns { display: block; padding: 11px 0 18px; }
+      .footer-column h3 {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        border-bottom: 1px solid #d2d2d7;
+        font-weight: 400;
+      }
+      .footer-heading {
+        width: 100%;
+        padding: 11px 20px 11px 0;
+        cursor: pointer;
+      }
+      .footer-column h3::after {
+        content: "+";
+        position: absolute;
+        top: 50%;
+        right: 8px;
+        font-size: 14px;
+        pointer-events: none;
+        transform: translateY(-50%);
+        transition: transform .2s ease;
+      }
+      .footer-column h3.is-open::after { transform: translateY(-50%) rotate(45deg); }
+      .footer-list { display: none; padding: 0 14px 4px; }
+      .footer-column h3.is-open + .footer-list { display: block; }
+      .footer-shop { border-bottom: 0; }
+      .footer-legal { padding-top: 4px; }
+      .legal-links { row-gap: 7px; }
+    }
+
+    @media (max-width: 380px) {
+      .mobile-menu { padding-inline: 34px; }
+      .hero h1 { font-size: 42px; }
+      .hero-subtitle { font-size: 19px; }
+      .hero-art { width: 700px; }
+      .product-card { height: 500px; }
+      .product-card h2 { font-size: 31px; }
+      .product-card .subtitle { font-size: 17px; }
+    }
+
+    @media (max-width: 820px) {
+      .mac-card { order: 1; }
+      .watch-card { order: 2; }
+      .airpods-card { order: 3; }
+      .ipad-card { order: 4; }
+      .trade-card { order: 5; }
+      .ultra-card { order: 6; }
+    }
+
+    @media (max-width: 820px) and (orientation: landscape) and (max-height: 600px) {
+      .hero { height: clamp(540px, 138dvh, 650px); min-height: 540px; }
+      .hero-copy { padding-top: 34px; }
+      .product-card { height: clamp(480px, 125dvh, 560px); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#inicio">Pular para o conteúdo</a>
+  <header class="global-nav" id="globalNav">
+    <nav class="nav-content" aria-label="Navegação global">
+      <a class="nav-link brand-link" href="#inicio" aria-label="Apple — início">
+        <svg viewBox="0 0 24 28" aria-hidden="true">
+          <path fill="currentColor" d="M19.69 14.54c-.03-3.24 2.65-4.82 2.77-4.9a5.95 5.95 0 0 0-4.69-2.54c-1.97-.21-3.88 1.18-4.88 1.18-1.02 0-2.56-1.16-4.22-1.13a6.22 6.22 0 0 0-5.24 3.2c-2.27 3.93-.58 9.7 1.6 12.88 1.09 1.56 2.36 3.29 4.01 3.23 1.62-.07 2.23-1.04 4.18-1.04 1.93 0 2.51 1.04 4.2 1 1.73-.03 2.82-1.56 3.87-3.13a12.8 12.8 0 0 0 1.77-3.6 5.59 5.59 0 0 1-3.37-5.15ZM16.48 5.01A5.66 5.66 0 0 0 17.77.93a5.78 5.78 0 0 0-3.73 1.94 5.4 5.4 0 0 0-1.33 3.93 4.8 4.8 0 0 0 3.77-1.8Z"/>
+        </svg>
+      </a>
+
+      <div class="nav-links">
+        <a class="nav-link" href="#store">Loja</a>
+        <a class="nav-link" href="#mac">Mac</a>
+        <a class="nav-link" href="#ipad">iPad</a>
+        <a class="nav-link" href="#iphone">iPhone</a>
+        <a class="nav-link" href="#watch">Watch</a>
+        <a class="nav-link" href="#airpods">AirPods</a>
+        <a class="nav-link" href="#entretenimento">TV e Casa</a>
+        <a class="nav-link" href="#entretenimento">Entretenimento</a>
+        <a class="nav-link" href="#airpods">Acessórios</a>
+        <a class="nav-link" href="#suporte">Suporte</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-button" id="searchToggle" type="button" aria-label="Buscar em apple.com" aria-expanded="false" aria-controls="searchPanel">
+          <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <circle cx="7.6" cy="7.6" r="5.35" stroke="currentColor" stroke-width="1.35"/>
+            <path d="m11.55 11.55 4.1 4.1" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="icon-button" id="bagToggle" type="button" aria-label="Sacola" aria-expanded="false" aria-controls="bagPanel">
+          <svg viewBox="0 0 18 20" fill="none" aria-hidden="true">
+            <path d="M3.3 6.2h11.4l.65 11.1a1.4 1.4 0 0 1-1.4 1.5h-9.9a1.4 1.4 0 0 1-1.4-1.5L3.3 6.2Z" stroke="currentColor" stroke-width="1.25"/>
+            <path d="M6.2 6.1V4.45a2.8 2.8 0 0 1 5.6 0V6.1" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+          </svg>
+          <span class="bag-count" id="bagCount" aria-hidden="true">0</span>
+        </button>
+        <button class="menu-button" id="menuToggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
+          <span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="page-scrim" id="pageScrim" aria-hidden="true"></div>
+
+  <section class="search-panel" id="searchPanel" aria-hidden="true" aria-label="Busca" inert>
+    <div class="search-inner">
+      <form id="searchForm" role="search">
+        <label class="visually-hidden" for="searchInput">Buscar em apple.com</label>
+        <div class="search-field-wrap">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="10.2" cy="10.2" r="6.4" stroke="currentColor" stroke-width="1.7"/>
+            <path d="m15 15 5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+          <input class="search-input" id="searchInput" type="search" autocomplete="off" placeholder="Buscar em apple.com">
+          <button class="visually-hidden" type="submit" tabindex="-1">Buscar</button>
+        </div>
+      </form>
+      <div class="quick-links">
+        <p class="quick-label">Links rápidos</p>
+        <a href="#iphone">› Comprar iPhone</a>
+        <a href="#mac">› Comprar Mac</a>
+        <a href="#suporte">› Suporte Apple</a>
+      </div>
+    </div>
+  </section>
+
+  <aside class="bag-panel" id="bagPanel" aria-hidden="true" aria-labelledby="bagTitle" inert>
+    <h2 id="bagTitle">Sua sacola está vazia.</h2>
+    <p>Salve seus produtos favoritos e volte quando quiser.</p>
+    <a class="drawer-action" href="#store">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M3 5.5h14l-.8 12H3.8l-.8-12Z" stroke="currentColor"/><path d="M7 5.5V4a3 3 0 0 1 6 0v1.5" stroke="currentColor"/></svg>
+      <span>Sacola</span>
+    </a>
+    <a class="drawer-action" href="#store">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m10 16.4-1.2-1.1C4.4 11.4 1.5 8.8 1.5 5.7A4.4 4.4 0 0 1 6 1.3c1.6 0 3.1.7 4 1.9a5 5 0 0 1 4-1.9 4.4 4.4 0 0 1 4.5 4.4c0 3.1-2.9 5.7-7.3 9.6L10 16.4Z" stroke="currentColor"/></svg>
+      <span>Itens salvos</span>
+    </a>
+    <a class="drawer-action" href="#conta">
+      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="6" r="3.4" stroke="currentColor"/><path d="M3.5 18c.4-3.2 3-5.5 6.5-5.5s6.1 2.3 6.5 5.5" stroke="currentColor"/></svg>
+      <span>Conta</span>
+    </a>
+  </aside>
+
+  <nav class="mobile-menu" id="mobileMenu" aria-hidden="true" aria-label="Menu para celular" inert>
+    <a class="mobile-link" href="#store">Loja</a>
+    <a class="mobile-link" href="#mac">Mac</a>
+    <a class="mobile-link" href="#ipad">iPad</a>
+    <a class="mobile-link" href="#iphone">iPhone</a>
+    <a class="mobile-link" href="#watch">Watch</a>
+    <a class="mobile-link" href="#airpods">AirPods</a>
+    <a class="mobile-link" href="#entretenimento">TV e Casa</a>
+    <a class="mobile-link" href="#entretenimento">Entretenimento</a>
+    <a class="mobile-link" href="#airpods">Acessórios</a>
+    <a class="mobile-link" href="#suporte">Suporte</a>
+  </nav>
+
+  <main id="inicio">
+    <div class="announcement" id="store">
+      <span>Frete grátis em todos os pedidos. <a href="#footer">Veja opções de compra <span aria-hidden="true">›</span></a></span>
+    </div>
+
+    <section class="hero" id="iphone" aria-labelledby="hero-title">
+      <div class="hero-copy reveal is-visible">
+        <p class="eyebrow">Novo</p>
+        <h1 id="hero-title">iPhone Air</h1>
+        <p class="hero-subtitle">Tão leve que parece o futuro.</p>
+        <div class="cta-row">
+          <a class="cta" href="#iphone-details">Saiba mais <span class="chevron" aria-hidden="true">›</span></a>
+          <a class="cta buy-action" href="#store" data-product="iPhone Air">Comprar <span class="chevron" aria-hidden="true">›</span></a>
+        </div>
+      </div>
+
+      <svg class="hero-art" viewBox="0 0 1200 500" role="img" aria-label="Três smartphones em acabamentos azul, prata e lavanda">
+        <defs>
+          <linearGradient id="heroScreenLeft" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#15264f"/><stop offset=".42" stop-color="#697ce9"/><stop offset="1" stop-color="#d9a8db"/>
+          </linearGradient>
+          <linearGradient id="heroScreenCenter" x1=".1" y1="0" x2=".9" y2="1">
+            <stop offset="0" stop-color="#0a1d4f"/><stop offset=".37" stop-color="#3c56c7"/><stop offset=".72" stop-color="#9b75dd"/><stop offset="1" stop-color="#ffc1cf"/>
+          </linearGradient>
+          <linearGradient id="heroScreenRight" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#4e1f70"/><stop offset=".47" stop-color="#a754b9"/><stop offset="1" stop-color="#f5a5ac"/>
+          </linearGradient>
+          <linearGradient id="titaniumBlue" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#8da1c0"/><stop offset=".5" stop-color="#d8e1ef"/><stop offset="1" stop-color="#7890b2"/></linearGradient>
+          <linearGradient id="titaniumSilver" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#93949c"/><stop offset=".5" stop-color="#f5f4f0"/><stop offset="1" stop-color="#b3b1b0"/></linearGradient>
+          <linearGradient id="titaniumPurple" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#837990"/><stop offset=".5" stop-color="#ded5e5"/><stop offset="1" stop-color="#8a7991"/></linearGradient>
+          <radialGradient id="orbBlue"><stop stop-color="#dbe6ff" stop-opacity=".95"/><stop offset="1" stop-color="#96b6ff" stop-opacity="0"/></radialGradient>
+          <radialGradient id="orbPink"><stop stop-color="#f9d8f5" stop-opacity=".85"/><stop offset="1" stop-color="#e8a6ef" stop-opacity="0"/></radialGradient>
+          <filter id="phoneShadow" x="-50%" y="-30%" width="200%" height="180%"><feDropShadow dx="0" dy="22" stdDeviation="18" flood-color="#212754" flood-opacity=".25"/></filter>
+          <filter id="softBlur"><feGaussianBlur stdDeviation="24"/></filter>
+        </defs>
+        <ellipse cx="430" cy="350" rx="320" ry="205" fill="url(#orbBlue)" filter="url(#softBlur)"/>
+        <ellipse cx="810" cy="350" rx="310" ry="205" fill="url(#orbPink)" filter="url(#softBlur)"/>
+
+        <g transform="translate(250 67) rotate(-11 135 215)" filter="url(#phoneShadow)">
+          <rect x="0" y="0" width="270" height="440" rx="46" fill="url(#titaniumBlue)"/>
+          <rect x="5" y="5" width="260" height="430" rx="41" fill="#07080a"/>
+          <rect x="11" y="11" width="248" height="418" rx="36" fill="url(#heroScreenLeft)"/>
+          <path d="M11 292c64-92 124-93 248-31v168H11Z" fill="#f5b5ce" opacity=".55"/>
+          <path d="M11 333c82-105 157-93 248-16v112H11Z" fill="#91a0f2" opacity=".48"/>
+          <rect x="91" y="21" width="88" height="25" rx="13" fill="#050506"/>
+          <circle cx="165" cy="33.5" r="4" fill="#172449"/>
+          <path d="M-3 98h3v54h-3zM270 112h3v78h-3z" fill="#6c82a5"/>
+        </g>
+
+        <g transform="translate(465 12)" filter="url(#phoneShadow)">
+          <rect x="0" y="0" width="285" height="466" rx="50" fill="url(#titaniumSilver)"/>
+          <rect x="5" y="5" width="275" height="456" rx="45" fill="#060607"/>
+          <rect x="11" y="11" width="263" height="444" rx="40" fill="url(#heroScreenCenter)"/>
+          <circle cx="125" cy="325" r="154" fill="#f59ac8" opacity=".28"/>
+          <circle cx="183" cy="356" r="137" fill="#7cc7ff" opacity=".26"/>
+          <path d="M11 352c77-64 157-65 263 1v102H11Z" fill="#f7c4d9" opacity=".34"/>
+          <rect x="96" y="21" width="93" height="27" rx="14" fill="#030304"/>
+          <circle cx="174" cy="34.5" r="4.2" fill="#1d2e57"/>
+          <path d="M-3 104h3v54h-3zM285 117h3v82h-3z" fill="#8e8d90"/>
+          <path d="M28 14c-9 8-13 23-13 40" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2" stroke-linecap="round"/>
+        </g>
+
+        <g transform="translate(720 67) rotate(11 135 215)" filter="url(#phoneShadow)">
+          <rect x="0" y="0" width="270" height="440" rx="46" fill="url(#titaniumPurple)"/>
+          <rect x="5" y="5" width="260" height="430" rx="41" fill="#070708"/>
+          <rect x="11" y="11" width="248" height="418" rx="36" fill="url(#heroScreenRight)"/>
+          <circle cx="137" cy="321" r="154" fill="#ffa2bc" opacity=".30"/>
+          <path d="M11 319c72-75 156-76 248-4v114H11Z" fill="#f5c3ce" opacity=".42"/>
+          <rect x="91" y="21" width="88" height="25" rx="13" fill="#050506"/>
+          <circle cx="165" cy="33.5" r="4" fill="#301e48"/>
+          <path d="M-3 112h3v78h-3zM270 98h3v54h-3z" fill="#766980"/>
+        </g>
+      </svg>
+    </section>
+
+    <div class="product-grid" id="iphone-details">
+      <section class="product-card mac-card reveal" id="mac" aria-labelledby="mac-title">
+        <div class="card-copy">
+          <h2 id="mac-title">MacBook Air</h2>
+          <p class="subtitle">Leve. Rápido. Pronto para tudo.</p>
+          <div class="cta-row">
+            <a class="cta" href="#mac">Saiba mais <span class="chevron" aria-hidden="true">›</span></a>
+            <a class="cta buy-action" href="#store" data-product="MacBook Air">Comprar <span class="chevron" aria-hidden="true">›</span></a>
+          </div>
+        </div>
+        <svg class="card-art" viewBox="0 0 760 390" role="img" aria-label="MacBook Air azul-céu aberto">
+          <defs>
+            <linearGradient id="macBody" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c4d4df"/><stop offset=".45" stop-color="#edf4f7"/><stop offset="1" stop-color="#92acbd"/></linearGradient>
+            <linearGradient id="macScreen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1749af"/><stop offset=".34" stop-color="#48a4e0"/><stop offset=".66" stop-color="#8ce0d8"/><stop offset="1" stop-color="#ffd1af"/></linearGradient>
+            <radialGradient id="macOrbA"><stop stop-color="#f4d7ff"/><stop offset="1" stop-color="#8a65d6" stop-opacity="0"/></radialGradient>
+            <radialGradient id="macOrbB"><stop stop-color="#b5f6ff"/><stop offset="1" stop-color="#40a9f6" stop-opacity="0"/></radialGradient>
+            <filter id="macShadow" x="-30%" y="-30%" width="160%" height="180%"><feDropShadow dx="0" dy="24" stdDeviation="18" flood-color="#355c78" flood-opacity=".24"/></filter>
+          </defs>
+          <ellipse cx="380" cy="354" rx="260" ry="22" fill="#6e8da0" opacity=".18"/>
+          <g filter="url(#macShadow)">
+            <rect x="170" y="24" width="420" height="276" rx="17" fill="url(#macBody)"/>
+            <rect x="179" y="33" width="402" height="257" rx="10" fill="#07080a"/>
+            <rect x="185" y="39" width="390" height="245" rx="6" fill="url(#macScreen)"/>
+            <ellipse cx="270" cy="113" rx="145" ry="126" fill="url(#macOrbA)" opacity=".82"/>
+            <ellipse cx="490" cy="235" rx="174" ry="151" fill="url(#macOrbB)" opacity=".85"/>
+            <path d="M185 201c85-47 147-42 213 6s116 45 177 0v77H185Z" fill="#effdff" opacity=".2"/>
+            <circle cx="380" cy="29" r="2" fill="#50636d"/>
+            <path d="m134 302 34-8h424l34 8 61 44c7 5 3 12-7 13H81c-10-1-14-8-7-13l60-44Z" fill="url(#macBody)"/>
+            <path d="M73 347h614c-4 8-10 12-23 13H96c-13-1-19-5-23-13Z" fill="#8fa6b4"/>
+            <path d="M318 302h124l13 7c3 2 1 5-3 5H308c-4 0-6-3-3-5l13-7Z" fill="#9bb0bd" opacity=".72"/>
+          </g>
+        </svg>
+      </section>
+
+      <section class="product-card dark watch-card reveal" id="watch" aria-label="Apple Watch Series 10">
+        <div class="card-copy">
+          <h2 class="brand-title" id="watch-title">
+            <svg viewBox="0 0 24 28" aria-hidden="true"><path fill="currentColor" d="M19.69 14.54c-.03-3.24 2.65-4.82 2.77-4.9a5.95 5.95 0 0 0-4.69-2.54c-1.97-.21-3.88 1.18-4.88 1.18-1.02 0-2.56-1.16-4.22-1.13a6.22 6.22 0 0 0-5.24 3.2c-2.27 3.93-.58 9.7 1.6 12.88 1.09 1.56 2.36 3.29 4.01 3.23 1.62-.07 2.23-1.04 4.18-1.04 1.93 0 2.51 1.04 4.2 1 1.73-.03 2.82-1.56 3.87-3.13a12.8 12.8 0 0 0 1.77-3.6 5.59 5.59 0 0 1-3.37-5.15ZM16.48 5.01A5.66 5.66 0 0 0 17.77.93a5.78 5.78 0 0 0-3.73 1.94 5.4 5.4 0 0 0-1.33 3.93 4.8 4.8 0 0 0 3.77-1.8Z"/></svg>
+            WATCH
+          </h2>
+          <div class="kicker">Series 10</div>
+          <p class="subtitle">Mais fino. Mais grandioso.</p>
+          <div class="cta-row">
+            <a class="cta" href="#watch">Saiba mais <span class="chevron" aria-hidden="true">›</span></a>
+            <a class="cta buy-action" href="#store" data-product="Apple Watch Series 10">Comprar <span class="chevron" aria-hidden="true">›</span></a>
+          </div>
+        </div>
+        <svg class="card-art" viewBox="0 0 760 390" role="img" aria-label="Apple Watch com pulseira roxa e mostrador colorido">
+          <defs>
+            <linearGradient id="watchBand" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8050c9"/><stop offset=".5" stop-color="#ad73e3"/><stop offset="1" stop-color="#543086"/></linearGradient>
+            <linearGradient id="watchCase" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7b7780"/><stop offset=".4" stop-color="#dedbe0"/><stop offset="1" stop-color="#504d54"/></linearGradient>
+            <radialGradient id="watchFace"><stop stop-color="#26163a"/><stop offset="1" stop-color="#050507"/></radialGradient>
+            <filter id="watchShadow" x="-50%" y="-30%" width="200%" height="180%"><feDropShadow dx="0" dy="18" stdDeviation="15" flood-color="#c97cff" flood-opacity=".24"/></filter>
+          </defs>
+          <ellipse cx="380" cy="356" rx="150" ry="18" fill="#b682de" opacity=".15"/>
+          <g transform="translate(266 -25)" filter="url(#watchShadow)">
+            <path d="M74 0h80c20 0 30 15 31 36l4 82H39l5-82C45 15 54 0 74 0Z" fill="url(#watchBand)"/>
+            <path d="M39 279h150l-6 105c-1 20-11 31-30 31H75c-20 0-29-11-30-31l-6-105Z" fill="url(#watchBand)"/>
+            <rect x="15" y="90" width="198" height="217" rx="55" fill="url(#watchCase)"/>
+            <rect x="23" y="98" width="182" height="201" rx="48" fill="#050506"/>
+            <rect x="30" y="105" width="168" height="187" rx="42" fill="url(#watchFace)"/>
+            <circle cx="114" cy="199" r="69" fill="none" stroke="#ff415f" stroke-width="12" stroke-dasharray="338 100" transform="rotate(-90 114 199)"/>
+            <circle cx="114" cy="199" r="50" fill="none" stroke="#b5ee31" stroke-width="11" stroke-dasharray="235 80" transform="rotate(-62 114 199)"/>
+            <circle cx="114" cy="199" r="31" fill="none" stroke="#43baff" stroke-width="10" stroke-dasharray="135 60" transform="rotate(-25 114 199)"/>
+            <text x="114" y="197" fill="#fff" font-family="-apple-system, sans-serif" font-size="13" font-weight="600" text-anchor="middle">10:09</text>
+            <text x="114" y="217" fill="#a6a6ab" font-family="-apple-system, sans-serif" font-size="8" text-anchor="middle">QUA 10</text>
+            <rect x="211" y="139" width="10" height="58" rx="5" fill="#b7b1bc"/>
+            <circle cx="218" cy="226" r="11" fill="#7c767f"/>
+          </g>
+        </svg>
+      </section>
+
+      <section class="product-card dark ipad-card reveal" id="ipad" aria-labelledby="ipad-title">
+        <div class="card-copy">
+          <h2 id="ipad-title">iPad Pro</h2>
+          <p class="subtitle">Inacreditavelmente fino. Poderoso demais.</p>
+          <div class="cta-row">
+            <a class="cta" href="#ipad">Saiba mais <span class="chevron" aria-hidden="true">›</span></a>
+            <a class="cta buy-action" href="#store" data-product="iPad Pro">Comprar <span class="chevron" aria-hidden="true">›</span></a>
+          </div>
+        </div>
+        <svg class="card-art" viewBox="0 0 760 390" role="img" aria-label="iPad Pro com tela em gradiente colorido">
+          <defs>
+            <linearGradient id="ipadEdge" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#898a91"/><stop offset=".5" stop-color="#e4e4e8"/><stop offset="1" stop-color="#494950"/></linearGradient>
+            <linearGradient id="ipadDisplay" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06071b"/><stop offset=".28" stop-color="#1449bd"/><stop offset=".57" stop-color="#9c28cf"/><stop offset=".78" stop-color="#f02b8b"/><stop offset="1" stop-color="#ff8a35"/></linearGradient>
+            <radialGradient id="ipadGlow"><stop stop-color="#4487ff" stop-opacity=".75"/><stop offset="1" stop-color="#3f29ff" stop-opacity="0"/></radialGradient>
+            <filter id="ipadShadow" x="-30%" y="-40%" width="160%" height="190%"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#315cff" flood-opacity=".34"/></filter>
+          </defs>
+          <ellipse cx="380" cy="328" rx="300" ry="115" fill="url(#ipadGlow)" opacity=".35"/>
+          <g transform="translate(133 36)" filter="url(#ipadShadow)">
+            <path d="m51 8 432 23c15 1 24 10 24 24v253c0 15-10 24-25 23L50 307c-15-1-24-10-24-25V31C26 16 36 7 51 8Z" fill="url(#ipadEdge)"/>
+            <path d="m51 16 427 23c12 1 19 8 19 20v241c0 12-8 19-20 18L51 295c-11-1-18-8-18-20V34c0-12 7-19 18-18Z" fill="#030305"/>
+            <path d="m59 26 410 21c10 1 17 7 17 17v225c0 10-7 16-17 16L59 284c-10-1-16-7-16-17V42c0-10 6-16 16-16Z" fill="url(#ipadDisplay)"/>
+            <path d="M43 236C146 116 279 81 486 86v203c0 10-7 16-17 16L59 284c-10-1-16-7-16-17Z" fill="#ff6d6d" opacity=".15"/>
+            <path d="M43 208c117-91 257-106 443-63v144c0 10-7 16-17 16L59 284c-10-1-16-7-16-17Z" fill="#4bdcff" opacity=".18"/>
+            <circle cx="266" cy="35" r="2.5" fill="#1d2c51"/>
+          </g>
+        </svg>
+      </section>
+
+      <section class="product-card airpods-card reveal" id="airpods" aria-labelledby="airpods-title">
+        <div class="card-copy">
+          <h2 id="airpods-title">AirPods Pro</h2>
+          <p class="subtitle">Som imersivo. Silêncio de outro nível.</p>
+          <div class="cta-row">
+            <a class="cta" href="#airpods">Saiba mais <span class="chevron" aria-hidden="true">›</span></a>
+            <a class="cta buy-action" href="#store" data-product="AirPods Pro">Comprar <span class="chevron" aria-hidden="true">›</span></a>
+          </div>
+        </div>
+        <svg class="card-art" viewBox="0 0 760 390" role="img" aria-label="AirPods Pro brancos com estojo de recarga">
+          <defs>
+            <linearGradient id="podWhite" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".58" stop-color="#eef0f3"/><stop offset="1" stop-color="#c9cdd3"/></linearGradient>
+            <linearGradient id="caseWhite" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff"/><stop offset=".5" stop-color="#f1f3f5"/><stop offset="1" stop-color="#c7cbd0"/></linearGradient>
+            <filter id="podsShadow" x="-50%" y="-50%" width="200%" height="220%"><feDropShadow dx="0" dy="20" stdDeviation="15" flood-color="#768797" flood-opacity=".25"/></filter>
+          </defs>
+          <ellipse cx="380" cy="350" rx="210" ry="24" fill="#5d7182" opacity=".12"/>
+          <g filter="url(#podsShadow)">
+            <g transform="translate(208 40) rotate(-12 65 130)">
+              <ellipse cx="61" cy="60" rx="56" ry="61" fill="url(#podWhite)"/>
+              <ellipse cx="45" cy="47" rx="20" ry="27" fill="#17181a"/>
+              <ellipse cx="44" cy="45" rx="13" ry="18" fill="#393a3c"/>
+              <rect x="80" y="50" width="29" height="177" rx="15" fill="url(#podWhite)"/>
+              <rect x="88" y="197" width="14" height="23" rx="7" fill="#d9dcdf"/>
+              <circle cx="91" cy="92" r="4" fill="#151617"/>
+            </g>
+            <g transform="translate(432 25) rotate(13 65 130)">
+              <ellipse cx="69" cy="60" rx="56" ry="61" fill="url(#podWhite)"/>
+              <ellipse cx="84" cy="47" rx="20" ry="27" fill="#17181a"/>
+              <ellipse cx="84" cy="45" rx="13" ry="18" fill="#393a3c"/>
+              <rect x="20" y="50" width="29" height="177" rx="15" fill="url(#podWhite)"/>
+              <rect x="27" y="197" width="14" height="23" rx="7" fill="#d9dcdf"/>
+              <circle cx="38" cy="92" r="4" fill="#151617"/>
+            </g>
+            <g transform="translate(244 223)">
+              <rect x="0" y="0" width="272" height="137" rx="58" fill="url(#caseWhite)"/>
+              <path d="M5 59h262" stroke="#b8bdc3" stroke-opacity=".7"/>
+              <path d="M93 1h86" stroke="#c2c6ca" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="136" cy="79" r="3.5" fill="#7ed99a"/>
+            </g>
+          </g>
+        </svg>
+      </section>
+
+      <section class="product-card trade-card reveal" id="trade-in" aria-labelledby="trade-title">
+        <div class="card-copy">
+          <h2 class="brand-title" id="trade-title">
+            <svg viewBox="0 0 24 28" aria-hidden="true"><path fill="currentColor" d="M19.69 14.54c-.03-3.24 2.65-4.82 2.77-4.9a5.95 5.95 0 0 0-4.69-2.54c-1.97-.21-3.88 1.18-4.88 1.18-1.02 0-2.56-1.16-4.22-1.13a6.22 6.22 0 0 0-5.24 3.2c-2.27 3.93-.58 9.7 1.6 12.88 1.09 1.56 2.36 3.29 4.01 3.23 1.62-.07 2.23-1.04 4.18-1.04 1.93 0 2.51 1.04 4.2 1 1.73-.03 2.82-1.56 3.87-3.13a12.8 12.8 0 0 0 1.77-3.6 5.59 5.59 0 0 1-3.37-5.15ZM16.48 5.01A5.66 5.66 0 0 0 17.77.93a5.78 5.78 0 0 0-3.73 1.94 5.4 5.4 0 0 0-1.33 3.93 4.8 4.8 0 0 0 3.77-1.8Z"/></svg>
+            Trade In
+          </h2>
+          <p class="subtitle">Troque seu aparelho e ganhe crédito para o próximo.</p>
+          <div class="cta-row">
+            <a class="cta" href="#trade-in">Saiba mais <span class="chevron" aria-hidden="true">›</span></a>
+          </div>
+        </div>
+        <svg class="card-art" viewBox="0 0 760 390" role="img" aria-label="Dois iPhones e símbolo de reciclagem verde">
+          <defs>
+            <linearGradient id="tradePhone1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9d5d0"/><stop offset="1" stop-color="#888780"/></linearGradient>
+            <linearGradient id="tradePhone2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9bc1ab"/><stop offset="1" stop-color="#376c52"/></linearGradient>
+            <linearGradient id="tradeScreen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d3824"/><stop offset=".58" stop-color="#38a269"/><stop offset="1" stop-color="#b8edc9"/></linearGradient>
+            <filter id="tradeShadow" x="-50%" y="-50%" width="200%" height="220%"><feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#44765b" flood-opacity=".23"/></filter>
+          </defs>
+          <ellipse cx="380" cy="354" rx="210" ry="22" fill="#4f775f" opacity=".12"/>
+          <g filter="url(#tradeShadow)">
+            <g transform="translate(219 44) rotate(-10 93 155)">
+              <rect width="187" height="318" rx="34" fill="url(#tradePhone1)"/>
+              <rect x="6" y="6" width="175" height="306" rx="29" fill="#f2f0ec"/>
+              <circle cx="51" cy="55" r="24" fill="#1c1d1e"/><circle cx="51" cy="55" r="17" fill="#344253"/><circle cx="105" cy="55" r="24" fill="#1c1d1e"/><circle cx="105" cy="55" r="17" fill="#344253"/>
+              <circle cx="78" cy="96" r="24" fill="#1c1d1e"/><circle cx="78" cy="96" r="17" fill="#344253"/>
+              <circle cx="139" cy="97" r="6" fill="#222"/>
+              <path d="M103 197c-8 0-16 5-20 12-5 9-1 24 7 34 4 5 8 10 14 10s8-4 15-4 9 4 15 4c6 0 10-5 13-10 4-5 6-11 7-15-13-5-15-22-3-29-6-8-15-9-18-9-7 0-13 5-17 5s-8-4-13-4Z" fill="#a5a49f"/>
+            </g>
+            <g transform="translate(380 28) rotate(9 93 155)">
+              <rect width="187" height="318" rx="34" fill="url(#tradePhone2)"/>
+              <rect x="6" y="6" width="175" height="306" rx="29" fill="#050706"/>
+              <rect x="11" y="11" width="165" height="296" rx="25" fill="url(#tradeScreen)"/>
+              <circle cx="94" cy="188" r="69" fill="none" stroke="#b8edc9" stroke-width="16" stroke-dasharray="134 70" transform="rotate(-84 94 188)"/>
+              <path d="m129 121 15 4-10 12" fill="none" stroke="#b8edc9" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="m55 250-15-5 10-12" fill="none" stroke="#b8edc9" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="60" y="17" width="68" height="20" rx="10" fill="#030403"/>
+            </g>
+          </g>
+        </svg>
+      </section>
+
+      <section class="product-card dark ultra-card reveal" id="watch-ultra" aria-label="Apple Watch Ultra">
+        <div class="card-copy">
+          <h2 class="brand-title" id="ultra-title">
+            <svg viewBox="0 0 24 28" aria-hidden="true"><path fill="currentColor" d="M19.69 14.54c-.03-3.24 2.65-4.82 2.77-4.9a5.95 5.95 0 0 0-4.69-2.54c-1.97-.21-3.88 1.18-4.88 1.18-1.02 0-2.56-1.16-4.22-1.13a6.22 6.22 0 0 0-5.24 3.2c-2.27 3.93-.58 9.7 1.6 12.88 1.09 1.56 2.36 3.29 4.01 3.23 1.62-.07 2.23-1.04 4.18-1.04 1.93 0 2.51 1.04 4.2 1 1.73-.03 2.82-1.56 3.87-3.13a12.8 12.8 0 0 0 1.77-3.6 5.59 5.59 0 0 1-3.37-5.15ZM16.48 5.01A5.66 5.66 0 0 0 17.77.93a5.78 5.78 0 0 0-3.73 1.94 5.4 5.4 0 0 0-1.33 3.93 4.8 4.8 0 0 0 3.77-1.8Z"/></svg>
+            WATCH
+          </h2>
+          <div class="kicker">Ultra</div>
+          <p class="subtitle">A aventura nunca termina.</p>
+          <div class="cta-row">
+            <a class="cta" href="#watch-ultra">Saiba mais <span class="chevron" aria-hidden="true">›</span></a>
+            <a class="cta buy-action" href="#store" data-product="Apple Watch Ultra">Comprar <span class="chevron" aria-hidden="true">›</span></a>
+          </div>
+        </div>
+        <svg class="card-art" viewBox="0 0 760 390" role="img" aria-label="Apple Watch Ultra com pulseira laranja">
+          <defs>
+            <linearGradient id="ultraBand" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9a38"/><stop offset=".55" stop-color="#ff5b16"/><stop offset="1" stop-color="#b93805"/></linearGradient>
+            <linearGradient id="ultraCase" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a7a29c"/><stop offset=".45" stop-color="#e6e1d9"/><stop offset="1" stop-color="#6f6c69"/></linearGradient>
+            <radialGradient id="ultraFace"><stop stop-color="#2f220f"/><stop offset="1" stop-color="#050504"/></radialGradient>
+            <filter id="ultraShadow" x="-50%" y="-30%" width="200%" height="180%"><feDropShadow dx="0" dy="20" stdDeviation="16" flood-color="#ff6b1a" flood-opacity=".27"/></filter>
+          </defs>
+          <ellipse cx="380" cy="358" rx="168" ry="18" fill="#ff6b1a" opacity=".14"/>
+          <g transform="translate(261 -20)" filter="url(#ultraShadow)">
+            <path d="M71 0h96c18 0 28 14 30 34l7 90H34l7-90C43 14 53 0 71 0Z" fill="url(#ultraBand)"/>
+            <path d="M34 284h170l-7 101c-2 20-12 30-30 30H71c-18 0-28-10-30-30l-7-101Z" fill="url(#ultraBand)"/>
+            <path d="M23 89h190c19 0 34 15 34 34v156c0 19-15 34-34 34H23c-19 0-34-15-34-34V123c0-19 15-34 34-34Z" fill="url(#ultraCase)"/>
+            <rect x="3" y="101" width="210" height="200" rx="44" fill="#080806"/>
+            <rect x="11" y="109" width="194" height="184" rx="38" fill="url(#ultraFace)"/>
+            <circle cx="108" cy="201" r="72" fill="none" stroke="#ff7b23" stroke-width="6" stroke-dasharray="8 6"/>
+            <circle cx="108" cy="201" r="57" fill="none" stroke="#f2eadc" stroke-width="2" stroke-dasharray="3 7"/>
+            <path d="M108 151v52l33 22" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="108" cy="201" r="6" fill="#ff7b23"/>
+            <text x="108" y="249" fill="#ff9a38" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" text-anchor="middle">ALT 1.245 M</text>
+            <rect x="241" y="134" width="12" height="54" rx="6" fill="#b7b2aa"/>
+            <circle cx="247" cy="225" r="15" fill="#8f8b85"/><circle cx="247" cy="225" r="9" fill="#bbb6ae"/>
+            <rect x="-18" y="159" width="10" height="58" rx="5" fill="#ff6b1a"/>
+          </g>
+        </svg>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="footer">
+    <div class="footer-inner">
+      <ol class="footer-notes">
+        <li>Os produtos e imagens apresentados nesta página são uma recriação visual independente para fins de demonstração.</li>
+        <li>A disponibilidade de recursos, cores e configurações pode variar. Consulte uma loja para mais informações.</li>
+      </ol>
+
+      <nav class="footer-columns" aria-label="Diretório Apple">
+        <div class="footer-column">
+          <h3><button class="footer-heading" type="button" disabled>Descobrir e Comprar</button></h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#store">Loja</a></li>
+            <li><a class="footer-link" href="#mac">Mac</a></li>
+            <li><a class="footer-link" href="#ipad">iPad</a></li>
+            <li><a class="footer-link" href="#iphone">iPhone</a></li>
+            <li><a class="footer-link" href="#watch">Watch</a></li>
+            <li><a class="footer-link" href="#airpods">AirPods</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 id="conta"><button class="footer-heading" type="button" disabled>Conta</button></h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#conta">Gerencie sua Conta Apple</a></li>
+            <li><a class="footer-link" href="#conta">Conta da Apple Store</a></li>
+            <li><a class="footer-link" href="#conta">iCloud.com</a></li>
+          </ul>
+          <h3 id="entretenimento"><button class="footer-heading" type="button" disabled>Entretenimento</button></h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#entretenimento">Apple One</a></li>
+            <li><a class="footer-link" href="#entretenimento">Apple TV+</a></li>
+            <li><a class="footer-link" href="#entretenimento">Apple Music</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 id="lojas"><button class="footer-heading" type="button" disabled>Apple Store</button></h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#lojas">Encontre uma loja</a></li>
+            <li><a class="footer-link" href="#lojas">Genius Bar</a></li>
+            <li><a class="footer-link" href="#lojas">Today at Apple</a></li>
+            <li><a class="footer-link" href="#lojas">Status do seu pedido</a></li>
+            <li><a class="footer-link" href="#suporte">Ajuda para comprar</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 id="negocios"><button class="footer-heading" type="button" disabled>Para Empresas</button></h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#negocios">Apple e os negócios</a></li>
+            <li><a class="footer-link" href="#negocios">Comprar para a sua empresa</a></li>
+          </ul>
+          <h3 id="educacao"><button class="footer-heading" type="button" disabled>Para a Educação</button></h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#educacao">Apple e a Educação</a></li>
+            <li><a class="footer-link" href="#educacao">Comprar para a faculdade</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3 id="valores"><button class="footer-heading" type="button" disabled>Valores da Apple</button></h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#valores">Acessibilidade</a></li>
+            <li><a class="footer-link" href="#valores">Meio ambiente</a></li>
+            <li><a class="footer-link" href="#valores">Privacidade</a></li>
+          </ul>
+          <h3 id="sobre"><button class="footer-heading" type="button" disabled>Sobre a Apple</button></h3>
+          <ul class="footer-list">
+            <li><a class="footer-link" href="#sobre">Newsroom</a></li>
+            <li><a class="footer-link" href="#sobre">Oportunidades de Carreira</a></li>
+            <li><a class="footer-link" href="#sobre">Contato</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="footer-shop" id="suporte">Outras formas de comprar: <a href="#lojas">encontre uma Apple Store</a> ou revendedor perto de você.</div>
+      <div class="footer-legal">
+        <span>Copyright © 2026 Apple Inc. Todos os direitos reservados.</span>
+        <div class="legal-links">
+          <a href="#valores">Política de Privacidade</a>
+          <a href="#footer">Política de vendas</a>
+          <a href="#footer">Avisos legais</a>
+          <a href="#footer">Mapa do site</a>
+        </div>
+        <a class="region" href="#footer">Brasil</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      const nav = document.getElementById('globalNav');
+      const scrim = document.getElementById('pageScrim');
+      const searchToggle = document.getElementById('searchToggle');
+      const searchPanel = document.getElementById('searchPanel');
+      const searchInput = document.getElementById('searchInput');
+      const searchForm = document.getElementById('searchForm');
+      const bagToggle = document.getElementById('bagToggle');
+      const bagPanel = document.getElementById('bagPanel');
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const main = document.querySelector('main');
+      const footer = document.getElementById('footer');
+      const toast = document.getElementById('toast');
+      let toastTimer;
+      let panelFocusTimer;
+      let activePanelName = '';
+
+      const panels = {
+        search: { toggle: searchToggle, panel: searchPanel },
+        bag: { toggle: bagToggle, panel: bagPanel },
+        menu: { toggle: menuToggle, panel: mobileMenu }
+      };
+
+      function setPanel(name, shouldOpen) {
+        window.clearTimeout(panelFocusTimer);
+        const hasOpenPanel = Boolean(shouldOpen && panels[name]);
+        activePanelName = hasOpenPanel ? name : '';
+
+        Object.entries(panels).forEach(([key, item]) => {
+          const open = key === name && hasOpenPanel;
+          item.panel.classList.toggle('is-open', open);
+          item.panel.setAttribute('aria-hidden', String(!open));
+          item.panel.inert = !open;
+          item.toggle.setAttribute('aria-expanded', String(open));
+          if (key === 'menu') item.toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+        });
+
+        const usesScrim = hasOpenPanel && name !== 'menu';
+        scrim.classList.toggle('is-open', usesScrim);
+        document.body.classList.toggle('overlay-open', hasOpenPanel);
+        main.inert = hasOpenPanel;
+        footer.inert = hasOpenPanel;
+
+        if (name === 'search' && hasOpenPanel) {
+          panelFocusTimer = window.setTimeout(() => searchInput.focus(), 180);
+        }
+      }
+
+      function closeActivePanel(restoreFocus = true) {
+        if (!activePanelName) return;
+        const trigger = panels[activePanelName].toggle;
+        setPanel('', false);
+        if (restoreFocus) trigger.focus({ preventScroll: true });
+      }
+
+      function togglePanel(name) {
+        const isOpen = panels[name].panel.classList.contains('is-open');
+        setPanel(name, !isOpen);
+      }
+
+      searchToggle.addEventListener('click', () => togglePanel('search'));
+      bagToggle.addEventListener('click', () => togglePanel('bag'));
+      menuToggle.addEventListener('click', () => togglePanel('menu'));
+      scrim.addEventListener('click', () => closeActivePanel());
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && activePanelName) {
+          event.preventDefault();
+          closeActivePanel();
+          return;
+        }
+
+        if (event.key === 'Tab' && activePanelName) {
+          const panel = panels[activePanelName].panel;
+          const focusable = [...panel.querySelectorAll('a[href], button:not([disabled]):not([tabindex="-1"]), input:not([disabled])')]
+            .filter(element => element.getClientRects().length);
+          if (!focusable.length) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (event.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        }
+      });
+
+      document.querySelectorAll('#searchPanel a, #bagPanel a, #mobileMenu a').forEach(link => {
+        link.addEventListener('click', () => closeActivePanel(false));
+      });
+
+      searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const term = searchInput.value.trim();
+        if (!term) return;
+        showToast(`Busca por “${term}”`);
+        closeActivePanel();
+      });
+
+      function showToast(message) {
+        window.clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.add('is-visible');
+        toastTimer = window.setTimeout(() => toast.classList.remove('is-visible'), 2400);
+      }
+
+      document.querySelectorAll('.buy-action').forEach(link => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          showToast(`${link.dataset.product} selecionado`);
+        });
+      });
+
+      const updateNav = () => nav.classList.toggle('is-scrolled', window.scrollY > 8);
+      updateNav();
+      window.addEventListener('scroll', updateNav, { passive: true });
+
+      const revealItems = document.querySelectorAll('.reveal:not(.is-visible)');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, revealObserver) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: .12, rootMargin: '0px 0px -35px' });
+        revealItems.forEach(item => observer.observe(item));
+      } else {
+        revealItems.forEach(item => item.classList.add('is-visible'));
+      }
+
+      const footerMedia = window.matchMedia('(max-width: 560px)');
+      const footerHeadings = [...document.querySelectorAll('.footer-heading')];
+
+      footerHeadings.forEach((button, index) => {
+        const heading = button.parentElement;
+        const list = heading.nextElementSibling;
+        list.id ||= `footer-list-${index + 1}`;
+
+        button.addEventListener('click', () => {
+          if (!footerMedia.matches) return;
+          const isOpen = heading.classList.toggle('is-open');
+          button.setAttribute('aria-expanded', String(isOpen));
+        });
+      });
+
+      function syncFooterAccordion() {
+        footerHeadings.forEach(button => {
+          const heading = button.parentElement;
+          const list = heading.nextElementSibling;
+          heading.classList.remove('is-open');
+          button.disabled = !footerMedia.matches;
+          if (footerMedia.matches) {
+            button.setAttribute('aria-expanded', 'false');
+            button.setAttribute('aria-controls', list.id);
+          } else {
+            button.removeAttribute('aria-expanded');
+            button.removeAttribute('aria-controls');
+          }
+        });
+      }
+
+      syncFooterAccordion();
+      footerMedia.addEventListener?.('change', syncFooterAccordion);
+
+      window.addEventListener('resize', () => {
+        if (window.innerWidth > 820 && mobileMenu.classList.contains('is-open')) setPanel('', false);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relatório de Vendas</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-soft: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --border: #374151;
+      --accent: #38bdf8;
+    }
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 10% 10%, #1e293b 0%, var(--bg) 45%);
+      color: var(--text);
+      padding: 24px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+    h1 {
+      margin: 0 0 16px;
+      letter-spacing: 0.3px;
+    }
+    p.note {
+      color: var(--muted);
+      margin-top: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 16px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+    }
+    .metric {
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+    }
+    .metric small {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 400;
+      display: block;
+      margin-top: 4px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    th {
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .hint {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Relatório de Vendas</h1>
+    <p class="note">Leitura de <strong>vendas.csv</strong> com limpeza de sujeiras (datas, valor, texto e deduplicação de pedido).</p>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Receita total</h2>
+        <div class="metric">R$ 515.086,00<small>considerando apenas pedidos válidos</small></div>
+      </div>
+      <div class="card">
+        <h2>Pedidos válidos</h2>
+        <div class="metric">1409<small>linhas únicas aprovadas</small></div>
+      </div>
+      <div class="card">
+        <h2>Descartadas</h2>
+        <div class="metric">91<small>linhas inválidas + duplicadas</small></div>
+      </div>
+      <div class="card">
+        <h2>Detalhe de descarte</h2>
+        <div class="metric">62<small>inválidas</small></div>
+        <div class="metric" style="font-size:20px; margin-top:8px;">29<small>duplicadas</small></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2 style="margin-top:0;">Receita por categoria</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Categoria</th><th>Receita</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Vestuario</td><td>R$ 206.272,00</td></tr>
+          <tr><td>2</td><td>Acessorios</td><td>R$ 159.637,90</td></tr>
+          <tr><td>3</td><td>Calcados</td><td>R$ 149.176,10</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <h2 style="margin-top:0;">Top 5 produtos por quantidade vendida</h2>
+      <table>
+        <thead>
+          <tr><th>#</th><th>Produto</th><th>Quantidade</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Bermuda tactel</td><td>465</td></tr>
+          <tr><td>2</td><td>Camiseta básica</td><td>453</td></tr>
+          <tr><td>3</td><td>Chinelo slide</td><td>449</td></tr>
+          <tr><td>4</td><td>Tênis corrida</td><td>439</td></tr>
+          <tr><td>5</td><td>Mochila urbana</td><td>429</td></tr>
+        </tbody>
+      </table>
+      <p class="hint">Critério de agrupamento: nome do produto normalizado (case/acentuação/espacos) + soma de quantidade.</p>
+    </div>
+  </div>
+</body>
+</html>

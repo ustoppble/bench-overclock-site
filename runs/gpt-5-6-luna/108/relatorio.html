@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Relatório de vendas do primeiro semestre de 2026">
+  <title>Relatório de vendas · 1º semestre de 2026</title>
+  <style>
+    :root {
+      --ink: #14253d;
+      --muted: #718096;
+      --line: #e5ebf2;
+      --paper: #ffffff;
+      --canvas: #f4f7fb;
+      --navy: #142d4c;
+      --navy-2: #1c4167;
+      --teal: #20b8a6;
+      --teal-soft: #dff6f2;
+      --orange: #f4a261;
+      --orange-soft: #fff0e3;
+      --violet: #7267cf;
+      --violet-soft: #eceaff;
+      --red: #d96c62;
+      --red-soft: #fff0ee;
+      --shadow: 0 18px 45px rgba(20, 37, 61, .07);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { color: var(--ink); background: var(--canvas); }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      background:
+        radial-gradient(circle at 90% 0%, rgba(32, 184, 166, .08), transparent 24rem),
+        var(--canvas);
+    }
+
+    .page { max-width: 1240px; margin: 0 auto; padding: 28px 28px 54px; }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 30px 34px 36px;
+      color: #fff;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 82% 10%, rgba(32, 184, 166, .28), transparent 19rem),
+        linear-gradient(135deg, var(--navy) 0%, #163858 58%, var(--navy-2) 100%);
+      box-shadow: 0 20px 50px rgba(20, 45, 76, .18);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -78px;
+      bottom: -132px;
+      width: 330px;
+      height: 330px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 50%;
+      box-shadow: 0 0 0 32px rgba(255,255,255,.025), 0 0 0 64px rgba(255,255,255,.025);
+      pointer-events: none;
+    }
+
+    .topline, .hero-grid { position: relative; z-index: 1; }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 48px;
+      color: rgba(255,255,255,.72);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; }
+
+    .brand-mark {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      color: var(--navy);
+      border-radius: 9px;
+      background: var(--teal);
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    .source code {
+      padding: 5px 9px;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 7px;
+      background: rgba(255,255,255,.08);
+      font-family: inherit;
+      font-size: 11px;
+      letter-spacing: .02em;
+      text-transform: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(270px, .6fr);
+      align-items: end;
+      gap: 48px;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--teal);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 640px;
+      margin-bottom: 16px;
+      font-size: clamp(38px, 5vw, 66px);
+      font-weight: 760;
+      letter-spacing: -.055em;
+      line-height: .98;
+    }
+
+    h1 em { color: var(--teal); font-style: normal; }
+
+    .lede {
+      max-width: 580px;
+      margin-bottom: 0;
+      color: rgba(255,255,255,.73);
+      font-size: 16px;
+    }
+
+    .hero-note {
+      padding: 18px 20px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 16px;
+      background: rgba(255,255,255,.07);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-note-label {
+      margin-bottom: 7px;
+      color: rgba(255,255,255,.55);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .hero-note strong { display: block; font-size: 23px; letter-spacing: -.03em; }
+    .hero-note span { display: block; margin-top: 3px; color: rgba(255,255,255,.63); font-size: 12px; }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: 1.35fr repeat(3, 1fr);
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .metric {
+      min-height: 146px;
+      padding: 21px 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .metric.primary { color: #fff; border-color: transparent; background: var(--teal); }
+
+    .metric-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+
+    .primary .metric-label { color: rgba(255,255,255,.77); }
+
+    .metric-icon {
+      display: grid;
+      width: 25px;
+      height: 25px;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--canvas);
+      color: var(--ink);
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+
+    .primary .metric-icon { color: var(--navy); background: rgba(255,255,255,.7); }
+
+    .metric-value {
+      margin-bottom: 4px;
+      color: var(--ink);
+      font-size: clamp(25px, 3vw, 34px);
+      font-weight: 780;
+      letter-spacing: -.045em;
+      line-height: 1;
+    }
+
+    .primary .metric-value { color: #fff; font-size: clamp(28px, 3vw, 39px); }
+
+    .metric-detail { color: var(--muted); font-size: 12px; }
+    .primary .metric-detail { color: rgba(255,255,255,.8); }
+
+    .section-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(370px, .88fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow);
+    }
+
+    .card-pad { padding: 26px 27px; }
+
+    .section-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+
+    .section-kicker {
+      margin-bottom: 7px;
+      color: var(--teal);
+      font-size: 10px;
+      font-weight: 850;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h2 { margin-bottom: 0; font-size: 22px; letter-spacing: -.035em; line-height: 1.1; }
+    .section-caption { margin: 3px 0 0; color: var(--muted); font-size: 12px; }
+
+    .mini-total { text-align: right; white-space: nowrap; }
+    .mini-total strong { display: block; color: var(--ink); font-size: 18px; letter-spacing: -.03em; }
+    .mini-total span { color: var(--muted); font-size: 11px; }
+
+    .category-list { display: grid; gap: 22px; }
+
+    .category-row { display: grid; grid-template-columns: 132px minmax(80px, 1fr) auto; align-items: center; gap: 13px; }
+
+    .category-name { display: flex; align-items: center; gap: 9px; font-weight: 700; }
+
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--teal); }
+    .dot.orange { background: var(--orange); }
+    .dot.violet { background: var(--violet); }
+
+    .bar-track { height: 9px; overflow: hidden; border-radius: 99px; background: #edf1f5; }
+    .bar { height: 100%; border-radius: inherit; background: var(--teal); }
+    .bar.orange { background: var(--orange); }
+    .bar.violet { background: var(--violet); }
+
+    .category-amount { min-width: 104px; text-align: right; }
+    .category-amount strong { display: block; font-size: 14px; }
+    .category-amount span { color: var(--muted); font-size: 11px; }
+
+    .category-foot {
+      display: flex;
+      gap: 22px;
+      margin-top: 29px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .category-foot strong { color: var(--ink); }
+
+    .ranking { display: grid; gap: 4px; }
+
+    .rank-row {
+      display: grid;
+      grid-template-columns: 31px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rank-row:last-child { border-bottom: 0; }
+
+    .rank {
+      display: grid;
+      width: 28px;
+      height: 28px;
+      place-items: center;
+      color: var(--navy);
+      border-radius: 9px;
+      background: var(--teal-soft);
+      font-size: 11px;
+      font-weight: 850;
+    }
+
+    .rank-row:nth-child(2) .rank { background: var(--orange-soft); }
+    .rank-row:nth-child(3) .rank { background: var(--violet-soft); }
+
+    .product-name { margin-bottom: 4px; font-weight: 700; }
+
+    .product-meter { height: 5px; overflow: hidden; border-radius: 99px; background: #edf1f5; }
+    .product-meter span { display: block; height: 100%; border-radius: inherit; background: var(--navy-2); }
+
+    .units { text-align: right; white-space: nowrap; }
+    .units strong { display: block; font-size: 16px; letter-spacing: -.02em; }
+    .units span { color: var(--muted); font-size: 11px; }
+
+    .audit { margin-bottom: 18px; }
+
+    .audit-grid {
+      display: grid;
+      grid-template-columns: minmax(250px, .85fr) minmax(0, 1.15fr);
+      gap: 36px;
+      align-items: start;
+    }
+
+    .audit-intro {
+      padding: 21px;
+      border-radius: 16px;
+      background: linear-gradient(145deg, #f8fbfd, #f1f7f8);
+    }
+
+    .audit-intro h3 { margin-bottom: 9px; font-size: 16px; letter-spacing: -.02em; }
+    .audit-intro p { margin-bottom: 17px; color: var(--muted); font-size: 13px; }
+
+    .pipeline { display: flex; align-items: center; gap: 8px; font-size: 11px; }
+    .pipeline b { display: block; color: var(--ink); font-size: 17px; letter-spacing: -.03em; }
+    .pipeline span { color: var(--muted); }
+    .pipeline-arrow { color: #a6b4c3; font-size: 18px; }
+
+    .audit-table { width: 100%; border-collapse: collapse; }
+    .audit-table tr { border-bottom: 1px solid var(--line); }
+    .audit-table tr:last-child { border-bottom: 0; }
+    .audit-table th, .audit-table td { padding: 12px 0; text-align: left; }
+    .audit-table th { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .audit-table td:last-child, .audit-table th:last-child { text-align: right; }
+    .audit-table td:last-child { color: var(--ink); font-weight: 800; }
+    .audit-table .total td { padding-top: 16px; color: var(--red); font-size: 15px; }
+
+    .method {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px 24px;
+      padding: 16px 27px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      font-size: 11px;
+    }
+
+    .method span::before { content: "✓"; margin-right: 6px; color: var(--teal); font-weight: 900; }
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .footer strong { color: var(--ink); }
+
+    @media (max-width: 950px) {
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .metric.primary { grid-column: span 2; }
+      .section-grid, .audit-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 620px) {
+      .page { padding: 12px 12px 30px; }
+      .hero { padding: 22px 21px 25px; border-radius: 20px; }
+      .topline { align-items: flex-start; flex-direction: column; gap: 14px; padding-bottom: 36px; }
+      .hero-grid { grid-template-columns: 1fr; gap: 25px; }
+      h1 { font-size: 44px; }
+      .metrics { grid-template-columns: 1fr; }
+      .metric.primary { grid-column: auto; }
+      .metric { min-height: 125px; }
+      .card-pad { padding: 22px 19px; }
+      .category-row { grid-template-columns: 112px minmax(50px, 1fr) auto; gap: 9px; }
+      .category-amount { min-width: 89px; }
+      .audit-grid { gap: 20px; }
+      .method { padding: 15px 19px; }
+      .footer { flex-direction: column; gap: 5px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <div class="topline">
+        <div class="brand"><span class="brand-mark">◒</span><span>Loja · inteligência comercial</span></div>
+        <div class="source">fonte <code>vendas.csv</code></div>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Relatório de vendas · 1º semestre 2026</p>
+          <h1>O semestre em uma <em>visão clara.</em></h1>
+          <p class="lede">Receita, mix de categorias e produtos mais vendidos, com a base higienizada e a qualidade da importação documentada.</p>
+        </div>
+        <div class="hero-note">
+          <div class="hero-note-label">Jan — Jun · período reconciliado</div>
+          <strong>R$ 515.086,00</strong>
+          <span>faturamento considerado no relatório</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="metrics" aria-label="Resumo do semestre">
+        <article class="metric primary">
+          <div class="metric-label"><span>Receita total</span><span class="metric-icon">↗</span></div>
+          <div class="metric-value">R$ 515.086,00</div>
+          <div class="metric-detail">quantidade × valor unitário</div>
+        </article>
+        <article class="metric">
+          <div class="metric-label"><span>Pedidos válidos</span><span class="metric-icon">#</span></div>
+          <div class="metric-value">1.409</div>
+          <div class="metric-detail">IDs únicos considerados</div>
+        </article>
+        <article class="metric">
+          <div class="metric-label"><span>Linhas descartadas</span><span class="metric-icon">!</span></div>
+          <div class="metric-value">91</div>
+          <div class="metric-detail">62 inválidas · 29 duplicadas</div>
+        </article>
+        <article class="metric">
+          <div class="metric-label"><span>Itens vendidos</span><span class="metric-icon">◫</span></div>
+          <div class="metric-value">4.230</div>
+          <div class="metric-detail">unidades nos pedidos válidos</div>
+        </article>
+      </section>
+
+      <div class="section-grid">
+        <section class="card card-pad" aria-labelledby="categoria-titulo">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Onde está a receita</div>
+              <h2 id="categoria-titulo">Receita por categoria</h2>
+              <p class="section-caption">Participação no faturamento considerado</p>
+            </div>
+            <div class="mini-total"><strong>3 categorias</strong><span>4.230 unidades</span></div>
+          </div>
+
+          <div class="category-list">
+            <div class="category-row">
+              <div class="category-name"><span class="dot"></span>Vestuário</div>
+              <div class="bar-track" aria-label="Vestuário representa 40,05% da receita"><div class="bar" style="width:40.05%"></div></div>
+              <div class="category-amount"><strong>R$ 206.272,00</strong><span>40,05% · 701 pedidos</span></div>
+            </div>
+            <div class="category-row">
+              <div class="category-name"><span class="dot orange"></span>Acessórios</div>
+              <div class="bar-track" aria-label="Acessórios representa 30,99% da receita"><div class="bar orange" style="width:30.99%"></div></div>
+              <div class="category-amount"><strong>R$ 159.637,90</strong><span>30,99% · 413 pedidos</span></div>
+            </div>
+            <div class="category-row">
+              <div class="category-name"><span class="dot violet"></span>Calçados</div>
+              <div class="bar-track" aria-label="Calçados representa 28,96% da receita"><div class="bar violet" style="width:28.96%"></div></div>
+              <div class="category-amount"><strong>R$ 149.176,10</strong><span>28,96% · 295 pedidos</span></div>
+            </div>
+          </div>
+
+          <div class="category-foot">
+            <span><strong>2.140</strong> itens em vestuário</span>
+            <span><strong>1.202</strong> em acessórios</span>
+            <span><strong>888</strong> em calçados</span>
+          </div>
+        </section>
+
+        <section class="card card-pad" aria-labelledby="top-titulo">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">O que mais saiu</div>
+              <h2 id="top-titulo">Top 5 produtos</h2>
+              <p class="section-caption">Ranking por quantidade vendida</p>
+            </div>
+            <div class="mini-total"><strong>2.235 un.</strong><span>nos cinco líderes</span></div>
+          </div>
+
+          <div class="ranking">
+            <div class="rank-row">
+              <span class="rank">01</span>
+              <div><div class="product-name">Bermuda tactel</div><div class="product-meter"><span style="width:100%"></span></div></div>
+              <div class="units"><strong>465</strong><span>unidades</span></div>
+            </div>
+            <div class="rank-row">
+              <span class="rank">02</span>
+              <div><div class="product-name">Camiseta básica</div><div class="product-meter"><span style="width:97.42%"></span></div></div>
+              <div class="units"><strong>453</strong><span>unidades</span></div>
+            </div>
+            <div class="rank-row">
+              <span class="rank">03</span>
+              <div><div class="product-name">Chinelo slide</div><div class="product-meter"><span style="width:96.56%"></span></div></div>
+              <div class="units"><strong>449</strong><span>unidades</span></div>
+            </div>
+            <div class="rank-row">
+              <span class="rank">04</span>
+              <div><div class="product-name">Tênis corrida</div><div class="product-meter"><span style="width:94.41%"></span></div></div>
+              <div class="units"><strong>439</strong><span>unidades</span></div>
+            </div>
+            <div class="rank-row">
+              <span class="rank">05</span>
+              <div><div class="product-name">Mochila urbana</div><div class="product-meter"><span style="width:92.26%"></span></div></div>
+              <div class="units"><strong>429</strong><span>unidades</span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="card audit" aria-labelledby="auditoria-titulo">
+        <div class="card-pad">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Base tratada, sem caixa-preta</div>
+              <h2 id="auditoria-titulo">Qualidade da importação</h2>
+              <p class="section-caption">As 1.500 linhas do arquivo foram conferidas antes dos cálculos.</p>
+            </div>
+            <div class="mini-total"><strong>91 descartes</strong><span>6,07% da base bruta</span></div>
+          </div>
+
+          <div class="audit-grid">
+            <div class="audit-intro">
+              <h3>Do bruto ao considerado</h3>
+              <p>Registros aproveitados após normalizar formatos e manter apenas a primeira ocorrência de cada <code>pedido_id</code>.</p>
+              <div class="pipeline">
+                <div><b>1.500</b><span>linhas brutas</span></div>
+                <div class="pipeline-arrow">→</div>
+                <div><b>1.438</b><span>válidas</span></div>
+                <div class="pipeline-arrow">→</div>
+                <div><b>1.409</b><span>únicas</span></div>
+              </div>
+            </div>
+
+            <table class="audit-table" aria-label="Detalhamento das linhas descartadas">
+              <thead><tr><th>Motivo</th><th>Linhas removidas</th></tr></thead>
+              <tbody>
+                <tr><td>Estrutura incompleta / linha quebrada</td><td>47</td></tr>
+                <tr><td>Valor unitário inválido (<code>ERRO_IMPORT</code>)</td><td>15</td></tr>
+                <tr><td>Duplicadas — ocorrências excedentes de 28 IDs</td><td>29</td></tr>
+                <tr class="total"><td>Total descartado</td><td>91</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="method" aria-label="Regras de tratamento">
+          <span>Datas reconciliadas em 3 formatos</span>
+          <span>Valores com ponto, vírgula e R$ normalizados</span>
+          <span>Categoria, produto e espaços padronizados</span>
+          <span>Receita calculada em centavos</span>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>Fonte: <strong>vendas.csv</strong> · período encontrado: 01/01/2026 a 28/06/2026</span>
+        <span>Relatório estático · abre localmente no navegador</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

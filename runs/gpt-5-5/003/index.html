@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulacao de Bolinhas</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --panel: rgba(18, 18, 16, 0.72);
+      --panel-border: rgba(255, 255, 255, 0.14);
+      --text: #f6f2e9;
+      --muted: rgba(246, 242, 233, 0.64);
+      --button: #f2d46b;
+      --button-hover: #ffe07d;
+      --button-text: #19150b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 18% 14%, rgba(253, 185, 98, 0.14), transparent 28rem),
+        radial-gradient(circle at 84% 18%, rgba(84, 202, 164, 0.13), transparent 26rem),
+        linear-gradient(135deg, #171612 0%, #22201c 44%, #10100f 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .hud {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      pointer-events: none;
+    }
+
+    .panel {
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px;
+      border: 1px solid var(--panel-border);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.26);
+      backdrop-filter: blur(18px);
+      pointer-events: auto;
+    }
+
+    .stat {
+      min-width: 84px;
+      display: grid;
+      gap: 1px;
+      padding: 0 8px;
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat span:first-child {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .stat span:last-child {
+      font-size: 18px;
+      font-weight: 760;
+      line-height: 1.05;
+    }
+
+    button {
+      height: 36px;
+      min-width: 126px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 14px;
+      background: var(--button);
+      color: var(--button-text);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 780;
+      line-height: 1;
+      cursor: pointer;
+      box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.16), 0 8px 20px rgba(0, 0, 0, 0.22);
+      transition: background 120ms ease, transform 120ms ease;
+    }
+
+    button:hover {
+      background: var(--button-hover);
+      transform: translateY(-1px);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button:focus-visible {
+      outline: 3px solid rgba(255, 255, 255, 0.74);
+      outline-offset: 3px;
+    }
+
+    button svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      stroke-width: 2.8;
+    }
+
+    .brand {
+      min-width: 100px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 0 10px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 780;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 36% 32%, rgba(255, 255, 255, 0.74) 0 14%, transparent 15%),
+        conic-gradient(from 45deg, #ff6f61, #f2d46b, #54caa4, #63a8ff, #d979ff, #ff6f61);
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 8px 18px rgba(0, 0, 0, 0.28);
+    }
+
+    @media (max-width: 620px) {
+      .hud {
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        align-items: stretch;
+      }
+
+      .brand {
+        display: none;
+      }
+
+      .panel {
+        width: 100%;
+        justify-content: space-between;
+        gap: 6px;
+        padding: 7px;
+      }
+
+      .stat {
+        min-width: 64px;
+        padding: 0 4px;
+      }
+
+      .stat span:last-child {
+        font-size: 16px;
+      }
+
+      button {
+        min-width: 112px;
+        padding: 0 10px;
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="world" aria-label="Simulacao fisica interativa"></canvas>
+
+  <div class="hud" aria-hidden="false">
+    <div class="panel">
+      <div class="brand" aria-label="Fisica">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>Fisica</span>
+      </div>
+      <div class="stat" aria-live="polite">
+        <span>Bolinhas</span>
+        <span id="ball-count">0</span>
+      </div>
+      <div class="stat">
+        <span>FPS</span>
+        <span id="fps">60</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <button id="drop" type="button" aria-label="Soltar 50 bolinhas novas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+          <path d="M12 5v14"></path>
+          <path d="M5 12h14"></path>
+        </svg>
+        Soltar 50
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/matter-js@0.20.0/build/matter.min.js"></script>
+  <script>
+    (() => {
+      "use strict";
+
+      if (!window.Matter) {
+        document.body.innerHTML = "<div style=\"min-height:100vh;display:grid;place-items:center;padding:24px;color:#f6f2e9;font:700 18px system-ui;background:#171612\">Nao foi possivel carregar o motor de fisica.</div>";
+        return;
+      }
+
+      const {
+        Body,
+        Bodies,
+        Composite,
+        Engine,
+        Events,
+        Sleeping
+      } = window.Matter;
+
+      const canvas = document.getElementById("world");
+      const ctx = canvas.getContext("2d", { alpha: true });
+      const countEl = document.getElementById("ball-count");
+      const fpsEl = document.getElementById("fps");
+      const dropButton = document.getElementById("drop");
+
+      const engine = Engine.create({
+        enableSleeping: false,
+        constraintIterations: 2,
+        positionIterations: 8,
+        velocityIterations: 8
+      });
+
+      engine.gravity.y = 1;
+      engine.gravity.scale = 0.00125;
+
+      const world = engine.world;
+      const balls = [];
+      const walls = [];
+      const explosions = [];
+      const tau = Math.PI * 2;
+      const step = 1000 / 60;
+      const maxBalls = 350;
+      const attractRadius = 240;
+      const blastRadius = 230;
+
+      const palette = [
+        "#ff6f61",
+        "#f2d46b",
+        "#54caa4",
+        "#63a8ff",
+        "#d979ff",
+        "#ff9f43",
+        "#36d1dc",
+        "#f368e0",
+        "#b8e986",
+        "#ff5c8a"
+      ];
+
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let lastFrame = performance.now();
+      let accumulator = 0;
+      let fpsFrames = 0;
+      let fpsStarted = performance.now();
+
+      const pointer = {
+        x: 0,
+        y: 0,
+        down: false,
+        active: false,
+        pointerId: null
+      };
+
+      function random(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function chooseColor() {
+        return palette[Math.floor(Math.random() * palette.length)];
+      }
+
+      function syncStats() {
+        countEl.textContent = String(balls.length);
+      }
+
+      function createWalls() {
+        if (walls.length) {
+          Composite.remove(world, walls);
+          walls.length = 0;
+        }
+
+        const thickness = 180;
+        const options = {
+          isStatic: true,
+          restitution: 0.92,
+          friction: 0.02,
+          render: { visible: false }
+        };
+
+        walls.push(
+          Bodies.rectangle(width / 2, height + thickness / 2, width + thickness * 2, thickness, options),
+          Bodies.rectangle(width / 2, -thickness / 2, width + thickness * 2, thickness, options),
+          Bodies.rectangle(-thickness / 2, height / 2, thickness, height + thickness * 2, options),
+          Bodies.rectangle(width + thickness / 2, height / 2, thickness, height + thickness * 2, options)
+        );
+
+        Composite.add(world, walls);
+      }
+
+      function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        pointer.x = clamp(pointer.x || width / 2, 0, width);
+        pointer.y = clamp(pointer.y || height / 2, 0, height);
+
+        createWalls();
+
+        for (const ball of balls) {
+          const r = ball.circleRadius || 12;
+          Body.setPosition(ball, {
+            x: clamp(ball.position.x, r + 2, width - r - 2),
+            y: clamp(ball.position.y, -r * 6, height - r - 2)
+          });
+        }
+      }
+
+      function makeBall(x, y, radius) {
+        const color = chooseColor();
+        const ball = Bodies.circle(x, y, radius, {
+          restitution: random(0.78, 0.91),
+          friction: 0.014,
+          frictionStatic: 0.02,
+          frictionAir: random(0.0022, 0.0048),
+          density: 0.0011,
+          slop: 0.02
+        });
+
+        ball.plugin.visual = {
+          color,
+          stripe: Math.random() > 0.55,
+          shade: Math.random() * 0.18 + 0.12
+        };
+
+        Body.setVelocity(ball, {
+          x: random(-2.2, 2.2),
+          y: random(-0.8, 1.6)
+        });
+        Body.setAngularVelocity(ball, random(-0.08, 0.08));
+
+        balls.push(ball);
+        Composite.add(world, ball);
+
+        while (balls.length > maxBalls) {
+          const oldest = balls.shift();
+          Composite.remove(world, oldest);
+        }
+
+        return ball;
+      }
+
+      function addBalls(amount) {
+        const topGap = Math.max(80, height * 0.18);
+
+        for (let i = 0; i < amount; i += 1) {
+          const radius = random(8, 22);
+          const columns = Math.max(1, Math.floor(width / 58));
+          const column = i % columns;
+          const laneWidth = width / columns;
+          const x = clamp(column * laneWidth + laneWidth * random(0.25, 0.75), radius + 10, width - radius - 10);
+          const y = random(-topGap - amount * 0.8, -radius * 2);
+          makeBall(x, y, radius);
+        }
+
+        syncStats();
+      }
+
+      function setPointerFromEvent(event) {
+        const rect = canvas.getBoundingClientRect();
+        pointer.x = event.clientX - rect.left;
+        pointer.y = event.clientY - rect.top;
+        pointer.active = true;
+      }
+
+      function explode(x, y) {
+        explosions.push({
+          x,
+          y,
+          started: performance.now()
+        });
+
+        for (const ball of balls) {
+          const dx = ball.position.x - x;
+          const dy = ball.position.y - y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq > blastRadius * blastRadius) {
+            continue;
+          }
+
+          const dist = Math.max(Math.sqrt(distSq), 8);
+          const falloff = Math.pow(1 - dist / blastRadius, 1.45);
+          const nx = dx / dist || random(-1, 1);
+          const ny = dy / dist || random(-1, 1);
+          const force = 0.046 * falloff * ball.mass;
+
+          Sleeping.set(ball, false);
+          Body.applyForce(ball, ball.position, {
+            x: nx * force,
+            y: ny * force - 0.014 * falloff * ball.mass
+          });
+          Body.setAngularVelocity(ball, ball.angularVelocity + random(-0.18, 0.18) * falloff);
+        }
+      }
+
+      function applyAttraction() {
+        if (!pointer.down) {
+          return;
+        }
+
+        for (const ball of balls) {
+          const dx = pointer.x - ball.position.x;
+          const dy = pointer.y - ball.position.y;
+          const distSq = dx * dx + dy * dy;
+
+          if (distSq > attractRadius * attractRadius || distSq < 12) {
+            continue;
+          }
+
+          const dist = Math.sqrt(distSq);
+          const falloff = 1 - dist / attractRadius;
+          const force = 0.00022 * falloff * falloff * ball.mass;
+
+          Sleeping.set(ball, false);
+          Body.applyForce(ball, ball.position, {
+            x: (dx / dist) * force,
+            y: (dy / dist) * force
+          });
+        }
+      }
+
+      function drawField(now) {
+        if (pointer.down) {
+          const pulse = 0.5 + Math.sin(now * 0.012) * 0.5;
+          ctx.beginPath();
+          ctx.arc(pointer.x, pointer.y, attractRadius * (0.97 + pulse * 0.025), 0, tau);
+          ctx.fillStyle = "rgba(246, 242, 233, 0.035)";
+          ctx.fill();
+          ctx.lineWidth = 1.5;
+          ctx.strokeStyle = `rgba(246, 242, 233, ${0.18 + pulse * 0.08})`;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(pointer.x, pointer.y, 8 + pulse * 3, 0, tau);
+          ctx.fillStyle = "rgba(242, 212, 107, 0.88)";
+          ctx.fill();
+        }
+
+        for (let i = explosions.length - 1; i >= 0; i -= 1) {
+          const burst = explosions[i];
+          const age = now - burst.started;
+          const t = age / 520;
+
+          if (t >= 1) {
+            explosions.splice(i, 1);
+            continue;
+          }
+
+          const eased = 1 - Math.pow(1 - t, 3);
+          const radius = blastRadius * eased;
+          const alpha = 1 - t;
+
+          ctx.beginPath();
+          ctx.arc(burst.x, burst.y, radius, 0, tau);
+          ctx.lineWidth = 5 * alpha + 1;
+          ctx.strokeStyle = `rgba(255, 214, 107, ${0.5 * alpha})`;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(burst.x, burst.y, radius * 0.48, 0, tau);
+          ctx.fillStyle = `rgba(255, 111, 97, ${0.08 * alpha})`;
+          ctx.fill();
+        }
+      }
+
+      function drawBall(ball) {
+        const radius = ball.circleRadius;
+        const visual = ball.plugin.visual;
+
+        ctx.save();
+        ctx.translate(ball.position.x, ball.position.y);
+        ctx.rotate(ball.angle);
+
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, tau);
+        ctx.fillStyle = visual.color;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(radius * 0.18, radius * 0.2, radius * 0.88, -0.2, Math.PI * 1.08);
+        ctx.strokeStyle = `rgba(0, 0, 0, ${visual.shade})`;
+        ctx.lineWidth = Math.max(1.2, radius * 0.22);
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(-radius * 0.36, -radius * 0.36, radius * 0.25, 0, tau);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.34)";
+        ctx.fill();
+
+        if (visual.stripe) {
+          ctx.beginPath();
+          ctx.moveTo(-radius * 0.48, radius * 0.08);
+          ctx.quadraticCurveTo(0, -radius * 0.12, radius * 0.48, radius * 0.08);
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
+          ctx.lineWidth = Math.max(1, radius * 0.12);
+          ctx.lineCap = "round";
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, tau);
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        ctx.lineWidth = Math.max(1, radius * 0.055);
+        ctx.stroke();
+
+        ctx.restore();
+      }
+
+      function render(now) {
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, width, height);
+
+        drawField(now);
+
+        ctx.save();
+        ctx.globalCompositeOperation = "source-over";
+        for (const ball of balls) {
+          drawBall(ball);
+        }
+        ctx.restore();
+      }
+
+      function tick(now) {
+        const delta = Math.min(now - lastFrame, 80);
+        lastFrame = now;
+        accumulator += delta;
+
+        let loops = 0;
+        while (accumulator >= step && loops < 3) {
+          applyAttraction();
+          Engine.update(engine, step);
+          accumulator -= step;
+          loops += 1;
+        }
+
+        if (loops === 3) {
+          accumulator = 0;
+        }
+
+        render(now);
+
+        fpsFrames += 1;
+        if (now - fpsStarted >= 500) {
+          fpsEl.textContent = String(Math.round((fpsFrames * 1000) / (now - fpsStarted)));
+          fpsFrames = 0;
+          fpsStarted = now;
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      canvas.addEventListener("pointerdown", (event) => {
+        setPointerFromEvent(event);
+        pointer.down = true;
+        pointer.pointerId = event.pointerId;
+        canvas.setPointerCapture(event.pointerId);
+        explode(pointer.x, pointer.y);
+      });
+
+      canvas.addEventListener("pointermove", (event) => {
+        setPointerFromEvent(event);
+      });
+
+      canvas.addEventListener("pointerup", (event) => {
+        setPointerFromEvent(event);
+        pointer.down = false;
+        pointer.pointerId = null;
+
+        if (canvas.hasPointerCapture(event.pointerId)) {
+          canvas.releasePointerCapture(event.pointerId);
+        }
+      });
+
+      canvas.addEventListener("pointercancel", () => {
+        pointer.down = false;
+        pointer.pointerId = null;
+      });
+
+      window.addEventListener("blur", () => {
+        pointer.down = false;
+        pointer.pointerId = null;
+      });
+
+      window.addEventListener("resize", resize);
+
+      dropButton.addEventListener("click", () => {
+        addBalls(50);
+        dropButton.animate(
+          [
+            { transform: "translateY(0) scale(1)" },
+            { transform: "translateY(-1px) scale(1.04)" },
+            { transform: "translateY(0) scale(1)" }
+          ],
+          { duration: 180, easing: "ease-out" }
+        );
+      });
+
+      Events.on(engine, "collisionStart", (event) => {
+        for (const pair of event.pairs) {
+          const a = pair.bodyA;
+          const b = pair.bodyB;
+
+          if (!a.isStatic && Math.abs(a.angularVelocity) < 0.32) {
+            Body.setAngularVelocity(a, a.angularVelocity + random(-0.018, 0.018));
+          }
+
+          if (!b.isStatic && Math.abs(b.angularVelocity) < 0.32) {
+            Body.setAngularVelocity(b, b.angularVelocity + random(-0.018, 0.018));
+          }
+        }
+      });
+
+      resize();
+      addBalls(90);
+      requestAnimationFrame((now) => {
+        lastFrame = now;
+        fpsStarted = now;
+        tick(now);
+      });
+    })();
+  </script>
+</body>
+</html>

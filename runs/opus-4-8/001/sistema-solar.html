@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Solar 3D Interativo</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+  canvas { display: block; }
+
+  #ui {
+    position: fixed;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #e8ecff;
+    -webkit-user-select: none; user-select: none;
+    pointer-events: none;
+  }
+
+  #help {
+    top: 16px; left: 16px;
+    background: rgba(10, 14, 30, 0.55);
+    border: 1px solid rgba(120, 150, 255, 0.25);
+    border-radius: 12px;
+    padding: 14px 16px;
+    max-width: 280px;
+    backdrop-filter: blur(8px);
+    line-height: 1.5;
+    font-size: 13px;
+  }
+  #help h1 { font-size: 15px; margin-bottom: 8px; letter-spacing: 0.3px; }
+  #help .k {
+    display: inline-block;
+    min-width: 20px; text-align: center;
+    padding: 1px 6px; margin: 0 1px;
+    background: rgba(120, 150, 255, 0.18);
+    border: 1px solid rgba(120, 150, 255, 0.35);
+    border-radius: 5px;
+    font-size: 11px; font-weight: 600;
+  }
+  #help p { margin-top: 6px; opacity: 0.85; }
+
+  #info {
+    top: 16px; right: 16px;
+    width: 300px;
+    background: rgba(10, 14, 30, 0.7);
+    border: 1px solid rgba(120, 150, 255, 0.3);
+    border-radius: 12px;
+    padding: 18px;
+    backdrop-filter: blur(10px);
+    transform: translateX(340px);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: auto;
+  }
+  #info.visible { transform: translateX(0); }
+  #info .swatch {
+    width: 14px; height: 14px; border-radius: 50%;
+    display: inline-block; vertical-align: middle;
+    margin-right: 8px; box-shadow: 0 0 10px currentColor;
+  }
+  #info h2 { font-size: 20px; display: flex; align-items: center; }
+  #info .close {
+    position: absolute; top: 12px; right: 14px;
+    cursor: pointer; font-size: 20px; opacity: 0.6;
+    line-height: 1; padding: 4px;
+  }
+  #info .close:hover { opacity: 1; }
+  #info .desc { font-size: 13px; opacity: 0.8; margin: 10px 0 14px; line-height: 1.5; }
+  #info table { width: 100%; font-size: 13px; border-collapse: collapse; }
+  #info td { padding: 5px 0; border-bottom: 1px solid rgba(120, 150, 255, 0.12); }
+  #info td:first-child { opacity: 0.6; }
+  #info td:last-child { text-align: right; font-weight: 600; }
+
+  #hint {
+    bottom: 16px; left: 50%; transform: translateX(-50%);
+    font-size: 12px; opacity: 0.5; text-align: center;
+  }
+</style>
+</head>
+<body>
+<div id="ui">
+  <div id="help">
+    <h1>☀️ Sistema Solar 3D</h1>
+    <div>
+      <span class="k">W</span><span class="k">A</span><span class="k">S</span><span class="k">D</span> voar &nbsp;·&nbsp;
+      <span class="k">Q</span><span class="k">E</span> descer/subir
+    </div>
+    <div style="margin-top:6px">
+      <span class="k">Shift</span> acelerar &nbsp;·&nbsp; <span class="k">Scroll</span> zoom
+    </div>
+    <p>Arraste com o mouse para olhar ao redor. Clique num planeta para ver seus dados.</p>
+  </div>
+
+  <div id="info">
+    <span class="close" id="infoClose">✕</span>
+    <h2><span class="swatch" id="infoSwatch"></span><span id="infoName"></span></h2>
+    <div class="desc" id="infoDesc"></div>
+    <table id="infoTable"></table>
+  </div>
+
+  <div id="hint">Clique na cena e comece a explorar</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+// ============================================================
+//  Dados dos planetas
+//  - radius: raio relativo (Terra = 1)  [comprimido p/ visibilidade]
+//  - dist:   distância orbital em unidades de cena
+//  - speed:  velocidade angular relativa (Terra = 1) = 1/período orbital
+//  - Os "dados reais" no painel são valores físicos verdadeiros.
+// ============================================================
+const PLANETS = [
+  {
+    name: "Mercúrio", color: 0x9c8a7d, radius: 0.38, dist: 34, speed: 4.15,
+    spin: 0.004,
+    desc: "O menor planeta e o mais próximo do Sol. Sem atmosfera, tem variações extremas de temperatura.",
+    facts: {
+      "Diâmetro": "4.879 km",
+      "Distância do Sol": "57,9 milhões km",
+      "Período orbital": "88 dias",
+      "Dia (rotação)": "1.408 h",
+      "Temperatura": "-173 a 427 °C",
+      "Luas": "0"
+    }
+  },
+  {
+    name: "Vênus", color: 0xe6b877, radius: 0.95, dist: 46, speed: 1.62,
+    spin: -0.002,
+    desc: "O planeta mais quente do sistema solar por causa do intenso efeito estufa. Gira ao contrário.",
+    facts: {
+      "Diâmetro": "12.104 km",
+      "Distância do Sol": "108,2 milhões km",
+      "Período orbital": "225 dias",
+      "Dia (rotação)": "5.832 h",
+      "Temperatura": "~465 °C",
+      "Luas": "0"
+    }
+  },
+  {
+    name: "Terra", color: 0x3a72c4, radius: 1.0, dist: 60, speed: 1.0,
+    spin: 0.02,
+    desc: "Nosso lar. O único planeta conhecido com vida, com água líquida em abundância na superfície.",
+    facts: {
+      "Diâmetro": "12.742 km",
+      "Distância do Sol": "149,6 milhões km",
+      "Período orbital": "365,25 dias",
+      "Dia (rotação)": "24 h",
+      "Temperatura": "-88 a 58 °C",
+      "Luas": "1"
+    }
+  },
+  {
+    name: "Marte", color: 0xc1440e, radius: 0.53, dist: 76, speed: 0.53,
+    spin: 0.018,
+    desc: "O planeta vermelho, coberto por óxido de ferro. Abriga o maior vulcão do sistema solar, o Monte Olimpo.",
+    facts: {
+      "Diâmetro": "6.779 km",
+      "Distância do Sol": "227,9 milhões km",
+      "Período orbital": "687 dias",
+      "Dia (rotação)": "24,6 h",
+      "Temperatura": "-153 a 20 °C",
+      "Luas": "2"
+    }
+  },
+  {
+    name: "Júpiter", color: 0xd8a06b, radius: 4.2, dist: 120, speed: 0.084,
+    spin: 0.04,
+    desc: "O gigante gasoso, maior planeta do sistema solar. A Grande Mancha Vermelha é uma tempestade centenária.",
+    facts: {
+      "Diâmetro": "139.820 km",
+      "Distância do Sol": "778,5 milhões km",
+      "Período orbital": "11,86 anos",
+      "Dia (rotação)": "9,9 h",
+      "Temperatura": "~-145 °C",
+      "Luas": "95"
+    }
+  },
+  {
+    name: "Saturno", color: 0xe3cd9a, radius: 3.6, dist: 165, speed: 0.034,
+    spin: 0.038, ring: { inner: 4.6, outer: 7.6, color: 0xcbb98a },
+    desc: "Famoso por seu deslumbrante sistema de anéis, feito de gelo e rocha. É o planeta menos denso.",
+    facts: {
+      "Diâmetro": "116.460 km",
+      "Distância do Sol": "1,43 bilhão km",
+      "Período orbital": "29,5 anos",
+      "Dia (rotação)": "10,7 h",
+      "Temperatura": "~-178 °C",
+      "Luas": "146"
+    }
+  },
+  {
+    name: "Urano", color: 0x9fdce3, radius: 2.0, dist: 205, speed: 0.012,
+    spin: 0.03,
+    desc: "Gigante de gelo azulado que gira praticamente deitado, com o eixo inclinado quase 98°.",
+    facts: {
+      "Diâmetro": "50.724 km",
+      "Distância do Sol": "2,87 bilhões km",
+      "Período orbital": "84 anos",
+      "Dia (rotação)": "17,2 h",
+      "Temperatura": "~-224 °C",
+      "Luas": "28"
+    }
+  },
+  {
+    name: "Netuno", color: 0x3b5bdb, radius: 1.9, dist: 240, speed: 0.006,
+    spin: 0.032,
+    desc: "O planeta mais distante do Sol, com os ventos mais fortes do sistema solar, chegando a 2.100 km/h.",
+    facts: {
+      "Diâmetro": "49.244 km",
+      "Distância do Sol": "4,50 bilhões km",
+      "Período orbital": "164,8 anos",
+      "Dia (rotação)": "16,1 h",
+      "Temperatura": "~-214 °C",
+      "Luas": "16"
+    }
+  }
+];
+
+// ============================================================
+//  Cena, câmera, renderer
+// ============================================================
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+  60, window.innerWidth / window.innerHeight, 0.1, 5000
+);
+camera.position.set(0, 90, 260);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// ============================================================
+//  Estrelas de fundo
+// ============================================================
+function createStarfield() {
+  const count = 9000;
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  const palette = [
+    [1.0, 1.0, 1.0], [0.75, 0.83, 1.0], [1.0, 0.9, 0.75], [1.0, 0.8, 0.7]
+  ];
+  for (let i = 0; i < count; i++) {
+    // distribuição em casca esférica bem distante
+    const r = 1400 + Math.random() * 1600;
+    const theta = Math.random() * Math.PI * 2;
+    const phi = Math.acos(2 * Math.random() - 1);
+    positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+    positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    positions[i * 3 + 2] = r * Math.cos(phi);
+    const c = palette[(Math.random() * palette.length) | 0];
+    const b = 0.6 + Math.random() * 0.4;
+    colors[i * 3] = c[0] * b; colors[i * 3 + 1] = c[1] * b; colors[i * 3 + 2] = c[2] * b;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  const mat = new THREE.PointsMaterial({
+    size: 2.2, sizeAttenuation: true, vertexColors: true,
+    transparent: true, opacity: 0.9, depthWrite: false
+  });
+  return new THREE.Points(geo, mat);
+}
+scene.add(createStarfield());
+
+// ============================================================
+//  Sol
+// ============================================================
+const SUN_RADIUS = 14;
+const sunGeo = new THREE.SphereGeometry(SUN_RADIUS, 48, 48);
+const sunMat = new THREE.MeshBasicMaterial({ color: 0xffcc33 });
+const sun = new THREE.Mesh(sunGeo, sunMat);
+sun.userData.info = {
+  name: "Sol", color: 0xffcc33,
+  desc: "A estrela no centro do sistema solar. Contém 99,8% de toda a massa do sistema e alimenta a vida na Terra.",
+  facts: {
+    "Diâmetro": "1.392.700 km",
+    "Tipo": "Anã amarela (G2V)",
+    "Temperatura (superfície)": "~5.500 °C",
+    "Temperatura (núcleo)": "~15 milhões °C",
+    "Idade": "~4,6 bilhões de anos",
+    "Composição": "74% H, 24% He"
+  }
+};
+scene.add(sun);
+
+// halo/glow do sol
+const glowMat = new THREE.SpriteMaterial({
+  map: makeGlowTexture(), color: 0xffdd66,
+  transparent: true, blending: THREE.AdditiveBlending, depthWrite: false
+});
+const glow = new THREE.Sprite(glowMat);
+glow.scale.set(90, 90, 1);
+sun.add(glow);
+
+function makeGlowTexture() {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+  g.addColorStop(0, 'rgba(255,230,150,1)');
+  g.addColorStop(0.25, 'rgba(255,200,90,0.6)');
+  g.addColorStop(1, 'rgba(255,180,60,0)');
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 128, 128);
+  return new THREE.CanvasTexture(c);
+}
+
+// luz emanando do sol + luz ambiente suave
+const sunLight = new THREE.PointLight(0xffffff, 2.2, 0, 0.6);
+sun.add(sunLight);
+scene.add(new THREE.AmbientLight(0x404055, 0.6));
+
+// ============================================================
+//  Planetas + órbitas
+// ============================================================
+const clickable = [];   // meshes que podem ser selecionadas
+const orbiting = [];    // pivots dos planetas p/ animar
+
+function orbitLine(radius) {
+  const pts = [];
+  const seg = 160;
+  for (let i = 0; i <= seg; i++) {
+    const a = (i / seg) * Math.PI * 2;
+    pts.push(new THREE.Vector3(Math.cos(a) * radius, 0, Math.sin(a) * radius));
+  }
+  const geo = new THREE.BufferGeometry().setFromPoints(pts);
+  const mat = new THREE.LineBasicMaterial({
+    color: 0x4a5580, transparent: true, opacity: 0.35
+  });
+  return new THREE.LineLoop(geo, mat);
+}
+
+const RADIUS_SCALE = 2.6; // amplia os raios (relativos) p/ visualização
+
+PLANETS.forEach((p) => {
+  scene.add(orbitLine(p.dist));
+
+  const pivot = new THREE.Object3D();      // gira em torno do sol
+  pivot.rotation.y = Math.random() * Math.PI * 2; // fase inicial aleatória
+  scene.add(pivot);
+
+  const r = p.radius * RADIUS_SCALE;
+  const geo = new THREE.SphereGeometry(r, 40, 40);
+  const mat = new THREE.MeshStandardMaterial({
+    color: p.color, roughness: 0.85, metalness: 0.1
+  });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.x = p.dist;
+  mesh.userData.info = p;
+  pivot.add(mesh);
+
+  // anel de Saturno
+  if (p.ring) {
+    const ringGeo = new THREE.RingGeometry(
+      p.ring.inner * RADIUS_SCALE * 0.4, p.ring.outer * RADIUS_SCALE * 0.4, 64
+    );
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: p.ring.color, side: THREE.DoubleSide,
+      transparent: true, opacity: 0.7
+    });
+    const ring = new THREE.Mesh(ringGeo, ringMat);
+    ring.rotation.x = Math.PI / 2.2;
+    mesh.add(ring);
+  }
+
+  clickable.push(mesh);
+  orbiting.push({ pivot, mesh, speed: p.speed, spin: p.spin });
+});
+
+// ============================================================
+//  Controles de voo:  mouse (olhar) + WASD (mover) + scroll (zoom)
+// ============================================================
+const keys = {};
+let yaw = 0, pitch = 0;
+let dragging = false, downX = 0, downY = 0, moved = false;
+
+// inicializa yaw/pitch a partir da direção inicial da câmera
+{
+  const dir = new THREE.Vector3(0, 0, 0).sub(camera.position).normalize();
+  yaw = Math.atan2(dir.x, dir.z);
+  pitch = Math.asin(THREE.MathUtils.clamp(dir.y, -1, 1));
+}
+
+const dom = renderer.domElement;
+
+dom.addEventListener('mousedown', (e) => {
+  if (e.button !== 0) return;
+  dragging = true; moved = false;
+  downX = e.clientX; downY = e.clientY;
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!dragging) return;
+  const dx = e.movementX || 0;
+  const dy = e.movementY || 0;
+  if (Math.abs(e.clientX - downX) > 3 || Math.abs(e.clientY - downY) > 3) moved = true;
+  const sens = 0.0026;
+  yaw   -= dx * sens;
+  pitch -= dy * sens;
+  const lim = Math.PI / 2 - 0.02;
+  pitch = THREE.MathUtils.clamp(pitch, -lim, lim);
+});
+
+window.addEventListener('mouseup', (e) => {
+  if (e.button !== 0) return;
+  dragging = false;
+  if (!moved) handleClick(e); // clique "limpo" = seleção
+});
+
+// zoom com a roda: desloca a câmera ao longo da direção de visão
+dom.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const forward = getForward();
+  const step = e.deltaY * 0.25;
+  camera.position.addScaledVector(forward, -step);
+}, { passive: false });
+
+document.addEventListener('keydown', (e) => { keys[e.code] = true; });
+document.addEventListener('keyup',   (e) => { keys[e.code] = false; });
+
+function getForward() {
+  return new THREE.Vector3(
+    Math.sin(yaw) * Math.cos(pitch),
+    Math.sin(pitch),
+    Math.cos(yaw) * Math.cos(pitch)
+  ).normalize();
+}
+
+function updateMovement(dt) {
+  const forward = getForward();
+  const right = new THREE.Vector3().crossVectors(forward, new THREE.Vector3(0, 1, 0)).normalize();
+  const base = keys['ShiftLeft'] || keys['ShiftRight'] ? 260 : 90;
+  const dist = base * dt;
+  const move = new THREE.Vector3();
+  if (keys['KeyW']) move.addScaledVector(forward, dist);
+  if (keys['KeyS']) move.addScaledVector(forward, -dist);
+  if (keys['KeyD']) move.addScaledVector(right, dist);
+  if (keys['KeyA']) move.addScaledVector(right, -dist);
+  if (keys['KeyE'] || keys['Space']) move.y += dist;
+  if (keys['KeyQ']) move.y -= dist;
+  camera.position.add(move);
+}
+
+// ============================================================
+//  Seleção por clique (raycaster)
+// ============================================================
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+
+function handleClick(e) {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  raycaster.setFromCamera(mouse, camera);
+  const targets = clickable.concat([sun]);
+  const hits = raycaster.intersectObjects(targets, false);
+  if (hits.length > 0) {
+    showInfo(hits[0].object.userData.info);
+  }
+}
+
+// ============================================================
+//  Painel de informações
+// ============================================================
+const infoEl = document.getElementById('info');
+function showInfo(data) {
+  document.getElementById('infoName').textContent = data.name;
+  document.getElementById('infoDesc').textContent = data.desc;
+  const sw = document.getElementById('infoSwatch');
+  sw.style.background = '#' + data.color.toString(16).padStart(6, '0');
+  sw.style.color = sw.style.background;
+  const tbl = document.getElementById('infoTable');
+  tbl.innerHTML = '';
+  for (const [k, v] of Object.entries(data.facts)) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${k}</td><td>${v}</td>`;
+    tbl.appendChild(tr);
+  }
+  infoEl.classList.add('visible');
+}
+document.getElementById('infoClose').addEventListener('click', () => {
+  infoEl.classList.remove('visible');
+});
+// esconde a dica ao primeiro clique
+dom.addEventListener('mousedown', () => {
+  const h = document.getElementById('hint');
+  if (h) h.style.display = 'none';
+}, { once: true });
+
+// ============================================================
+//  Loop de animação
+// ============================================================
+const ORBIT_SPEED = 0.12; // fator global de velocidade orbital
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+
+  updateMovement(dt);
+
+  // orienta a câmera segundo yaw/pitch
+  const forward = getForward();
+  camera.lookAt(camera.position.clone().add(forward));
+
+  // órbitas e rotações
+  orbiting.forEach((o) => {
+    o.pivot.rotation.y += o.speed * ORBIT_SPEED * dt;
+    o.mesh.rotation.y += o.spin;
+  });
+  sun.rotation.y += 0.0015;
+
+  renderer.render(scene, camera);
+}
+animate();
+
+// ============================================================
+//  Resize
+// ============================================================
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+</body>
+</html>

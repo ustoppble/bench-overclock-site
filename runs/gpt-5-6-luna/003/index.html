@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080b18" />
+    <title>Orbital Bloom — Simulação de Física</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f4f6ff;
+        --muted: #a5acc8;
+        --line: rgba(255, 255, 255, 0.12);
+        --glass: rgba(13, 17, 38, 0.68);
+        --accent: #8b7cff;
+        --accent-2: #33d7c1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: #080b18;
+      }
+
+      body {
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      .scene {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        isolation: isolate;
+        background:
+          radial-gradient(circle at 76% 18%, rgba(108, 74, 255, 0.16), transparent 29%),
+          radial-gradient(circle at 15% 78%, rgba(0, 211, 190, 0.1), transparent 25%),
+          linear-gradient(145deg, #090b19 0%, #0b1024 52%, #080a17 100%);
+      }
+
+      .scene::before {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        background-size: 56px 56px;
+        content: "";
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), transparent 82%);
+      }
+
+      canvas {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        cursor: crosshair;
+        touch-action: none;
+      }
+
+      .vignette {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse at center, transparent 45%, rgba(3, 4, 12, 0.58));
+      }
+
+      .topbar {
+        position: absolute;
+        top: clamp(22px, 4vw, 48px);
+        right: clamp(22px, 5vw, 72px);
+        left: clamp(22px, 5vw, 72px);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        pointer-events: none;
+      }
+
+      .brand {
+        max-width: 390px;
+        text-shadow: 0 3px 24px rgba(0, 0, 0, 0.24);
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 10px;
+        color: #9da5c7;
+        font-size: 10px;
+        font-weight: 750;
+        letter-spacing: 0.23em;
+        text-transform: uppercase;
+      }
+
+      .eyebrow::before {
+        width: 22px;
+        height: 1px;
+        background: linear-gradient(90deg, var(--accent-2), var(--accent));
+        content: "";
+      }
+
+      h1 {
+        margin: 0;
+        color: #ffffff;
+        font-size: clamp(34px, 5vw, 62px);
+        font-weight: 760;
+        letter-spacing: -0.06em;
+        line-height: 0.98;
+      }
+
+      .brand p {
+        margin: 15px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        letter-spacing: 0.01em;
+      }
+
+      .control-card {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--glass);
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(18px);
+        pointer-events: auto;
+      }
+
+      .counter {
+        min-width: 80px;
+        padding-left: 9px;
+      }
+
+      .counter-label {
+        display: block;
+        margin-bottom: 3px;
+        color: #8992b7;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .counter strong {
+        display: block;
+        color: #ffffff;
+        font-size: 25px;
+        font-weight: 650;
+        letter-spacing: -0.04em;
+        line-height: 1;
+      }
+
+      #addBalls {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 46px;
+        padding: 0 17px 0 13px;
+        border: 0;
+        border-radius: 12px;
+        color: #0a1023;
+        background: linear-gradient(135deg, #9b91ff, #63dfd1);
+        box-shadow: 0 8px 24px rgba(84, 199, 210, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 760;
+        letter-spacing: -0.01em;
+        transition: transform 160ms ease, filter 160ms ease, box-shadow 160ms ease;
+      }
+
+      #addBalls span {
+        display: grid;
+        width: 22px;
+        height: 22px;
+        place-items: center;
+        border-radius: 50%;
+        color: #ffffff;
+        background: rgba(8, 16, 35, 0.26);
+        font-size: 19px;
+        font-weight: 400;
+        line-height: 1;
+      }
+
+      #addBalls:hover {
+        filter: saturate(1.12) brightness(1.06);
+        box-shadow: 0 11px 30px rgba(84, 199, 210, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+        transform: translateY(-2px);
+      }
+
+      #addBalls:active {
+        transform: translateY(1px) scale(0.985);
+      }
+
+      #addBalls:focus-visible {
+        outline: 2px solid #ffffff;
+        outline-offset: 4px;
+      }
+
+      .bottom-info {
+        position: absolute;
+        right: clamp(22px, 5vw, 72px);
+        bottom: clamp(22px, 4vw, 48px);
+        left: clamp(22px, 5vw, 72px);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        pointer-events: none;
+      }
+
+      .hint {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #a8afd0;
+        font-size: 11px;
+        letter-spacing: 0.01em;
+      }
+
+      .hint .mouse-icon {
+        position: relative;
+        width: 18px;
+        height: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        border-radius: 10px;
+      }
+
+      .hint .mouse-icon::before {
+        position: absolute;
+        top: 5px;
+        left: 7px;
+        width: 3px;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--accent-2);
+        content: "";
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #8992b7;
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent-2);
+        box-shadow: 0 0 12px var(--accent-2);
+      }
+
+      .status-dot.active {
+        background: #ffbb73;
+        box-shadow: 0 0 14px #ff9d50;
+      }
+
+      @media (max-width: 650px) {
+        .topbar {
+          display: block;
+        }
+
+        .control-card {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 7px;
+          gap: 7px;
+        }
+
+        .counter {
+          display: none;
+        }
+
+        #addBalls {
+          min-height: 42px;
+          padding-right: 12px;
+          font-size: 11px;
+        }
+
+        .bottom-info {
+          display: block;
+        }
+
+        .status {
+          display: none;
+        }
+
+        .hint {
+          max-width: 240px;
+          line-height: 1.5;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="scene">
+      <canvas id="world" aria-label="Simulação interativa de bolinhas coloridas"></canvas>
+      <div class="vignette" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <div class="brand">
+          <div class="eyebrow">Physics playground</div>
+          <h1>Orbital Bloom</h1>
+          <p>Gravidade, colisão e caos sob controle.</p>
+        </div>
+
+        <div class="control-card">
+          <div class="counter">
+            <span class="counter-label">Bolinhas</span>
+            <strong id="ballCount">00</strong>
+          </div>
+          <button id="addBalls" type="button" aria-label="Soltar 50 bolinhas novas">
+            <span aria-hidden="true">+</span>
+            Soltar 50 bolinhas
+          </button>
+        </div>
+      </header>
+
+      <div class="bottom-info">
+        <div class="hint">
+          <span class="mouse-icon" aria-hidden="true"></span>
+          Segure o mouse para atrair · clique para uma explosão
+        </div>
+        <div class="status">
+          <span id="statusDot" class="status-dot"></span>
+          <span id="statusText">simulação em tempo real</span>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const canvas = document.getElementById("world");
+        const ctx = canvas.getContext("2d", { alpha: true });
+        const countLabel = document.getElementById("ballCount");
+        const addButton = document.getElementById("addBalls");
+        const statusText = document.getElementById("statusText");
+        const statusDot = document.getElementById("statusDot");
+
+        const palette = [
+          "#ff6b9d",
+          "#ffbd6b",
+          "#73e7d2",
+          "#8b7cff",
+          "#69b7ff",
+          "#f28cff",
+          "#d9f56b",
+        ];
+
+        const GRAVITY = 980;
+        const FIXED_STEP = 1 / 120;
+        const MAX_FRAME = 0.05;
+        const CELL_SIZE = 46;
+        const ATTRACTION_RADIUS = 210;
+        const ATTRACTION_FORCE = 2750;
+        const EXPLOSION_RADIUS = 230;
+        const EXPLOSION_FORCE = 1180;
+
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        let pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        let balls = [];
+        let nextId = 1;
+        let stars = [];
+        let rings = [];
+        let sparks = [];
+        let lastTime = performance.now();
+        let accumulator = 0;
+        let shownCount = -1;
+
+        const mouse = {
+          x: width * 0.5,
+          y: height * 0.5,
+          inside: false,
+          active: false,
+        };
+
+        function random(min, max) {
+          return min + Math.random() * (max - min);
+        }
+
+        function clamp(value, min, max) {
+          return Math.max(min, Math.min(max, value));
+        }
+
+        function resize() {
+          width = window.innerWidth;
+          height = window.innerHeight;
+          pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+
+          canvas.width = Math.floor(width * pixelRatio);
+          canvas.height = Math.floor(height * pixelRatio);
+          ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+          stars = Array.from({ length: Math.max(45, Math.floor((width * height) / 15000)) }, () => ({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            radius: random(0.35, 1.25),
+            alpha: random(0.12, 0.42),
+          }));
+
+          for (const ball of balls) {
+            ball.x = clamp(ball.x, ball.radius, Math.max(ball.radius, width - ball.radius));
+            ball.y = clamp(ball.y, ball.radius, Math.max(ball.radius, height - ball.radius));
+          }
+        }
+
+        function makeBall(x, y, fromTop = false) {
+          const radius = random(8, 18);
+          return {
+            id: nextId++,
+            x,
+            y,
+            radius,
+            mass: radius * radius,
+            vx: fromTop ? random(-65, 65) : random(-130, 130),
+            vy: fromTop ? random(15, 120) : random(-40, 120),
+            color: palette[Math.floor(Math.random() * palette.length)],
+            rotation: Math.random() * Math.PI * 2,
+            spin: random(-2, 2),
+          };
+        }
+
+        function spawnBatch(amount, fromTop = false) {
+          for (let i = 0; i < amount; i += 1) {
+            const radius = random(8, 18);
+            const topLimit = Math.max(radius + 12, Math.min(height * 0.25, radius + 170));
+            const ball = makeBall(
+              random(radius + 4, Math.max(radius + 4, width - radius - 4)),
+              fromTop ? random(radius + 12, topLimit) : random(radius + 70, Math.max(radius + 70, height * 0.52)),
+              fromTop,
+            );
+            ball.radius = radius;
+            ball.mass = radius * radius;
+            balls.push(ball);
+          }
+          updateCount();
+        }
+
+        function updateCount() {
+          if (shownCount === balls.length) return;
+          shownCount = balls.length;
+          countLabel.textContent = String(balls.length).padStart(2, "0");
+        }
+
+        function setMousePosition(event) {
+          const rect = canvas.getBoundingClientRect();
+          mouse.x = event.clientX - rect.left;
+          mouse.y = event.clientY - rect.top;
+          mouse.inside = true;
+        }
+
+        function explode(x, y) {
+          rings.push({ x, y, age: 0, duration: 0.7, maxRadius: EXPLOSION_RADIUS });
+
+          for (const ball of balls) {
+            const dx = ball.x - x;
+            const dy = ball.y - y;
+            const distance = Math.hypot(dx, dy);
+            if (distance >= EXPLOSION_RADIUS) continue;
+
+            const falloff = 1 - distance / EXPLOSION_RADIUS;
+            const safeDistance = distance || 1;
+            const nx = distance ? dx / safeDistance : random(-1, 1);
+            const ny = distance ? dy / safeDistance : -1;
+            const kick = EXPLOSION_FORCE * (0.22 + falloff * falloff);
+            ball.vx += nx * kick;
+            ball.vy += ny * kick;
+          }
+
+          for (let i = 0; i < 30; i += 1) {
+            const angle = Math.random() * Math.PI * 2;
+            const speed = random(130, 620);
+            sparks.push({
+              x,
+              y,
+              vx: Math.cos(angle) * speed,
+              vy: Math.sin(angle) * speed,
+              life: random(0.28, 0.7),
+              maxLife: 0.7,
+              size: random(1, 3),
+              color: palette[Math.floor(Math.random() * palette.length)],
+            });
+          }
+        }
+
+        function applyPointerField(ball, dt) {
+          if (!mouse.active || !mouse.inside) return;
+
+          const dx = mouse.x - ball.x;
+          const dy = mouse.y - ball.y;
+          const distance = Math.hypot(dx, dy);
+          if (distance >= ATTRACTION_RADIUS) return;
+
+          const falloff = 1 - distance / ATTRACTION_RADIUS;
+          const strength = ATTRACTION_FORCE * (0.14 + falloff * falloff);
+          const safeDistance = distance || 1;
+          ball.vx += (dx / safeDistance) * strength * dt;
+          ball.vy += (dy / safeDistance) * strength * dt;
+        }
+
+        function resolveBounds(ball) {
+          const bounce = 0.78;
+          const floorBounce = 0.7;
+          const wallFriction = 0.985;
+
+          if (ball.x - ball.radius < 0) {
+            ball.x = ball.radius;
+            if (ball.vx < 0) ball.vx = -ball.vx * bounce;
+            ball.vy *= wallFriction;
+          } else if (ball.x + ball.radius > width) {
+            ball.x = width - ball.radius;
+            if (ball.vx > 0) ball.vx = -ball.vx * bounce;
+            ball.vy *= wallFriction;
+          }
+
+          if (ball.y - ball.radius < 0) {
+            ball.y = ball.radius;
+            if (ball.vy < 0) ball.vy = -ball.vy * bounce;
+            ball.vx *= wallFriction;
+          } else if (ball.y + ball.radius > height) {
+            ball.y = height - ball.radius;
+            if (ball.vy > 0) ball.vy = -ball.vy * floorBounce;
+            ball.vx *= 0.985;
+          }
+        }
+
+        function buildGrid() {
+          const grid = new Map();
+          for (const ball of balls) {
+            const gx = Math.floor(ball.x / CELL_SIZE);
+            const gy = Math.floor(ball.y / CELL_SIZE);
+            const key = `${gx},${gy}`;
+            let bucket = grid.get(key);
+            if (!bucket) {
+              bucket = [];
+              grid.set(key, bucket);
+            }
+            bucket.push(ball);
+          }
+          return grid;
+        }
+
+        function resolveBallCollisions() {
+          const grid = buildGrid();
+
+          for (const ball of balls) {
+            const gx = Math.floor(ball.x / CELL_SIZE);
+            const gy = Math.floor(ball.y / CELL_SIZE);
+
+            for (let ox = -1; ox <= 1; ox += 1) {
+              for (let oy = -1; oy <= 1; oy += 1) {
+                const bucket = grid.get(`${gx + ox},${gy + oy}`);
+                if (!bucket) continue;
+
+                for (const other of bucket) {
+                  if (other.id <= ball.id) continue;
+
+                  let dx = other.x - ball.x;
+                  let dy = other.y - ball.y;
+                  const minimumDistance = ball.radius + other.radius;
+                  const distanceSquared = dx * dx + dy * dy;
+                  if (distanceSquared >= minimumDistance * minimumDistance) continue;
+
+                  let distance = Math.sqrt(distanceSquared);
+                  if (distance < 0.0001) {
+                    const angle = Math.random() * Math.PI * 2;
+                    dx = Math.cos(angle);
+                    dy = Math.sin(angle);
+                    distance = 1;
+                  }
+
+                  const nx = dx / distance;
+                  const ny = dy / distance;
+                  const overlap = minimumDistance - distance;
+                  const inverseA = 1 / ball.mass;
+                  const inverseB = 1 / other.mass;
+                  const inverseTotal = inverseA + inverseB;
+
+                  // Positional correction keeps stacks from slowly sinking into one another.
+                  const correction = (overlap * 0.84) / inverseTotal;
+                  ball.x -= nx * correction * inverseA;
+                  ball.y -= ny * correction * inverseA;
+                  other.x += nx * correction * inverseB;
+                  other.y += ny * correction * inverseB;
+
+                  const relativeVelocityX = other.vx - ball.vx;
+                  const relativeVelocityY = other.vy - ball.vy;
+                  const velocityAlongNormal = relativeVelocityX * nx + relativeVelocityY * ny;
+
+                  if (velocityAlongNormal > 0) continue;
+
+                  const restitution = 0.86;
+                  const impulse = (-(1 + restitution) * velocityAlongNormal) / inverseTotal;
+                  const impulseX = impulse * nx;
+                  const impulseY = impulse * ny;
+                  ball.vx -= impulseX * inverseA;
+                  ball.vy -= impulseY * inverseA;
+                  other.vx += impulseX * inverseB;
+                  other.vy += impulseY * inverseB;
+
+                  // A little tangential friction makes collisions feel less perfectly frictionless.
+                  const tangentX = -ny;
+                  const tangentY = nx;
+                  const tangentVelocity = relativeVelocityX * tangentX + relativeVelocityY * tangentY;
+                  let frictionImpulse = -tangentVelocity / inverseTotal;
+                  const frictionLimit = impulse * 0.16;
+                  frictionImpulse = clamp(frictionImpulse, -frictionLimit, frictionLimit);
+                  const frictionX = frictionImpulse * tangentX;
+                  const frictionY = frictionImpulse * tangentY;
+                  ball.vx -= frictionX * inverseA;
+                  ball.vy -= frictionY * inverseA;
+                  other.vx += frictionX * inverseB;
+                  other.vy += frictionY * inverseB;
+                }
+              }
+            }
+          }
+        }
+
+        function step(dt) {
+          for (const ball of balls) {
+            applyPointerField(ball, dt);
+            ball.vy += GRAVITY * dt;
+
+            // Mild air drag prevents runaway velocities while preserving bounce energy.
+            const drag = Math.pow(0.997, dt * 60);
+            ball.vx *= drag;
+            ball.vy *= drag;
+            ball.x += ball.vx * dt;
+            ball.y += ball.vy * dt;
+            ball.rotation += ball.spin * dt;
+
+            const speed = Math.hypot(ball.vx, ball.vy);
+            if (speed > 2500) {
+              const factor = 2500 / speed;
+              ball.vx *= factor;
+              ball.vy *= factor;
+            }
+          }
+
+          // Two solver passes keep dense clusters stable without sacrificing frame rate.
+          for (let iteration = 0; iteration < 2; iteration += 1) {
+            resolveBallCollisions();
+            for (const ball of balls) resolveBounds(ball);
+          }
+
+          updateEffects(dt);
+        }
+
+        function updateEffects(dt) {
+          for (const ring of rings) ring.age += dt;
+          rings = rings.filter((ring) => ring.age < ring.duration);
+
+          for (const spark of sparks) {
+            spark.life -= dt;
+            spark.vy += 420 * dt;
+            spark.x += spark.vx * dt;
+            spark.y += spark.vy * dt;
+          }
+          sparks = sparks.filter((spark) => spark.life > 0);
+        }
+
+        function drawBackground() {
+          for (const star of stars) {
+            ctx.globalAlpha = star.alpha;
+            ctx.fillStyle = "#c9d0ff";
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.globalAlpha = 1;
+        }
+
+        function drawEffects() {
+          for (const ring of rings) {
+            const progress = ring.age / ring.duration;
+            const eased = 1 - Math.pow(1 - progress, 3);
+            ctx.globalAlpha = (1 - progress) * 0.8;
+            ctx.strokeStyle = "#ffca8a";
+            ctx.lineWidth = 2.4;
+            ctx.shadowBlur = 18;
+            ctx.shadowColor = "#ff9f62";
+            ctx.beginPath();
+            ctx.arc(ring.x, ring.y, eased * ring.maxRadius, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+          }
+
+          for (const spark of sparks) {
+            ctx.globalAlpha = clamp(spark.life / spark.maxLife, 0, 1);
+            ctx.fillStyle = spark.color;
+            ctx.shadowBlur = 11;
+            ctx.shadowColor = spark.color;
+            ctx.beginPath();
+            ctx.arc(spark.x, spark.y, spark.size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          ctx.shadowBlur = 0;
+          ctx.globalAlpha = 1;
+        }
+
+        function drawPointerField() {
+          if (!mouse.inside) return;
+
+          const radius = mouse.active ? ATTRACTION_RADIUS : 74;
+          const glow = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, radius);
+          glow.addColorStop(0, mouse.active ? "rgba(255, 184, 116, 0.22)" : "rgba(130, 129, 255, 0.11)");
+          glow.addColorStop(0.42, mouse.active ? "rgba(255, 157, 98, 0.07)" : "rgba(130, 129, 255, 0.035)");
+          glow.addColorStop(1, "rgba(0, 0, 0, 0)");
+          ctx.fillStyle = glow;
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.globalAlpha = mouse.active ? 0.74 : 0.32;
+          ctx.strokeStyle = mouse.active ? "#ffb879" : "#b3b2ff";
+          ctx.lineWidth = mouse.active ? 1.5 : 1;
+          ctx.setLineDash(mouse.active ? [3, 7] : [2, 8]);
+          ctx.beginPath();
+          ctx.arc(mouse.x, mouse.y, radius * (mouse.active ? 0.96 : 0.82), 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.globalAlpha = 1;
+        }
+
+        function drawBall(ball) {
+          const { x, y, radius, color } = ball;
+          const gradient = ctx.createRadialGradient(
+            x - radius * 0.34,
+            y - radius * 0.4,
+            radius * 0.08,
+            x,
+            y,
+            radius * 1.12,
+          );
+          gradient.addColorStop(0, "#ffffff");
+          gradient.addColorStop(0.14, color);
+          gradient.addColorStop(0.72, color);
+          gradient.addColorStop(1, "rgba(5, 8, 20, 0.92)");
+
+          ctx.fillStyle = gradient;
+          ctx.shadowBlur = 17;
+          ctx.shadowColor = color;
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.shadowBlur = 0;
+          ctx.globalAlpha = 0.34;
+          ctx.fillStyle = "#ffffff";
+          ctx.beginPath();
+          ctx.arc(x - radius * 0.34, y - radius * 0.38, radius * 0.17, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+
+        function render() {
+          ctx.clearRect(0, 0, width, height);
+          drawBackground();
+          drawEffects();
+          for (const ball of balls) drawBall(ball);
+          drawPointerField();
+        }
+
+        function frame(now) {
+          const frameTime = Math.min((now - lastTime) / 1000, MAX_FRAME);
+          lastTime = now;
+          accumulator = Math.min(accumulator + frameTime, 0.14);
+
+          while (accumulator >= FIXED_STEP) {
+            step(FIXED_STEP);
+            accumulator -= FIXED_STEP;
+          }
+
+          render();
+          requestAnimationFrame(frame);
+        }
+
+        canvas.addEventListener("pointermove", (event) => {
+          setMousePosition(event);
+        });
+
+        canvas.addEventListener("pointerenter", (event) => {
+          setMousePosition(event);
+        });
+
+        canvas.addEventListener("pointerleave", () => {
+          mouse.inside = false;
+        });
+
+        canvas.addEventListener("pointerdown", (event) => {
+          if (event.pointerType === "mouse" && event.button !== 0) return;
+          setMousePosition(event);
+          mouse.active = true;
+          explode(mouse.x, mouse.y);
+          statusText.textContent = "campo de atração ativo";
+          statusDot.classList.add("active");
+          canvas.setPointerCapture?.(event.pointerId);
+        });
+
+        canvas.addEventListener("pointerup", (event) => {
+          mouse.active = false;
+          statusText.textContent = "simulação em tempo real";
+          statusDot.classList.remove("active");
+          canvas.releasePointerCapture?.(event.pointerId);
+        });
+
+        canvas.addEventListener("pointercancel", () => {
+          mouse.active = false;
+          statusText.textContent = "simulação em tempo real";
+          statusDot.classList.remove("active");
+        });
+
+        canvas.addEventListener("contextmenu", (event) => event.preventDefault());
+
+        addButton.addEventListener("click", () => {
+          spawnBatch(50, true);
+          const x = width * 0.5;
+          rings.push({ x, y: 62, age: 0, duration: 0.5, maxRadius: Math.min(width * 0.45, 280) });
+        });
+
+        window.addEventListener("resize", resize, { passive: true });
+
+        resize();
+        spawnBatch(38);
+        updateCount();
+        requestAnimationFrame(frame);
+      })();
+    </script>
+  </body>
+</html>
