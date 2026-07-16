@@ -120,6 +120,13 @@
       "vendor": "Google",
       "price_in": 1.5,
       "price_out": 9.0
+    },
+    {
+      "id": "kimi-k3",
+      "name": "Kimi K3",
+      "vendor": "Moonshot AI",
+      "price_in": 3.0,
+      "price_out": 15.0
     }
   ],
   "tests": [

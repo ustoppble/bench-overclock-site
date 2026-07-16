@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Simulação de Bolinhas — Física Interativa</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(ellipse at 50% 30%, #16213e 0%, #0a0f1e 70%);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+
+  canvas {
+    display: block;
+    cursor: crosshair;
+  }
+
+  #hud {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 10;
+    user-select: none;
+  }
+
+  #btnAdd {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ff6b6b, #feca57);
+    color: #1a1a2e;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 18px rgba(255, 107, 107, 0.45);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+  }
+
+  #btnAdd:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 8px 26px rgba(255, 107, 107, 0.6);
+  }
+
+  #btnAdd:active { transform: scale(0.96); }
+
+  #contador {
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(6px);
+    color: #e8eaf6;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  #dica {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    user-select: none;
+    pointer-events: none;
+    z-index: 10;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div id="hud">
+  <button id="btnAdd">🎈 Soltar 50 bolinhas</button>
+  <span id="contador">0 bolinhas</span>
+</div>
+<div id="dica">Segure o mouse para atrair &nbsp;•&nbsp; Clique para explodir</div>
+<canvas id="c"></canvas>
+
+<script>
+'use strict';
+
+// ============================================================
+// Configuração
+// ============================================================
+const CONFIG = {
+  gravidade: 2200,          // px/s²
+  atritoAr: 0.12,           // arrasto linear (1/s)
+  restituicaoParede: 0.82,  // quique nas bordas
+  restituicaoBolinha: 0.92, // elasticidade bola-bola
+  atritoChao: 0.985,        // atrito ao rolar no chão
+  raioMin: 8,
+  raioMax: 22,
+  forcaAtracao: 90000,      // segurar mouse = atrair
+  raioAtracao: 280,
+  forcaExplosao: 130000,    // clique = repelir
+  raioExplosao: 320,
+  maxBolinhas: 900,
+  dtMax: 1 / 60,            // passo máximo de física
+  subPassos: 2              // subdivisões por frame (estabilidade)
+};
+
+const CORES = [
+  ['#ff6b6b', '#ee5253'], ['#feca57', '#ff9f43'], ['#48dbfb', '#0abde3'],
+  ['#1dd1a1', '#10ac84'], ['#f368e0', '#c56cf0'], ['#ff9ff3', '#f368e0'],
+  ['#54a0ff', '#2e86de'], ['#5f27cd', '#341f97'], ['#00d2d3', '#01a3a4'],
+  ['#ff6348', '#ff4757'], ['#2ed573', '#7bed9f'], ['#eccc68', '#ffa502']
+];
+
+// ============================================================
+// Estado
+// ============================================================
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const contador = document.getElementById('contador');
+
+let W = 0, H = 0;
+const bolinhas = [];
+const mouse = { x: 0, y: 0, segurando: false };
+const explosoes = []; // anéis visuais das explosões
+
+function redimensionar() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth;
+  H = window.innerHeight;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', redimensionar);
+redimensionar();
+
+function corAleatoria() {
+  return CORES[(Math.random() * CORES.length) | 0];
+}
+
+function criarBolinha(x, y) {
+  const r = CONFIG.raioMin + Math.random() * (CONFIG.raioMax - CONFIG.raioMin);
+  const [c1, c2] = corAleatoria();
+  return {
+    x: x ?? (r + Math.random() * (W - 2 * r)),
+    y: y ?? (-r - Math.random() * H * 0.4),
+    vx: (Math.random() - 0.5) * 300,
+    vy: Math.random() * 100,
+    r,
+    massa: r * r, // massa proporcional à área
+    c1, c2
+  };
+}
+
+function soltarBolinhas(n) {
+  for (let i = 0; i < n; i++) {
+    if (bolinhas.length >= CONFIG.maxBolinhas) break;
+    bolinhas.push(criarBolinha());
+  }
+  atualizarContador();
+}
+
+function atualizarContador() {
+  contador.textContent = bolinhas.length + (bolinhas.length === 1 ? ' bolinha' : ' bolinhas');
+}
+
+// ============================================================
+// Física
+// ============================================================
+// Grade espacial simples para colisões O(n) em vez de O(n²)
+const grade = new Map();
+const CELULA = 48;
+
+function chave(cx, cy) { return cx * 100000 + cy; }
+
+function montarGrade() {
+  grade.clear();
+  for (let i = 0; i < bolinhas.length; i++) {
+    const b = bolinhas[i];
+    const cx = Math.floor(b.x / CELULA);
+    const cy = Math.floor(b.y / CELULA);
+    const k = chave(cx, cy);
+    let cel = grade.get(k);
+    if (!cel) { cel = []; grade.set(k, cel); }
+    cel.push(i);
+  }
+}
+
+function resolverColisoes() {
+  montarGrade();
+  const rest = CONFIG.restituicaoBolinha;
+
+  for (let i = 0; i < bolinhas.length; i++) {
+    const a = bolinhas[i];
+    const cx = Math.floor(a.x / CELULA);
+    const cy = Math.floor(a.y / CELULA);
+
+    for (let gx = cx - 1; gx <= cx + 1; gx++) {
+      for (let gy = cy - 1; gy <= cy + 1; gy++) {
+        const cel = grade.get(chave(gx, gy));
+        if (!cel) continue;
+
+        for (const j of cel) {
+          if (j <= i) continue;
+          const b = bolinhas[j];
+
+          let dx = b.x - a.x;
+          let dy = b.y - a.y;
+          const raioSoma = a.r + b.r;
+          const dist2 = dx * dx + dy * dy;
+          if (dist2 >= raioSoma * raioSoma || dist2 === 0) continue;
+
+          const dist = Math.sqrt(dist2);
+          const nx = dx / dist;
+          const ny = dy / dist;
+
+          // 1) Separação posicional (sem sobreposição)
+          const sobreposicao = raioSoma - dist;
+          const massaTotal = a.massa + b.massa;
+          const proporcaoA = b.massa / massaTotal;
+          const proporcaoB = a.massa / massaTotal;
+          a.x -= nx * sobreposicao * proporcaoA;
+          a.y -= ny * sobreposicao * proporcaoA;
+          b.x += nx * sobreposicao * proporcaoB;
+          b.y += ny * sobreposicao * proporcaoB;
+
+          // 2) Impulso (colisão elástica com restituição)
+          const vn = (b.vx - a.vx) * nx + (b.vy - a.vy) * ny;
+          if (vn < 0) {
+            const impulso = -(1 + rest) * vn / (1 / a.massa + 1 / b.massa);
+            const ix = impulso * nx;
+            const iy = impulso * ny;
+            a.vx -= ix / a.massa;
+            a.vy -= iy / a.massa;
+            b.vx += ix / b.massa;
+            b.vy += iy / b.massa;
+          }
+        }
+      }
+    }
+  }
+}
+
+function integrar(dt) {
+  const { gravidade, atritoAr, raioAtracao, forcaAtracao } = CONFIG;
+  const arrasto = Math.max(0, 1 - atritoAr * dt);
+  const raioAtr2 = raioAtracao * raioAtracao;
+
+  for (const b of bolinhas) {
+    // Gravidade
+    b.vy += gravidade * dt;
+
+    // Atração do mouse (segurando)
+    if (mouse.segurando) {
+      const dx = mouse.x - b.x;
+      const dy = mouse.y - b.y;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < raioAtr2 && d2 > 1) {
+        const d = Math.sqrt(d2);
+        const f = forcaAtracao / (d2 + 4000); // suaviza perto do centro
+        b.vx += (dx / d) * f * dt;
+        b.vy += (dy / d) * f * dt;
+      }
+    }
+
+    // Arrasto do ar
+    b.vx *= arrasto;
+    b.vy *= arrasto;
+
+    // Integração
+    b.x += b.vx * dt;
+    b.y += b.vy * dt;
+
+    // Bordas
+    const rest = CONFIG.restituicaoParede;
+    if (b.x < b.r)        { b.x = b.r;      b.vx = Math.abs(b.vx) * rest; }
+    else if (b.x > W - b.r) { b.x = W - b.r; b.vx = -Math.abs(b.vx) * rest; }
+
+    if (b.y < b.r)        { b.y = b.r;      b.vy = Math.abs(b.vy) * rest; }
+    else if (b.y > H - b.r) {
+      b.y = H - b.r;
+      b.vy = -Math.abs(b.vy) * rest;
+      b.vx *= CONFIG.atritoChao; // atrito ao tocar o chão
+      if (Math.abs(b.vy) < 30) b.vy = 0; // evita trepidação infinita
+    }
+  }
+}
+
+function passoFisica(dt) {
+  const sub = CONFIG.subPassos;
+  const h = dt / sub;
+  for (let s = 0; s < sub; s++) {
+    integrar(h);
+    resolverColisoes();
+  }
+}
+
+// ============================================================
+// Explosão (clique)
+// ============================================================
+function explodir(x, y) {
+  const { raioExplosao, forcaExplosao } = CONFIG;
+  const r2max = raioExplosao * raioExplosao;
+
+  for (const b of bolinhas) {
+    const dx = b.x - x;
+    const dy = b.y - y;
+    const d2 = dx * dx + dy * dy;
+    if (d2 < r2max && d2 > 1) {
+      const d = Math.sqrt(d2);
+      const f = forcaExplosao / (d2 + 2000);
+      b.vx += (dx / d) * f;
+      b.vy += (dy / d) * f;
+    }
+  }
+
+  explosoes.push({ x, y, r: 10, alpha: 1 });
+}
+
+// ============================================================
+// Renderização
+// ============================================================
+function desenhar() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Aura de atração
+  if (mouse.segurando) {
+    const g = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, CONFIG.raioAtracao);
+    g.addColorStop(0, 'rgba(120, 180, 255, 0.18)');
+    g.addColorStop(1, 'rgba(120, 180, 255, 0)');
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(mouse.x, mouse.y, CONFIG.raioAtracao, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Bolinhas com gradiente (profundidade)
+  for (const b of bolinhas) {
+    const g = ctx.createRadialGradient(
+      b.x - b.r * 0.35, b.y - b.r * 0.35, b.r * 0.1,
+      b.x, b.y, b.r
+    );
+    g.addColorStop(0, b.c1);
+    g.addColorStop(1, b.c2);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Brilho especular
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+    ctx.beginPath();
+    ctx.arc(b.x - b.r * 0.35, b.y - b.r * 0.4, b.r * 0.22, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Anéis de explosão
+  for (let i = explosoes.length - 1; i >= 0; i--) {
+    const e = explosoes[i];
+    e.r += 1400 * (1 / 60) * (1 - e.alpha * 0.5);
+    e.alpha -= 0.05;
+    if (e.alpha <= 0) { explosoes.splice(i, 1); continue; }
+
+    ctx.strokeStyle = `rgba(255, 200, 100, ${e.alpha * 0.8})`;
+    ctx.lineWidth = 4 * e.alpha + 1;
+    ctx.beginPath();
+    ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+}
+
+// ============================================================
+// Loop principal (delta time, com teto para estabilidade)
+// ============================================================
+let ultimoTempo = performance.now();
+
+function loop(agora) {
+  requestAnimationFrame(loop);
+  let dt = (agora - ultimoTempo) / 1000;
+  ultimoTempo = agora;
+  if (dt > CONFIG.dtMax) dt = CONFIG.dtMax;
+
+  passoFisica(dt);
+  desenhar();
+}
+requestAnimationFrame(loop);
+
+// ============================================================
+// Eventos
+// ============================================================
+function posMouse(e) {
+  const t = e.touches ? e.touches[0] : e;
+  mouse.x = t.clientX;
+  mouse.y = t.clientY;
+}
+
+canvas.addEventListener('pointermove', posMouse);
+
+canvas.addEventListener('pointerdown', (e) => {
+  posMouse(e);
+  if (mouse.segurando) return; // já segurando → clique extra vira explosão
+  mouse.segurando = true;
+});
+
+canvas.addEventListener('pointerup', (e) => {
+  posMouse(e);
+  mouse.segurando = false;
+  explodir(mouse.x, mouse.y);
+});
+
+canvas.addEventListener('pointerleave', () => { mouse.segurando = false; });
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+// Toque em dispositivos móveis
+canvas.addEventListener('touchstart', (e) => { e.preventDefault(); posMouse(e); mouse.segurando = true; }, { passive: false });
+canvas.addEventListener('touchmove', (e) => { e.preventDefault(); posMouse(e); }, { passive: false });
+canvas.addEventListener('touchend', (e) => {
+  e.preventDefault();
+  mouse.segurando = false;
+  explodir(mouse.x, mouse.y);
+}, { passive: false });
+
+document.getElementById('btnAdd').addEventListener('click', () => soltarBolinhas(50));
+
+// Bolinhas iniciais
+soltarBolinhas(40);
+</script>
+</body>
+</html>
