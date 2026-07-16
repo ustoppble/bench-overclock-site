@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-10T23:27:19-03:00",
+  "generated_at": "2026-07-16T14:39:03-03:00",
   "models": [
     {
       "id": "sonnet-5",
@@ -120,6 +120,13 @@
       "vendor": "Google",
       "price_in": 1.5,
       "price_out": 9.0
+    },
+    {
+      "id": "kimi-k3",
+      "name": "Kimi K3",
+      "vendor": "Moonshot AI",
+      "price_in": 3.0,
+      "price_out": 15.0
     }
   ],
   "tests": [
@@ -208,7 +215,7 @@
       "rounds": 5,
       "duration_s": 78.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-O.judge.json",
+      "judge_ref": "judging/001/run-D.judge.json",
       "source": "measured"
     },
     {
@@ -236,7 +243,7 @@
       "rounds": 4,
       "duration_s": 140.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-D.judge.json",
+      "judge_ref": "judging/001/run-G.judge.json",
       "source": "measured"
     },
     {
@@ -265,7 +272,7 @@
       "rounds": 9,
       "duration_s": 631.5,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-G.judge.json",
+      "judge_ref": "judging/001/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -314,14 +321,14 @@
       "test": "001",
       "model": "haiku-4-5",
       "run_ref": "runs/haiku-4-5/001/index.html",
-      "verdict": "defeitos",
+      "verdict": "entregou",
       "acabamento_score": "1/1",
       "cost_usd": 0.059594,
       "tokens_out": 5271,
       "rounds": 3,
       "duration_s": 60.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-H.judge.json",
+      "judge_ref": "judging/001/run-L.judge.json",
       "source": "measured"
     },
     {
@@ -335,7 +342,7 @@
       "rounds": 46,
       "duration_s": 1055.2,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-M.judge.json",
+      "judge_ref": "judging/001/run-N.judge.json",
       "source": "measured"
     },
     {
@@ -377,7 +384,7 @@
       "rounds": 2,
       "duration_s": 19.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-Q.judge.json",
+      "judge_ref": "judging/001/run-R.judge.json",
       "source": "measured"
     },
     {
@@ -391,7 +398,7 @@
       "rounds": 8,
       "duration_s": 37.8,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-L.judge.json",
+      "judge_ref": "judging/001/run-M.judge.json",
       "source": "measured"
     },
     {
@@ -405,7 +412,7 @@
       "rounds": 2,
       "duration_s": 187.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-P.judge.json",
+      "judge_ref": "judging/001/run-Q.judge.json",
       "source": "measured"
     },
     {
@@ -433,8 +440,22 @@
       "rounds": null,
       "duration_s": 97.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/001/run-N.judge.json",
+      "judge_ref": "judging/001/run-O.judge.json",
       "source": "estimated"
+    },
+    {
+      "test": "001",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/001/index.html",
+      "verdict": "entregou",
+      "acabamento_score": "1/1",
+      "cost_usd": 0.643005,
+      "tokens_out": 23384,
+      "rounds": 15,
+      "duration_s": 254.3,
+      "verified_in_browser": null,
+      "judge_ref": "judging/001/run-H.judge.json",
+      "source": "measured"
     },
     {
       "test": "002",
@@ -447,7 +468,7 @@
       "rounds": 6,
       "duration_s": 97.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/002/run-O.judge.json",
+      "judge_ref": "judging/002/run-D.judge.json",
       "source": "measured"
     },
     {
@@ -461,7 +482,7 @@
       "rounds": 3,
       "duration_s": 528.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/002/run-M.judge.json",
+      "judge_ref": "judging/002/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -475,7 +496,7 @@
       "rounds": 8,
       "duration_s": 182.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/002/run-D.judge.json",
+      "judge_ref": "judging/002/run-M.judge.json",
       "source": "measured"
     },
     {
@@ -560,7 +581,7 @@
       "rounds": 3,
       "duration_s": 71.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/002/run-A.judge.json",
+      "judge_ref": "judging/002/run-N.judge.json",
       "source": "measured"
     },
     {
@@ -588,7 +609,7 @@
       "rounds": 12,
       "duration_s": 259.5,
       "verified_in_browser": null,
-      "judge_ref": "judging/002/run-N.judge.json",
+      "judge_ref": "judging/002/run-O.judge.json",
       "source": "measured"
     },
     {
@@ -644,7 +665,7 @@
       "rounds": 2,
       "duration_s": 197.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/002/run-P.judge.json",
+      "judge_ref": "judging/002/run-Q.judge.json",
       "source": "measured"
     },
     {
@@ -672,8 +693,22 @@
       "rounds": null,
       "duration_s": 56.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/002/run-Q.judge.json",
+      "judge_ref": "judging/002/run-R.judge.json",
       "source": "estimated"
+    },
+    {
+      "test": "002",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/002/index.html",
+      "verdict": "entregou",
+      "acabamento_score": "1/1",
+      "cost_usd": 0.436802,
+      "tokens_out": 20984,
+      "rounds": 5,
+      "duration_s": 161.8,
+      "verified_in_browser": null,
+      "judge_ref": "judging/002/run-A.judge.json",
+      "source": "measured"
     },
     {
       "test": "003",
@@ -714,7 +749,7 @@
       "rounds": 3,
       "duration_s": 87.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/003/run-D.judge.json",
+      "judge_ref": "judging/003/run-E.judge.json",
       "source": "measured"
     },
     {
@@ -785,7 +820,7 @@
       "rounds": 7,
       "duration_s": 71.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/003/run-E.judge.json",
+      "judge_ref": "judging/003/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -813,7 +848,7 @@
       "rounds": 12,
       "duration_s": 317.2,
       "verified_in_browser": null,
-      "judge_ref": "judging/003/run-Q.judge.json",
+      "judge_ref": "judging/003/run-R.judge.json",
       "source": "measured"
     },
     {
@@ -827,7 +862,7 @@
       "rounds": 10,
       "duration_s": 200.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/003/run-O.judge.json",
+      "judge_ref": "judging/003/run-D.judge.json",
       "source": "measured"
     },
     {
@@ -855,7 +890,7 @@
       "rounds": 4,
       "duration_s": 17.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/003/run-P.judge.json",
+      "judge_ref": "judging/003/run-Q.judge.json",
       "source": "measured"
     },
     {
@@ -915,6 +950,20 @@
       "source": "estimated"
     },
     {
+      "test": "003",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/003/index.html",
+      "verdict": "entregou",
+      "acabamento_score": "1/1",
+      "cost_usd": 0.128114,
+      "tokens_out": 5015,
+      "rounds": 3,
+      "duration_s": 30.5,
+      "verified_in_browser": null,
+      "judge_ref": "judging/003/run-O.judge.json",
+      "source": "measured"
+    },
+    {
       "test": "004",
       "model": "sonnet-5",
       "run_ref": "runs/sonnet-5/004/index.html",
@@ -925,7 +974,7 @@
       "rounds": 6,
       "duration_s": 116.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-K.judge.json",
+      "judge_ref": "judging/004/run-L.judge.json",
       "source": "measured"
     },
     {
@@ -939,7 +988,7 @@
       "rounds": 2,
       "duration_s": 491.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-E.judge.json",
+      "judge_ref": "judging/004/run-I.judge.json",
       "source": "measured"
     },
     {
@@ -953,7 +1002,7 @@
       "rounds": 2,
       "duration_s": 186.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-I.judge.json",
+      "judge_ref": "judging/004/run-J.judge.json",
       "source": "measured"
     },
     {
@@ -967,7 +1016,7 @@
       "rounds": 3,
       "duration_s": 361.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-G.judge.json",
+      "judge_ref": "judging/004/run-H.judge.json",
       "source": "measured",
       "source_note": "Custo/tokens da 1ª geração Fable 5 (01/jul, archive/runs-fable5-01jul); o artefato canônico em run_ref é o re-run de 09/jul, cujo custo não foi medido."
     },
@@ -982,7 +1031,7 @@
       "rounds": 10,
       "duration_s": 549.9,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-P.judge.json",
+      "judge_ref": "judging/004/run-Q.judge.json",
       "source": "measured"
     },
     {
@@ -996,7 +1045,7 @@
       "rounds": 57,
       "duration_s": 1851.3,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-D.judge.json",
+      "judge_ref": "judging/004/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -1010,7 +1059,7 @@
       "rounds": 32,
       "duration_s": 2052.1,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-H.judge.json",
+      "judge_ref": "judging/004/run-B.judge.json",
       "source": "measured"
     },
     {
@@ -1024,7 +1073,7 @@
       "rounds": 4,
       "duration_s": 90.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-A.judge.json",
+      "judge_ref": "judging/004/run-E.judge.json",
       "source": "measured"
     },
     {
@@ -1052,7 +1101,7 @@
       "rounds": 46,
       "duration_s": 996.1,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-L.judge.json",
+      "judge_ref": "judging/004/run-M.judge.json",
       "source": "measured"
     },
     {
@@ -1066,7 +1115,7 @@
       "rounds": 17,
       "duration_s": 534.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-O.judge.json",
+      "judge_ref": "judging/004/run-F.judge.json",
       "source": "measured"
     },
     {
@@ -1080,7 +1129,7 @@
       "rounds": 9,
       "duration_s": 1864.2,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-B.judge.json",
+      "judge_ref": "judging/004/run-A.judge.json",
       "source": "measured"
     },
     {
@@ -1094,7 +1143,7 @@
       "rounds": 6,
       "duration_s": 34.3,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-M.judge.json",
+      "judge_ref": "judging/004/run-N.judge.json",
       "source": "measured"
     },
     {
@@ -1108,7 +1157,7 @@
       "rounds": 4,
       "duration_s": 357.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-J.judge.json",
+      "judge_ref": "judging/004/run-K.judge.json",
       "source": "measured"
     },
     {
@@ -1122,7 +1171,7 @@
       "rounds": 2,
       "duration_s": 322.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-F.judge.json",
+      "judge_ref": "judging/004/run-G.judge.json",
       "source": "measured"
     },
     {
@@ -1136,8 +1185,22 @@
       "rounds": null,
       "duration_s": 303.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/004/run-N.judge.json",
+      "judge_ref": "judging/004/run-O.judge.json",
       "source": "estimated"
+    },
+    {
+      "test": "004",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/004/index.html",
+      "verdict": "defeitos",
+      "acabamento_score": "1/1",
+      "cost_usd": 1.18978,
+      "tokens_out": 46151,
+      "rounds": 23,
+      "duration_s": 830.3,
+      "verified_in_browser": null,
+      "judge_ref": "judging/004/run-D.judge.json",
+      "source": "measured"
     },
     {
       "test": "101",
@@ -1150,7 +1213,7 @@
       "rounds": 7,
       "duration_s": 29.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-A.judge.json",
+      "judge_ref": "judging/101/run-D.judge.json",
       "source": "measured"
     },
     {
@@ -1164,7 +1227,7 @@
       "rounds": 6,
       "duration_s": 33.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-G.judge.json",
+      "judge_ref": "judging/101/run-C.judge.json",
       "source": "measured"
     },
     {
@@ -1178,7 +1241,7 @@
       "rounds": 7,
       "duration_s": 41.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-C.judge.json",
+      "judge_ref": "judging/101/run-G.judge.json",
       "source": "measured"
     },
     {
@@ -1192,7 +1255,7 @@
       "rounds": 4,
       "duration_s": 33.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-N.judge.json",
+      "judge_ref": "judging/101/run-F.judge.json",
       "source": "measured"
     },
     {
@@ -1206,7 +1269,7 @@
       "rounds": 4,
       "duration_s": 30.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-L.judge.json",
+      "judge_ref": "judging/101/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -1220,7 +1283,7 @@
       "rounds": 4,
       "duration_s": 18.8,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-M.judge.json",
+      "judge_ref": "judging/101/run-A.judge.json",
       "source": "measured"
     },
     {
@@ -1234,7 +1297,7 @@
       "rounds": 4,
       "duration_s": 18.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-J.judge.json",
+      "judge_ref": "judging/101/run-E.judge.json",
       "source": "measured"
     },
     {
@@ -1248,7 +1311,7 @@
       "rounds": 5,
       "duration_s": 12.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-P.judge.json",
+      "judge_ref": "judging/101/run-K.judge.json",
       "source": "measured"
     },
     {
@@ -1262,7 +1325,7 @@
       "rounds": 6,
       "duration_s": 24.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-B.judge.json",
+      "judge_ref": "judging/101/run-L.judge.json",
       "source": "measured"
     },
     {
@@ -1276,7 +1339,7 @@
       "rounds": 7,
       "duration_s": 65.8,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-O.judge.json",
+      "judge_ref": "judging/101/run-N.judge.json",
       "source": "measured"
     },
     {
@@ -1290,7 +1353,7 @@
       "rounds": 5,
       "duration_s": 67.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-F.judge.json",
+      "judge_ref": "judging/101/run-B.judge.json",
       "source": "measured"
     },
     {
@@ -1304,7 +1367,7 @@
       "rounds": 7,
       "duration_s": 104.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-Q.judge.json",
+      "judge_ref": "judging/101/run-J.judge.json",
       "source": "measured"
     },
     {
@@ -1318,7 +1381,7 @@
       "rounds": 3,
       "duration_s": 7.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-H.judge.json",
+      "judge_ref": "judging/101/run-R.judge.json",
       "source": "measured"
     },
     {
@@ -1332,7 +1395,7 @@
       "rounds": 4,
       "duration_s": 6.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-I.judge.json",
+      "judge_ref": "judging/101/run-M.judge.json",
       "source": "measured"
     },
     {
@@ -1346,7 +1409,7 @@
       "rounds": 6,
       "duration_s": 35.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-D.judge.json",
+      "judge_ref": "judging/101/run-Q.judge.json",
       "source": "measured"
     },
     {
@@ -1360,7 +1423,7 @@
       "rounds": 5,
       "duration_s": 16.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-K.judge.json",
+      "judge_ref": "judging/101/run-I.judge.json",
       "source": "measured"
     },
     {
@@ -1374,8 +1437,22 @@
       "rounds": null,
       "duration_s": 11.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/101/run-E.judge.json",
+      "judge_ref": "judging/101/run-O.judge.json",
       "source": "estimated"
+    },
+    {
+      "test": "101",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/101/index.html",
+      "verdict": "entregou",
+      "acabamento_score": "1/1",
+      "cost_usd": 0.067933,
+      "tokens_out": 1332,
+      "rounds": 4,
+      "duration_s": 44.9,
+      "verified_in_browser": null,
+      "judge_ref": "judging/101/run-H.judge.json",
+      "source": "measured"
     },
     {
       "test": "103",
@@ -1388,7 +1465,7 @@
       "rounds": 14,
       "duration_s": 46.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-L.judge.json",
+      "judge_ref": "judging/103/run-M.judge.json",
       "source": "measured"
     },
     {
@@ -1402,7 +1479,7 @@
       "rounds": 8,
       "duration_s": 42.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-J.judge.json",
+      "judge_ref": "judging/103/run-F.judge.json",
       "source": "measured"
     },
     {
@@ -1416,7 +1493,7 @@
       "rounds": 8,
       "duration_s": 50.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-Q.judge.json",
+      "judge_ref": "judging/103/run-E.judge.json",
       "source": "measured"
     },
     {
@@ -1430,7 +1507,7 @@
       "rounds": 10,
       "duration_s": 76.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-E.judge.json",
+      "judge_ref": "judging/103/run-I.judge.json",
       "source": "measured"
     },
     {
@@ -1444,7 +1521,7 @@
       "rounds": 6,
       "duration_s": 44.1,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-F.judge.json",
+      "judge_ref": "judging/103/run-A.judge.json",
       "source": "measured"
     },
     {
@@ -1458,7 +1535,7 @@
       "rounds": 5,
       "duration_s": 33.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-A.judge.json",
+      "judge_ref": "judging/103/run-L.judge.json",
       "source": "measured"
     },
     {
@@ -1472,7 +1549,7 @@
       "rounds": 5,
       "duration_s": 33.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-M.judge.json",
+      "judge_ref": "judging/103/run-N.judge.json",
       "source": "measured"
     },
     {
@@ -1486,7 +1563,7 @@
       "rounds": 4,
       "duration_s": 16.9,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-O.judge.json",
+      "judge_ref": "judging/103/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -1514,7 +1591,7 @@
       "rounds": 6,
       "duration_s": 70.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-I.judge.json",
+      "judge_ref": "judging/103/run-R.judge.json",
       "source": "measured"
     },
     {
@@ -1528,7 +1605,7 @@
       "rounds": 5,
       "duration_s": 62.1,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-H.judge.json",
+      "judge_ref": "judging/103/run-D.judge.json",
       "source": "measured"
     },
     {
@@ -1542,7 +1619,7 @@
       "rounds": 9,
       "duration_s": 92.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-P.judge.json",
+      "judge_ref": "judging/103/run-C.judge.json",
       "source": "measured"
     },
     {
@@ -1556,7 +1633,7 @@
       "rounds": 5,
       "duration_s": 9.3,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-C.judge.json",
+      "judge_ref": "judging/103/run-Q.judge.json",
       "source": "measured"
     },
     {
@@ -1570,7 +1647,7 @@
       "rounds": 5,
       "duration_s": 17.1,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-G.judge.json",
+      "judge_ref": "judging/103/run-H.judge.json",
       "source": "measured"
     },
     {
@@ -1584,7 +1661,7 @@
       "rounds": 9,
       "duration_s": 91.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-B.judge.json",
+      "judge_ref": "judging/103/run-G.judge.json",
       "source": "measured"
     },
     {
@@ -1598,7 +1675,7 @@
       "rounds": 8,
       "duration_s": 25.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-D.judge.json",
+      "judge_ref": "judging/103/run-B.judge.json",
       "source": "measured"
     },
     {
@@ -1612,8 +1689,22 @@
       "rounds": null,
       "duration_s": 24.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/103/run-N.judge.json",
+      "judge_ref": "judging/103/run-J.judge.json",
       "source": "estimated"
+    },
+    {
+      "test": "103",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/103/index.html",
+      "verdict": "entregou",
+      "acabamento_score": "1/1",
+      "cost_usd": 0.183144,
+      "tokens_out": 5731,
+      "rounds": 9,
+      "duration_s": 180.5,
+      "verified_in_browser": null,
+      "judge_ref": "judging/103/run-O.judge.json",
+      "source": "measured"
     },
     {
       "test": "104",
@@ -1626,7 +1717,7 @@
       "rounds": 60,
       "duration_s": 643.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-J.judge.json",
+      "judge_ref": "judging/104/run-M.judge.json",
       "source": "measured"
     },
     {
@@ -1640,7 +1731,7 @@
       "rounds": 6,
       "duration_s": 41.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-L.judge.json",
+      "judge_ref": "judging/104/run-D.judge.json",
       "source": "measured"
     },
     {
@@ -1654,7 +1745,7 @@
       "rounds": 5,
       "duration_s": 75.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-E.judge.json",
+      "judge_ref": "judging/104/run-B.judge.json",
       "source": "measured"
     },
     {
@@ -1668,7 +1759,7 @@
       "rounds": 8,
       "duration_s": 135.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-Q.judge.json",
+      "judge_ref": "judging/104/run-I.judge.json",
       "source": "measured"
     },
     {
@@ -1682,7 +1773,7 @@
       "rounds": 6,
       "duration_s": 56.8,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-A.judge.json",
+      "judge_ref": "judging/104/run-E.judge.json",
       "source": "measured"
     },
     {
@@ -1696,7 +1787,7 @@
       "rounds": 6,
       "duration_s": 43.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-D.judge.json",
+      "judge_ref": "judging/104/run-J.judge.json",
       "source": "measured"
     },
     {
@@ -1710,7 +1801,7 @@
       "rounds": 7,
       "duration_s": 48.5,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-H.judge.json",
+      "judge_ref": "judging/104/run-Q.judge.json",
       "source": "measured"
     },
     {
@@ -1738,7 +1829,7 @@
       "rounds": 4,
       "duration_s": 25.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-C.judge.json",
+      "judge_ref": "judging/104/run-H.judge.json",
       "source": "measured"
     },
     {
@@ -1752,7 +1843,7 @@
       "rounds": 22,
       "duration_s": 217.5,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-F.judge.json",
+      "judge_ref": "judging/104/run-R.judge.json",
       "source": "measured"
     },
     {
@@ -1766,7 +1857,7 @@
       "rounds": 19,
       "duration_s": 249.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-K.judge.json",
+      "judge_ref": "judging/104/run-C.judge.json",
       "source": "measured"
     },
     {
@@ -1780,7 +1871,7 @@
       "rounds": 7,
       "duration_s": 289.5,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-P.judge.json",
+      "judge_ref": "judging/104/run-N.judge.json",
       "source": "measured"
     },
     {
@@ -1794,7 +1885,7 @@
       "rounds": 3,
       "duration_s": 9.2,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-B.judge.json",
+      "judge_ref": "judging/104/run-G.judge.json",
       "source": "measured"
     },
     {
@@ -1808,7 +1899,7 @@
       "rounds": 8,
       "duration_s": 34.5,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-N.judge.json",
+      "judge_ref": "judging/104/run-A.judge.json",
       "source": "measured"
     },
     {
@@ -1822,7 +1913,7 @@
       "rounds": 5,
       "duration_s": 166.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-I.judge.json",
+      "judge_ref": "judging/104/run-L.judge.json",
       "source": "measured"
     },
     {
@@ -1836,7 +1927,7 @@
       "rounds": 4,
       "duration_s": 112.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-M.judge.json",
+      "judge_ref": "judging/104/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -1850,8 +1941,22 @@
       "rounds": null,
       "duration_s": 33.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/104/run-G.judge.json",
+      "judge_ref": "judging/104/run-K.judge.json",
       "source": "estimated"
+    },
+    {
+      "test": "104",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/104/index.html",
+      "verdict": "entregou",
+      "acabamento_score": "1/1",
+      "cost_usd": 0.197927,
+      "tokens_out": 5840,
+      "rounds": 9,
+      "duration_s": 237.3,
+      "verified_in_browser": null,
+      "judge_ref": "judging/104/run-F.judge.json",
+      "source": "measured"
     },
     {
       "test": "105",
@@ -1864,7 +1969,7 @@
       "rounds": 8,
       "duration_s": 121.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-B.judge.json",
+      "judge_ref": "judging/105/run-G.judge.json",
       "source": "measured"
     },
     {
@@ -1878,7 +1983,7 @@
       "rounds": 5,
       "duration_s": 120.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-D.judge.json",
+      "judge_ref": "judging/105/run-F.judge.json",
       "source": "measured"
     },
     {
@@ -1892,7 +1997,7 @@
       "rounds": 5,
       "duration_s": 130.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-E.judge.json",
+      "judge_ref": "judging/105/run-J.judge.json",
       "source": "measured"
     },
     {
@@ -1906,7 +2011,7 @@
       "rounds": 5,
       "duration_s": 133.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-O.judge.json",
+      "judge_ref": "judging/105/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -1920,7 +2025,7 @@
       "rounds": 6,
       "duration_s": 144.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-M.judge.json",
+      "judge_ref": "judging/105/run-R.judge.json",
       "source": "measured"
     },
     {
@@ -1934,7 +2039,7 @@
       "rounds": 6,
       "duration_s": 86.4,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-H.judge.json",
+      "judge_ref": "judging/105/run-K.judge.json",
       "source": "measured"
     },
     {
@@ -1948,7 +2053,7 @@
       "rounds": 5,
       "duration_s": 137.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-L.judge.json",
+      "judge_ref": "judging/105/run-B.judge.json",
       "source": "measured"
     },
     {
@@ -1976,7 +2081,7 @@
       "rounds": 9,
       "duration_s": 67.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-J.judge.json",
+      "judge_ref": "judging/105/run-O.judge.json",
       "source": "measured"
     },
     {
@@ -1990,7 +2095,7 @@
       "rounds": 5,
       "duration_s": 124.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-C.judge.json",
+      "judge_ref": "judging/105/run-N.judge.json",
       "source": "measured"
     },
     {
@@ -2004,7 +2109,7 @@
       "rounds": 5,
       "duration_s": 214.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-K.judge.json",
+      "judge_ref": "judging/105/run-D.judge.json",
       "source": "measured"
     },
     {
@@ -2018,7 +2123,7 @@
       "rounds": 6,
       "duration_s": 219.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-F.judge.json",
+      "judge_ref": "judging/105/run-C.judge.json",
       "source": "measured"
     },
     {
@@ -2032,7 +2137,7 @@
       "rounds": 3,
       "duration_s": 11.3,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-N.judge.json",
+      "judge_ref": "judging/105/run-A.judge.json",
       "source": "measured"
     },
     {
@@ -2046,7 +2151,7 @@
       "rounds": 4,
       "duration_s": 29.5,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-A.judge.json",
+      "judge_ref": "judging/105/run-M.judge.json",
       "source": "measured"
     },
     {
@@ -2074,7 +2179,7 @@
       "rounds": 4,
       "duration_s": 300.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-P.judge.json",
+      "judge_ref": "judging/105/run-L.judge.json",
       "source": "measured"
     },
     {
@@ -2088,8 +2193,22 @@
       "rounds": null,
       "duration_s": 28.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/105/run-G.judge.json",
+      "judge_ref": "judging/105/run-H.judge.json",
       "source": "estimated"
+    },
+    {
+      "test": "105",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/105/index.html",
+      "verdict": "entregou",
+      "acabamento_score": "1/1",
+      "cost_usd": 0.175708,
+      "tokens_out": 7464,
+      "rounds": 3,
+      "duration_s": 256.2,
+      "verified_in_browser": null,
+      "judge_ref": "judging/105/run-E.judge.json",
+      "source": "measured"
     },
     {
       "test": "108",
@@ -2102,7 +2221,7 @@
       "rounds": 17,
       "duration_s": 176.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-K.judge.json",
+      "judge_ref": "judging/108/run-G.judge.json",
       "source": "measured"
     },
     {
@@ -2116,7 +2235,7 @@
       "rounds": 12,
       "duration_s": 123.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-G.judge.json",
+      "judge_ref": "judging/108/run-M.judge.json",
       "source": "measured"
     },
     {
@@ -2130,7 +2249,7 @@
       "rounds": 10,
       "duration_s": 216.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-O.judge.json",
+      "judge_ref": "judging/108/run-E.judge.json",
       "source": "measured"
     },
     {
@@ -2144,7 +2263,7 @@
       "rounds": 11,
       "duration_s": 132.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-A.judge.json",
+      "judge_ref": "judging/108/run-L.judge.json",
       "source": "measured"
     },
     {
@@ -2158,7 +2277,7 @@
       "rounds": 12,
       "duration_s": 190.1,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-B.judge.json",
+      "judge_ref": "judging/108/run-H.judge.json",
       "source": "measured"
     },
     {
@@ -2172,7 +2291,7 @@
       "rounds": 11,
       "duration_s": 128.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-N.judge.json",
+      "judge_ref": "judging/108/run-C.judge.json",
       "source": "measured"
     },
     {
@@ -2186,7 +2305,7 @@
       "rounds": 10,
       "duration_s": 160.2,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-C.judge.json",
+      "judge_ref": "judging/108/run-B.judge.json",
       "source": "measured"
     },
     {
@@ -2200,7 +2319,7 @@
       "rounds": 5,
       "duration_s": 45.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-L.judge.json",
+      "judge_ref": "judging/108/run-Q.judge.json",
       "source": "measured"
     },
     {
@@ -2214,7 +2333,7 @@
       "rounds": 5,
       "duration_s": 58.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-D.judge.json",
+      "judge_ref": "judging/108/run-I.judge.json",
       "source": "measured"
     },
     {
@@ -2228,7 +2347,7 @@
       "rounds": 10,
       "duration_s": 212.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-F.judge.json",
+      "judge_ref": "judging/108/run-R.judge.json",
       "source": "measured"
     },
     {
@@ -2242,7 +2361,7 @@
       "rounds": 19,
       "duration_s": 310.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-E.judge.json",
+      "judge_ref": "judging/108/run-F.judge.json",
       "source": "measured"
     },
     {
@@ -2256,7 +2375,7 @@
       "rounds": 16,
       "duration_s": 436.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-M.judge.json",
+      "judge_ref": "judging/108/run-D.judge.json",
       "source": "measured"
     },
     {
@@ -2270,7 +2389,7 @@
       "rounds": 6,
       "duration_s": 17.6,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-Q.judge.json",
+      "judge_ref": "judging/108/run-A.judge.json",
       "source": "measured"
     },
     {
@@ -2284,7 +2403,7 @@
       "rounds": 10,
       "duration_s": 37.7,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-J.judge.json",
+      "judge_ref": "judging/108/run-P.judge.json",
       "source": "measured"
     },
     {
@@ -2298,7 +2417,7 @@
       "rounds": 25,
       "duration_s": 505.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-P.judge.json",
+      "judge_ref": "judging/108/run-O.judge.json",
       "source": "measured"
     },
     {
@@ -2312,7 +2431,7 @@
       "rounds": 6,
       "duration_s": 314.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-I.judge.json",
+      "judge_ref": "judging/108/run-N.judge.json",
       "source": "measured"
     },
     {
@@ -2326,8 +2445,22 @@
       "rounds": null,
       "duration_s": 112.0,
       "verified_in_browser": null,
-      "judge_ref": "judging/108/run-H.judge.json",
+      "judge_ref": "judging/108/run-K.judge.json",
       "source": "estimated"
+    },
+    {
+      "test": "108",
+      "model": "kimi-k3",
+      "run_ref": "runs/kimi-k3/108/relatorio.html",
+      "verdict": "entregou",
+      "acabamento_score": "1/1",
+      "cost_usd": 0.410669,
+      "tokens_out": 13974,
+      "rounds": 17,
+      "duration_s": 433.4,
+      "verified_in_browser": null,
+      "judge_ref": "judging/108/run-J.judge.json",
+      "source": "measured"
     }
   ],
   "rounds_history": []
