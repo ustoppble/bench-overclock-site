@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /runs/
+Sitemap: https://bench.overclock.sh/site/sitemap.xml

@@ -1,25 +1,258 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>opus-4-8 vs fable-5 — Overclock Benchmark</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/site.css">
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1SMRLPTMSZ"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-1SMRLPTMSZ');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Opus 4.8 vs Claude Fable 5: qual é melhor pra programar? — Overclock Benchmark</title>
+  <meta name="description" content="Claude Opus 4.8 vs Claude Fable 5 em testes reais de código: placar 6×3, custo $3,86 vs $7,43. Julgamento cego, custo medido.">
+  <link rel="canonical" href="https://bench.overclock.sh/site/comparativo-opus-4-8__vs__fable-5.html">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:site_name" content="Overclock Benchmark">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Claude Opus 4.8 vs Claude Fable 5: qual é melhor pra programar? — Overclock Benchmark">
+  <meta property="og:description" content="Claude Opus 4.8 vs Claude Fable 5 em testes reais de código: placar 6×3, custo $3,86 vs $7,43. Julgamento cego, custo medido.">
+  <meta property="og:url" content="https://bench.overclock.sh/site/comparativo-opus-4-8__vs__fable-5.html">
+  <meta property="og:image" content="https://bench.overclock.sh/site/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@laschuk">
+  <meta name="twitter:creator" content="@laschuk">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="assets/site.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "placar", "item": "https://bench.overclock.sh/site/"}, {"@type": "ListItem", "position": 2, "name": "comparativos", "item": "https://bench.overclock.sh/site/comparativos.html"}, {"@type": "ListItem", "position": 3, "name": "Opus 4.8 vs Fable 5", "item": "https://bench.overclock.sh/site/comparativo-opus-4-8__vs__fable-5.html"}]}</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1SMRLPTMSZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1SMRLPTMSZ');
+  </script>
 </head>
 <body>
-<div class="layout">
-<aside class="sidebar"><a class="sb-brand" href="index.html"><span class="dot"></span>OVERCLOCK BENCH</a><div class="sb-group"><div class="sb-label">visão geral</div><a class="sb-item" href="index.html"><span class="k">»</span><span>Placar</span></a><a class="sb-item active" href="comparativos.html"><span class="k">vs</span><span>Comparativos</span></a></div><div class="sb-group"><div class="sb-label">testes &middot; benchmark</div><a class="sb-item" href="teste-001.html"><span class="k">001</span><span>sistema-solar-3d<span class="cat">3D interativo</span></span></a><a class="sb-item" href="teste-002.html"><span class="k">002</span><span>site-apple<span class="cat">clone de site</span></span></a><a class="sb-item" href="teste-003.html"><span class="k">003</span><span>fisica-mouse<span class="cat">física/canvas</span></span></a><a class="sb-item" href="teste-004.html"><span class="k">004</span><span>fps<span class="cat">jogo 3D</span></span></a></div><div class="sb-group"><div class="sb-label">testes &middot; dia a dia</div><a class="sb-item" href="teste-101.html"><span class="k">101</span><span>caca-bug<span class="cat">debug</span></span></a><a class="sb-item" href="teste-103.html"><span class="k">103</span><span>feature-alheia<span class="cat">feature em código existente</span></span></a><a class="sb-item" href="teste-104.html"><span class="k">104</span><span>css-mobile<span class="cat">CSS responsivo</span></span></a><a class="sb-item" href="teste-105.html"><span class="k">105</span><span>revisar-codigo<span class="cat">code review</span></span></a><a class="sb-item" href="teste-108.html"><span class="k">108</span><span>dado-sujo<span class="cat">dados</span></span></a></div><div class="sb-group"><div class="sb-label">testes &middot; harness com squad</div><a class="sb-item" href="squads.html"><span class="k">&#9733;</span><span>squads recomendados</span></a></div><div class="sb-group"><div class="sb-label">modelos</div><a class="sb-item" href="modelo-sonnet-5.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></svg><span>Sonnet 5</span></a><a class="sb-item" href="modelo-sonnet-4-6.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></svg><span>Sonnet 4.6</span></a><a class="sb-item" href="modelo-opus-4-8.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></svg><span>Opus 4.8</span></a><a class="sb-item" href="modelo-fable-5.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></svg><span>Fable 5</span></a><a class="sb-item" href="modelo-gpt-5-6-luna.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span>GPT-5.6 Luna</span></a><a class="sb-item" href="modelo-gpt-5-6-terra.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span>GPT-5.6 Terra</span></a><a class="sb-item" href="modelo-gpt-5-6-sol.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span>GPT-5.6 Sol</span></a><a class="sb-item" href="modelo-grok-4-5.html"><svg class="vlogo" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true"><path d="M395.479 633.828L735.91 381.105C752.599 368.715 776.454 373.548 784.406 392.792C826.26 494.285 807.561 616.253 724.288 699.996C641.016 783.739 525.151 802.104 419.247 760.277L303.556 814.143C469.49 928.202 670.987 899.995 796.901 773.282C896.776 672.843 927.708 535.937 898.785 412.476L899.047 412.739C857.105 231.37 909.358 158.874 1016.4 10.6326C1018.93 7.11771 1021.47 3.60279 1024 0L883.144 141.651V141.212L395.392 633.916"/><path d="M325.226 695.251C206.128 580.84 226.662 403.776 328.285 301.668C403.431 226.097 526.549 195.254 634.026 240.596L749.454 186.994C728.657 171.88 702.007 155.623 671.424 144.2C533.19 86.9942 367.693 115.465 255.323 228.382C147.234 337.081 113.244 504.215 171.613 646.833C215.216 753.423 143.739 828.818 71.7385 904.916C46.2237 931.893 20.6216 958.87 0 987.429L325.139 695.339"/></svg><span>Grok 4.5</span></a><a class="sb-item" href="modelo-haiku-4-5.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></svg><span>Haiku 4.5</span></a><a class="sb-item" href="modelo-gpt-5-5.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span>GPT-5.5</span></a><a class="sb-item" href="modelo-gpt-5-4.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span>GPT-5.4</span></a><a class="sb-item" href="modelo-gpt-5-4-mini.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span>GPT-5.4 Mini</span></a><a class="sb-item" href="modelo-gpt-5-3-codex-spark.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg><span>GPT-5.3 Codex Spark</span></a><a class="sb-item" href="modelo-grok-composer-2-5-fast.html"><svg class="vlogo" viewBox="0 0 1024 1024" fill="currentColor" aria-hidden="true"><path d="M395.479 633.828L735.91 381.105C752.599 368.715 776.454 373.548 784.406 392.792C826.26 494.285 807.561 616.253 724.288 699.996C641.016 783.739 525.151 802.104 419.247 760.277L303.556 814.143C469.49 928.202 670.987 899.995 796.901 773.282C896.776 672.843 927.708 535.937 898.785 412.476L899.047 412.739C857.105 231.37 909.358 158.874 1016.4 10.6326C1018.93 7.11771 1021.47 3.60279 1024 0L883.144 141.651V141.212L395.392 633.916"/><path d="M325.226 695.251C206.128 580.84 226.662 403.776 328.285 301.668C403.431 226.097 526.549 195.254 634.026 240.596L749.454 186.994C728.657 171.88 702.007 155.623 671.424 144.2C533.19 86.9942 367.693 115.465 255.323 228.382C147.234 337.081 113.244 504.215 171.613 646.833C215.216 753.423 143.739 828.818 71.7385 904.916C46.2237 931.893 20.6216 958.87 0 987.429L325.139 695.339"/></svg><span>Grok Composer 2.5 Fast</span></a><a class="sb-item" href="modelo-glm-5-2.html"><span class="k">zhi</span><span>GLM 5.2</span></a><a class="sb-item" href="modelo-glm-5-turbo.html"><span class="k">zhi</span><span>GLM 5 Turbo</span></a><a class="sb-item" href="modelo-gemini-3-5-flash.html"><span class="k">goo</span><span>Gemini 3.5 Flash</span></a><a class="sb-item" href="modelo-kimi-k3.html"><span class="k">moo</span><span>Kimi K3</span></a></div></aside>
-<main class="main">
-<div class="wrap">
-<div class="crumb"><a href="comparativos.html">comparativos</a> / duelo</div><div class="duel-hero"><a class="duel-side" href="modelo-opus-4-8.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></svg><span>Opus 4.8</span></a><span class="vs">vs</span><a class="duel-side" href="modelo-fable-5.html"><svg class="vlogo" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></svg><span>Fable 5</span></a></div><div class="section md"><blockquote><p>Ranking geral: <b>Opus 4.8</b> #9 (0.7922) · <b>Fable 5</b> #13 (0.754) — vencedor geral: <b>Opus 4.8</b></p><p>Placar por teste: Opus 4.8 <b>6</b> × <b>3</b> Fable 5 (empates: 0) · custo total da bateria: Opus 4.8 $3.86 vs Fable 5 $7.434</p></blockquote><div class="tblwrap"><table><thead><tr><th>teste</th><th>opus-4-8</th><th>fable-5</th><th>vencedor</th></tr></thead><tbody><tr><td>001 3D interativo</td><td>⚠️ · $0.48 · 140s · score 0.71</td><td>⚠️ · $0.78 · 107s · score 0.69</td><td><b>opus-4-8</b></td></tr><tr><td>002 clone de site</td><td>✅ · $0.67 · 182s · score 0.93</td><td>✅ · $0.94 · 151s · score 0.92</td><td><b>opus-4-8</b></td></tr><tr><td>003 física/canvas</td><td>✅ · $0.29 · 87s · score 0.95</td><td>✅ · $0.59 · 88s · score 0.92</td><td><b>opus-4-8</b></td></tr><tr><td>004 jogo 3D</td><td>⚠️ · $0.59 · 186s · score 0.71</td><td>✅ · $2.11 · 361s · score 0.87</td><td><b>fable-5</b></td></tr><tr><td>101 debug</td><td>✅ · $0.30 · 41s · score 0.67</td><td>✅ · $0.31 · 33s · score 0.68</td><td><b>fable-5</b></td></tr><tr><td>103 feature em código existente</td><td>✅ · $0.20 · 50s · score 0.78</td><td>✅ · $0.49 · 76s · score 0.55</td><td><b>opus-4-8</b></td></tr><tr><td>104 CSS responsivo</td><td>✅ · $0.25 · 75s · score 0.93</td><td>✅ · $0.70 · 135s · score 0.82</td><td><b>opus-4-8</b></td></tr><tr><td>105 code review</td><td>✅ · $0.34 · 130s · score 0.78</td><td>✅ · $0.69 · 133s · score 0.64</td><td><b>opus-4-8</b></td></tr><tr><td>108 dados</td><td>✅ · $0.75 · 216s · score 0.68</td><td>✅ · $0.83 · 132s · score 0.69</td><td><b>fable-5</b></td></tr></tbody></table></div><h2>Onde Opus 4.8 leva</h2><ul><li><b>6 de 9 testes</b>: vitória em clone, canvas, feature, CSS e code review — 67% de sucesso</li><li><b>Qualidade em design</b>: scores 0.93–0.95 em clone/canvas onde Fable fica com 0.82–0.92</li><li><b>Custo eficiente</b>: $3.86 vs $7.434 — Opus é praticamente 2× mais barato</li></ul><h2>Onde Fable 5 leva</h2><ul><li><b>Jogo 3D, debug e dados</b>: 3 testes onde Fable entrega melhor (score 0.68–0.87) ou comparable</li><li><b>Velocidade em jogo</b>: consegue renderização 3D (score 0.87) onde Opus falha (0.71)</li><li>Sem compensação: o custo duplo não justifica 3 vitórias</li></ul><h2>Qual escolher</h2><p><b>Opus 4.8 é a escolha prática</b>: 6 de 9, 2× mais barato ($3.86 vs $7.434) e melhor em design. <b>Fable 5 só para 3D/jogo</b>: considere só se renderização 3D complexa for crítica e orçamento permitir gastar 2× mais. Diferença de ranking (0.7922 vs 0.754) é relevante — Opus é mais balanced.</p></div>
-<footer>gerado por <b>publish.py</b> em 2026-07-16T17:50:07-03:00 — fonte: <b>results.json</b></footer>
-</div>
-</main>
-</div>
+
+  <svg style="display: none" aria-hidden="true"><symbol id="v-anthropic" viewBox="0 0 24 24"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></symbol><symbol id="v-openai" viewBox="0 0 24 24"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></symbol><symbol id="v-xai" viewBox="0 0 1024 1024"><path d="M395.479 633.828L735.91 381.105C752.599 368.715 776.454 373.548 784.406 392.792C826.26 494.285 807.561 616.253 724.288 699.996C641.016 783.739 525.151 802.104 419.247 760.277L303.556 814.143C469.49 928.202 670.987 899.995 796.901 773.282C896.776 672.843 927.708 535.937 898.785 412.476L899.047 412.739C857.105 231.37 909.358 158.874 1016.4 10.6326C1018.93 7.11771 1021.47 3.60279 1024 0L883.144 141.651V141.212L395.392 633.916"/><path d="M325.226 695.251C206.128 580.84 226.662 403.776 328.285 301.668C403.431 226.097 526.549 195.254 634.026 240.596L749.454 186.994C728.657 171.88 702.007 155.623 671.424 144.2C533.19 86.9942 367.693 115.465 255.323 228.382C147.234 337.081 113.244 504.215 171.613 646.833C215.216 753.423 143.739 828.818 71.7385 904.916C46.2237 931.893 20.6216 958.87 0 987.429L325.139 695.339"/></symbol></svg>
+
+  <nav class="site-nav">
+    <div class="site-nav-in">
+      <a href="index.html" class="site-logo">
+        <span class="logo-mark">OB</span>
+        Overclock<em>Benchmark</em>
+      </a>
+      <div class="site-nav-links">
+        <a href="index.html#resultados">Resultados</a>
+        <a href="index.html#placar">Placar</a>
+        <a href="comparativos.html">Comparativos</a>
+        <a href="index.html#metodologia">Como funciona</a>
+        <a href="https://overclock.sh" target="_blank" rel="noopener">overclock.sh →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="site-sec" style="padding-top: 48px;">
+    <div class="site-wrap">
+      <nav class="crumb" aria-label="breadcrumb"><a href="index.html">placar</a><span class="sep" aria-hidden="true">/</span><a href="comparativos.html">comparativos</a><span class="sep" aria-hidden="true">/</span>Opus 4.8 vs Fable 5</nav>
+      <div class="page-head">
+        <div class="eyebrow">duelo direto</div>
+        <h1>Opus 4.8 vs Fable 5</h1>
+        <p class="lede">Placar 6×3 em 9 testes reais de
+        vibe coding — julgamento cego, custo medido, código auditável.</p>
+      </div>
+      <div class="duel-hero">
+        <a class="duel-side" href="modelo-opus-4-8.html">
+          <div class="model-avatar lg" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>
+          <div>
+            <div class="duel-name">Opus 4.8</div>
+            <div class="duel-sub">#11 geral · score 0,799</div>
+          </div>
+        </a>
+        <span class="vs">vs</span>
+        <a class="duel-side" href="modelo-fable-5.html">
+          <div style="text-align: right;">
+            <div class="duel-name">Fable 5</div>
+            <div class="duel-sub">#14 geral · score 0,765</div>
+          </div>
+          <div class="model-avatar lg" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>
+        </a>
+      </div>
+      <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 40px;">
+        <div class="kpi-card brand">
+          <span>Placar por teste</span>
+          <strong>6 × 3</strong>
+          <em>Opus 4.8 × Fable 5</em>
+        </div>
+        <div class="kpi-card">
+          <span>Custo da bateria</span>
+          <strong>$3,86 vs $7,43</strong>
+          <em>soma dos runs medidos</em>
+        </div>
+        <div class="kpi-card green">
+          <span>Vencedor geral</span>
+          <strong>Opus 4.8</strong>
+          <em>score do ranking cego</em>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Teste</th>
+              <th>Opus 4.8</th>
+              <th>Fable 5</th>
+              <th>Vencedor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-benchmark" href="teste-001.html" style="text-decoration: none;">001</a> <span style="color: var(--color-muted-2); margin-left: 4px;">3D interativo</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-defeitos">Defeitos</span> <span class="cell-cost">$0,48</span> · 2m 20s · score 0,71</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-defeitos">Defeitos</span> <span class="cell-cost">$0,78</span> · 1m 47s · score 0,69</td>
+              <td data-label="Vencedor"><b>Opus 4.8</b></td>
+            </tr>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-benchmark" href="teste-002.html" style="text-decoration: none;">002</a> <span style="color: var(--color-muted-2); margin-left: 4px;">clone de site</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,67</span> · 3m 2s · score 0,93</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,94</span> · 2m 31s · score 0,92</td>
+              <td data-label="Vencedor"><b>Opus 4.8</b></td>
+            </tr>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-benchmark" href="teste-003.html" style="text-decoration: none;">003</a> <span style="color: var(--color-muted-2); margin-left: 4px;">física/canvas</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,29</span> · 1m 27s · score 0,95</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,59</span> · 1m 28s · score 0,92</td>
+              <td data-label="Vencedor"><b>Opus 4.8</b></td>
+            </tr>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-benchmark" href="teste-004.html" style="text-decoration: none;">004</a> <span style="color: var(--color-muted-2); margin-left: 4px;">jogo 3D</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-defeitos">Defeitos</span> <span class="cell-cost">$0,59</span> · 3m 6s · score 0,71</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$2,11</span> · 6m 1s · score 0,87</td>
+              <td data-label="Vencedor"><b>Fable 5</b></td>
+            </tr>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-diaadia" href="teste-101.html" style="text-decoration: none;">101</a> <span style="color: var(--color-muted-2); margin-left: 4px;">debug</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,30</span> · 41s · score 0,67</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,31</span> · 33s · score 0,68</td>
+              <td data-label="Vencedor"><b>Fable 5</b></td>
+            </tr>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-diaadia" href="teste-103.html" style="text-decoration: none;">103</a> <span style="color: var(--color-muted-2); margin-left: 4px;">feature em código existente</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,20</span> · 50s · score 0,84</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,49</span> · 1m 16s · score 0,65</td>
+              <td data-label="Vencedor"><b>Opus 4.8</b></td>
+            </tr>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-diaadia" href="teste-104.html" style="text-decoration: none;">104</a> <span style="color: var(--color-muted-2); margin-left: 4px;">CSS responsivo</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,25</span> · 1m 15s · score 0,93</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,70</span> · 2m 15s · score 0,82</td>
+              <td data-label="Vencedor"><b>Opus 4.8</b></td>
+            </tr>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-diaadia" href="teste-105.html" style="text-decoration: none;">105</a> <span style="color: var(--color-muted-2); margin-left: 4px;">code review</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,34</span> · 2m 10s · score 0,78</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,69</span> · 2m 13s · score 0,64</td>
+              <td data-label="Vencedor"><b>Opus 4.8</b></td>
+            </tr>
+            <tr>
+              <td data-label="Teste"><a class="pill pill-diaadia" href="teste-108.html" style="text-decoration: none;">108</a> <span style="color: var(--color-muted-2); margin-left: 4px;">dados</span></td>
+              <td data-label="Opus 4.8"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,75</span> · 3m 36s · score 0,68</td>
+              <td data-label="Fable 5"><span class="verdict-badge verdict-entregou">Entregou</span> <span class="cell-cost">$0,83</span> · 2m 12s · score 0,69</td>
+              <td data-label="Vencedor"><b>Fable 5</b></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">veredito e custo de results.json · score por teste de scores.json (qualidade 50% · preço 25% · velocidade 25%)</p>
+      <div class="prose" style="margin-top: 32px;">
+<h2>Onde Opus 4.8 leva</h2>
+<ul>
+<li><b>6 de 9 testes</b>: vitória em clone, canvas, feature, CSS e code review — 67% de sucesso</li>
+<li><b>Qualidade em design</b>: scores 0.93–0.95 em clone/canvas onde Fable fica com 0.82–0.92</li>
+<li><b>Custo eficiente</b>: $3.86 vs $7.434 — Opus é praticamente 2× mais barato</li>
+</ul>
+<h2>Onde Fable 5 leva</h2>
+<ul>
+<li><b>Jogo 3D, debug e dados</b>: 3 testes onde Fable entrega melhor (score 0.68–0.87) ou comparable</li>
+<li><b>Velocidade em jogo</b>: consegue renderização 3D (score 0.87) onde Opus falha (0.71)</li>
+<li>Sem compensação: o custo duplo não justifica 3 vitórias</li>
+</ul>
+<h2>Qual escolher</h2>
+<p><b>Opus 4.8 é a escolha prática</b>: 6 de 9, 2× mais barato ($3.86 vs $7.434) e melhor em design. <b>Fable 5 só para 3D/jogo</b>: considere só se renderização 3D complexa for crítica e orçamento permitir gastar 2× mais. Diferença de ranking (0.7922 vs 0.754) é relevante — Opus é mais balanced.</p>
+      </div>
+      <div class="site-sec-head" style="margin-top: 40px;">
+        <h2 style="font-size: var(--t-h3);">Outros duelos</h2>
+      </div>
+      <div class="duel-chips">
+        <a class="duel-chip" href="comparativo-fable-5__vs__gpt-5-4-mini.html">Fable 5 vs GPT-5.4 Mini</a>
+        <a class="duel-chip" href="comparativo-fable-5__vs__gpt-5-4.html">Fable 5 vs GPT-5.4</a>
+        <a class="duel-chip" href="comparativo-fable-5__vs__gpt-5-5.html">Fable 5 vs GPT-5.5</a>
+        <a class="duel-chip" href="comparativo-fable-5__vs__gpt-5-6-sol.html">Fable 5 vs GPT-5.6 Sol</a>
+        <a class="duel-chip" href="comparativo-glm-5-2__vs__fable-5.html">GLM 5.2 vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-glm-5-turbo__vs__fable-5.html">GLM 5 Turbo vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-glm-5-turbo__vs__opus-4-8.html">GLM 5 Turbo vs Opus 4.8</a>
+        <a class="duel-chip" href="comparativo-gpt-5-3-codex-spark__vs__fable-5.html">GPT-5.3 Codex Spark vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-gpt-5-3-codex-spark__vs__opus-4-8.html">GPT-5.3 Codex Spark vs Opus 4.8</a>
+        <a class="duel-chip" href="comparativo-gpt-5-6-luna__vs__fable-5.html">GPT-5.6 Luna vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-gpt-5-6-luna__vs__opus-4-8.html">GPT-5.6 Luna vs Opus 4.8</a>
+        <a class="duel-chip" href="comparativo-gpt-5-6-terra__vs__fable-5.html">GPT-5.6 Terra vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-grok-4-5__vs__fable-5.html">Grok 4.5 vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-grok-4-5__vs__opus-4-8.html">Grok 4.5 vs Opus 4.8</a>
+        <a class="duel-chip" href="comparativo-grok-composer-2-5-fast__vs__fable-5.html">Grok Composer 2.5 Fast vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-grok-composer-2-5-fast__vs__opus-4-8.html">Grok Composer 2.5 Fast vs Opus 4.8</a>
+        <a class="duel-chip" href="comparativo-haiku-4-5__vs__fable-5.html">Haiku 4.5 vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-haiku-4-5__vs__opus-4-8.html">Haiku 4.5 vs Opus 4.8</a>
+        <a class="duel-chip" href="comparativo-kimi-k3__vs__fable-5.html">Kimi K3 vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-kimi-k3__vs__opus-4-8.html">Kimi K3 vs Opus 4.8</a>
+        <a class="duel-chip" href="comparativo-opus-4-8__vs__glm-5-2.html">Opus 4.8 vs GLM 5.2</a>
+        <a class="duel-chip" href="comparativo-opus-4-8__vs__gpt-5-4-mini.html">Opus 4.8 vs GPT-5.4 Mini</a>
+        <a class="duel-chip" href="comparativo-opus-4-8__vs__gpt-5-4.html">Opus 4.8 vs GPT-5.4</a>
+        <a class="duel-chip" href="comparativo-opus-4-8__vs__gpt-5-5.html">Opus 4.8 vs GPT-5.5</a>
+        <a class="duel-chip" href="comparativo-opus-4-8__vs__gpt-5-6-sol.html">Opus 4.8 vs GPT-5.6 Sol</a>
+        <a class="duel-chip" href="comparativo-opus-4-8__vs__gpt-5-6-terra.html">Opus 4.8 vs GPT-5.6 Terra</a>
+        <a class="duel-chip" href="comparativo-opus-4-8__vs__sonnet-5.html">Opus 4.8 vs Sonnet 5</a>
+        <a class="duel-chip" href="comparativo-sonnet-4-6__vs__fable-5.html">Sonnet 4.6 vs Fable 5</a>
+        <a class="duel-chip" href="comparativo-sonnet-4-6__vs__opus-4-8.html">Sonnet 4.6 vs Opus 4.8</a>
+        <a class="duel-chip" href="comparativo-sonnet-5__vs__fable-5.html">Sonnet 5 vs Fable 5</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-foot-cols">
+      <div class="site-foot-group">
+        <div class="site-foot-h">
+          <span style="display: inline-flex; align-items: center; gap: 8px;">
+            <span class="logo-mark sm">OB</span>
+            Overclock Benchmark
+          </span>
+        </div>
+        <p style="font-size: 12px; color: var(--color-muted); line-height: 1.6; max-width: 320px;">
+          Benchmark independente de modelos de IA para vibe coding.
+          Nenhum número é inventado. Todo fato vem de medição.
+        </p>
+      </div>
+      <div class="site-foot-group">
+        <div class="site-foot-h">Navegar</div>
+        <a href="index.html#resultados">Resultados</a>
+        <a href="index.html#placar">Placar por modelo</a>
+        <a href="comparativos.html">Comparativos</a>
+        <a href="squads.html">Squads recomendados</a>
+        <a href="index.html#metodologia">Como funciona</a>
+      </div>
+      <div class="site-foot-group">
+        <div class="site-foot-h">Links</div>
+        <a href="https://overclock.sh" target="_blank" rel="noopener">overclock.sh</a>
+        <a href="https://github.com/laschuk/overclock-benchmark" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://x.com/laschuk" target="_blank" rel="noopener">@laschuk</a>
+      </div>
+    </div>
+    <div class="site-foot-bar">
+      <span class="gen-note">gerado por <b>publish.py</b> em 2026-07-17T03:33:36-03:00 — fonte: <b>results.json</b></span>
+      <span style="font-family: var(--site-font-mono); font-size: 10px; color: var(--color-muted);">v2.0</span>
+    </div>
+  </footer>
+
 </body>
 </html>
