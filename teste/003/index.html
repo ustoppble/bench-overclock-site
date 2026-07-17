@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Melhor IA para física/canvas: 18 modelos no mesmo prompt — Overclock Benchmark</title>
+  <meta name="description" content="18 modelos de IA no mesmo prompt de física/canvas: Grok Composer 2.5 Fast entregou pelo menor custo. Veredito cego, custo e tempo medidos.">
+  <link rel="canonical" href="https://bench.overclock.sh/teste/003/">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:site_name" content="Overclock Benchmark">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Melhor IA para física/canvas: 18 modelos no mesmo prompt — Overclock Benchmark">
+  <meta property="og:description" content="18 modelos de IA no mesmo prompt de física/canvas: Grok Composer 2.5 Fast entregou pelo menor custo. Veredito cego, custo e tempo medidos.">
+  <meta property="og:url" content="https://bench.overclock.sh/teste/003/">
+  <meta property="og:image" content="https://bench.overclock.sh/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@laschuk">
+  <meta name="twitter:creator" content="@laschuk">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "placar", "item": "https://bench.overclock.sh/"}, {"@type": "ListItem", "position": 2, "name": "teste 003 — fisica-mouse", "item": "https://bench.overclock.sh/teste/003/"}]}</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1SMRLPTMSZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1SMRLPTMSZ');
+  </script>
+</head>
+<body>
+
+  <svg style="display: none" aria-hidden="true"><symbol id="v-anthropic" viewBox="0 0 24 24"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></symbol><symbol id="v-openai" viewBox="0 0 24 24"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></symbol><symbol id="v-xai" viewBox="0 0 1024 1024"><path d="M395.479 633.828L735.91 381.105C752.599 368.715 776.454 373.548 784.406 392.792C826.26 494.285 807.561 616.253 724.288 699.996C641.016 783.739 525.151 802.104 419.247 760.277L303.556 814.143C469.49 928.202 670.987 899.995 796.901 773.282C896.776 672.843 927.708 535.937 898.785 412.476L899.047 412.739C857.105 231.37 909.358 158.874 1016.4 10.6326C1018.93 7.11771 1021.47 3.60279 1024 0L883.144 141.651V141.212L395.392 633.916"/><path d="M325.226 695.251C206.128 580.84 226.662 403.776 328.285 301.668C403.431 226.097 526.549 195.254 634.026 240.596L749.454 186.994C728.657 171.88 702.007 155.623 671.424 144.2C533.19 86.9942 367.693 115.465 255.323 228.382C147.234 337.081 113.244 504.215 171.613 646.833C215.216 753.423 143.739 828.818 71.7385 904.916C46.2237 931.893 20.6216 958.87 0 987.429L325.139 695.339"/></symbol></svg>
+
+  <nav class="site-nav">
+    <div class="site-nav-in">
+      <a href="/" class="site-logo">
+        <span class="logo-mark">OB</span>
+        Overclock<em>Benchmark</em>
+      </a>
+      <div class="site-nav-links">
+        <a href="/#resultados">Resultados</a>
+        <a href="/#placar">Placar</a>
+        <a href="/comparativos/">Comparativos</a>
+        <a href="/#metodologia">Como funciona</a>
+        <a href="https://overclock.sh" target="_blank" rel="noopener">overclock.sh →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="site-sec" style="padding-top: 48px;">
+    <div class="site-wrap">
+      <nav class="crumb" aria-label="breadcrumb"><a href="/">placar</a><span class="sep" aria-hidden="true">/</span>teste 003 — fisica-mouse</nav>
+      <div class="page-head">
+        <div class="eyebrow">teste 003 · benchmark · física/canvas</div>
+        <h1>“Brinquedo de física”</h1>
+        <p class="lede">fisica-mouse — todos os modelos recebem o mesmo prompt, verbatim, uma vez.</p>
+      </div>
+      <div class="term">
+        <div class="term-bar">
+          <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+          <span class="lbl">prompt canônico</span>
+        </div>
+        <div class="term-body">
+          <span class="p">$ </span>Crie um único arquivo HTML com uma simulação de física interativa: várias bolinhas coloridas caindo com gravidade, que colidem entre si e com as bordas da tela de forma realista. Quando eu segurar o mouse, as bolinhas perto do cursor devem …
+          <br><a href="/prompts/003-fisica-mouse.md">ler o prompt canônico →</a>
+        </div>
+      </div>
+      <div class="runs-grid">
+        <div class="run-cell hero">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-xai"/></svg></div>Grok Composer 2.5 Fast</span>
+            <span class="cost">$0,02</span>
+            <a class="open" href="/runs/grok-composer-2-5-fast/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/grok-composer-2-5-fast/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Grok Composer 2.5 Fast — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 4</span>
+            <span>tempo: 21s</span>
+            <span>score: 1,00</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8)">Z</div>GLM 5 Turbo</span>
+            <span class="cost">$0,04</span>
+            <a class="open" href="/runs/glm-5-turbo/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/glm-5-turbo/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GLM 5 Turbo — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 2</span>
+            <span>tempo: 44s</span>
+            <span>score: 0,99</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>Haiku 4.5</span>
+            <span class="cost">$0,04</span>
+            <a class="open" href="/runs/haiku-4-5/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/haiku-4-5/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Haiku 4.5 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 2</span>
+            <span>tempo: 43s</span>
+            <span>score: 0,99</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #a855f7, #7c3aed)">G</div>Gemini 3.5 Flash</span>
+            <span class="cost"><span class="est" title="custo estimado do transcript — a CLI não expõe tokens (piso, não medido)">$0,11<sup>est</sup></span></span>
+            <a class="open" href="/runs/gemini-3-5-flash/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/gemini-3-5-flash/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Gemini 3.5 Flash — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: —</span>
+            <span>tempo: 1m 1s</span>
+            <span>score: 0,98</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>GPT-5.6 Luna</span>
+            <span class="cost">$0,13</span>
+            <a class="open" href="/runs/gpt-5-6-luna/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/gpt-5-6-luna/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GPT-5.6 Luna — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 8</span>
+            <span>tempo: 4m 55s</span>
+            <span>score: 0,92</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #ec4899, #be185d)">M</div>Kimi K3</span>
+            <span class="cost">$0,13</span>
+            <a class="open" href="/runs/kimi-k3/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/kimi-k3/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Kimi K3 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 3</span>
+            <span>tempo: 30s</span>
+            <span>score: 0,98</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>Sonnet 4.6</span>
+            <span class="cost">$0,13</span>
+            <a class="open" href="/runs/sonnet-4-6/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/sonnet-4-6/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Sonnet 4.6 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 3</span>
+            <span>tempo: 1m 2s</span>
+            <span>score: 0,98</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8)">Z</div>GLM 5.2</span>
+            <span class="cost">$0,14</span>
+            <a class="open" href="/runs/glm-5-2/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/glm-5-2/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GLM 5.2 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 4</span>
+            <span>tempo: 5m 9s</span>
+            <span>score: 0,91</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>GPT-5.4 Mini</span>
+            <span class="cost">$0,16</span>
+            <a class="open" href="/runs/gpt-5-4-mini/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/gpt-5-4-mini/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GPT-5.4 Mini — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 9</span>
+            <span>tempo: 6m 30s</span>
+            <span>score: 0,89</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>GPT-5.3 Codex Spark</span>
+            <span class="cost">$0,17</span>
+            <a class="open" href="/runs/gpt-5-3-codex-spark/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/gpt-5-3-codex-spark/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GPT-5.3 Codex Spark — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 4</span>
+            <span>tempo: 18s</span>
+            <span>score: 0,98</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>Sonnet 5</span>
+            <span class="cost">$0,18</span>
+            <a class="open" href="/runs/sonnet-5/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/sonnet-5/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Sonnet 5 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 5</span>
+            <span>tempo: 1m 6s</span>
+            <span>score: 0,97</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-xai"/></svg></div>Grok 4.5</span>
+            <span class="cost">$0,20</span>
+            <a class="open" href="/runs/grok-4-5/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/grok-4-5/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Grok 4.5 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 7</span>
+            <span>tempo: 1m 11s</span>
+            <span>score: 0,97</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>Opus 4.8</span>
+            <span class="cost">$0,29</span>
+            <a class="open" href="/runs/opus-4-8/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/opus-4-8/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 3</span>
+            <span>tempo: 1m 27s</span>
+            <span>score: 0,95</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>GPT-5.4</span>
+            <span class="cost">$0,30</span>
+            <a class="open" href="/runs/gpt-5-4/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/gpt-5-4/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GPT-5.4 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 10</span>
+            <span>tempo: 3m 20s</span>
+            <span>score: 0,92</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>Fable 5</span>
+            <span class="cost">$0,59</span>
+            <a class="open" href="/runs/fable-5/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/fable-5/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Fable 5 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 3</span>
+            <span>tempo: 1m 28s</span>
+            <span>score: 0,92</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>GPT-5.6 Terra</span>
+            <span class="cost">$0,63</span>
+            <a class="open" href="/runs/gpt-5-6-terra/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/gpt-5-6-terra/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GPT-5.6 Terra — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 24</span>
+            <span>tempo: 13m 42s</span>
+            <span>score: 0,73</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>GPT-5.5</span>
+            <span class="cost">$0,79</span>
+            <a class="open" href="/runs/gpt-5-5/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/gpt-5-5/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GPT-5.5 — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 12</span>
+            <span>tempo: 5m 17s</span>
+            <span>score: 0,83</span>
+          </div>
+        </div>
+        <div class="run-cell">
+          <div class="run-head">
+            <span class="m"><div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>GPT-5.6 Sol</span>
+            <span class="cost">$2,12</span>
+            <a class="open" href="/runs/gpt-5-6-sol/003/index.html">abrir ↗</a>
+          </div>
+          <div class="run-frame run-facade" data-src="/runs/gpt-5-6-sol/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: GPT-5.6 Sol — teste 003"><span>▶ carregar preview</span></div>
+          <div class="run-foot">
+            <span class="verdict-badge verdict-entregou">Entregou</span>
+            <span>idas: 37</span>
+            <span>tempo: 17m 21s</span>
+            <span>score: 0,50</span>
+          </div>
+        </div>
+      </div>
+      <div class="site-sec-head" style="margin-top: 16px;">
+        <h2 style="font-size: var(--t-h3);">Lado a lado</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Modelo</th>
+              <th>Veredito</th>
+              <th>Score</th>
+              <th>Custo</th>
+              <th>Tokens out</th>
+              <th>Idas</th>
+              <th>Tempo</th>
+              <th>Run</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hero">
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-xai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/grok-composer-2-5-fast/" style="color: inherit; text-decoration: none;">Grok Composer 2.5 Fast</a></div>
+            <div class="model-vendor">xAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">1,00</td>
+              <td data-label="Custo">$0,02</td>
+              <td data-label="Tokens out">4.203</td>
+              <td data-label="Idas">4</td>
+              <td data-label="Tempo">21s</td>
+              <td data-label="Run"><a href="/runs/grok-composer-2-5-fast/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8)">Z</div>
+          <div>
+            <div class="model-name"><a href="/modelo/glm-5-turbo/" style="color: inherit; text-decoration: none;">GLM 5 Turbo</a></div>
+            <div class="model-vendor">Zhipu</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,99</td>
+              <td data-label="Custo">$0,04</td>
+              <td data-label="Tokens out">3.515</td>
+              <td data-label="Idas">2</td>
+              <td data-label="Tempo">44s</td>
+              <td data-label="Run"><a href="/runs/glm-5-turbo/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/haiku-4-5/" style="color: inherit; text-decoration: none;">Haiku 4.5</a></div>
+            <div class="model-vendor">Anthropic</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,99</td>
+              <td data-label="Custo">$0,04</td>
+              <td data-label="Tokens out">3.876</td>
+              <td data-label="Idas">2</td>
+              <td data-label="Tempo">43s</td>
+              <td data-label="Run"><a href="/runs/haiku-4-5/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #a855f7, #7c3aed)">G</div>
+          <div>
+            <div class="model-name"><a href="/modelo/gemini-3-5-flash/" style="color: inherit; text-decoration: none;">Gemini 3.5 Flash</a></div>
+            <div class="model-vendor">Google</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,98</td>
+              <td data-label="Custo"><span class="est" title="custo estimado do transcript — a CLI não expõe tokens (piso, não medido)">$0,11<sup>est</sup></span></td>
+              <td data-label="Tokens out">12.031</td>
+              <td data-label="Idas">—</td>
+              <td data-label="Tempo">1m 1s</td>
+              <td data-label="Run"><a href="/runs/gemini-3-5-flash/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/gpt-5-6-luna/" style="color: inherit; text-decoration: none;">GPT-5.6 Luna</a></div>
+            <div class="model-vendor">OpenAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,92</td>
+              <td data-label="Custo">$0,13</td>
+              <td data-label="Tokens out">14.975</td>
+              <td data-label="Idas">8</td>
+              <td data-label="Tempo">4m 55s</td>
+              <td data-label="Run"><a href="/runs/gpt-5-6-luna/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #ec4899, #be185d)">M</div>
+          <div>
+            <div class="model-name"><a href="/modelo/kimi-k3/" style="color: inherit; text-decoration: none;">Kimi K3</a></div>
+            <div class="model-vendor">Moonshot AI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,98</td>
+              <td data-label="Custo">$0,13</td>
+              <td data-label="Tokens out">5.015</td>
+              <td data-label="Idas">3</td>
+              <td data-label="Tempo">30s</td>
+              <td data-label="Run"><a href="/runs/kimi-k3/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/sonnet-4-6/" style="color: inherit; text-decoration: none;">Sonnet 4.6</a></div>
+            <div class="model-vendor">Anthropic</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,98</td>
+              <td data-label="Custo">$0,13</td>
+              <td data-label="Tokens out">4.543</td>
+              <td data-label="Idas">3</td>
+              <td data-label="Tempo">1m 2s</td>
+              <td data-label="Run"><a href="/runs/sonnet-4-6/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8)">Z</div>
+          <div>
+            <div class="model-name"><a href="/modelo/glm-5-2/" style="color: inherit; text-decoration: none;">GLM 5.2</a></div>
+            <div class="model-vendor">Zhipu</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,91</td>
+              <td data-label="Custo">$0,14</td>
+              <td data-label="Tokens out">16.118</td>
+              <td data-label="Idas">4</td>
+              <td data-label="Tempo">5m 9s</td>
+              <td data-label="Run"><a href="/runs/glm-5-2/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/gpt-5-4-mini/" style="color: inherit; text-decoration: none;">GPT-5.4 Mini</a></div>
+            <div class="model-vendor">OpenAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,89</td>
+              <td data-label="Custo">$0,16</td>
+              <td data-label="Tokens out">26.647</td>
+              <td data-label="Idas">9</td>
+              <td data-label="Tempo">6m 30s</td>
+              <td data-label="Run"><a href="/runs/gpt-5-4-mini/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/gpt-5-3-codex-spark/" style="color: inherit; text-decoration: none;">GPT-5.3 Codex Spark</a></div>
+            <div class="model-vendor">OpenAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,98</td>
+              <td data-label="Custo">$0,17</td>
+              <td data-label="Tokens out">9.761</td>
+              <td data-label="Idas">4</td>
+              <td data-label="Tempo">18s</td>
+              <td data-label="Run"><a href="/runs/gpt-5-3-codex-spark/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/sonnet-5/" style="color: inherit; text-decoration: none;">Sonnet 5</a></div>
+            <div class="model-vendor">Anthropic</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,97</td>
+              <td data-label="Custo">$0,18</td>
+              <td data-label="Tokens out">6.824</td>
+              <td data-label="Idas">5</td>
+              <td data-label="Tempo">1m 6s</td>
+              <td data-label="Run"><a href="/runs/sonnet-5/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-xai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/grok-4-5/" style="color: inherit; text-decoration: none;">Grok 4.5</a></div>
+            <div class="model-vendor">xAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,97</td>
+              <td data-label="Custo">$0,20</td>
+              <td data-label="Tokens out">10.089</td>
+              <td data-label="Idas">7</td>
+              <td data-label="Tempo">1m 11s</td>
+              <td data-label="Run"><a href="/runs/grok-4-5/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/opus-4-8/" style="color: inherit; text-decoration: none;">Opus 4.8</a></div>
+            <div class="model-vendor">Anthropic</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,95</td>
+              <td data-label="Custo">$0,29</td>
+              <td data-label="Tokens out">6.916</td>
+              <td data-label="Idas">3</td>
+              <td data-label="Tempo">1m 27s</td>
+              <td data-label="Run"><a href="/runs/opus-4-8/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/gpt-5-4/" style="color: inherit; text-decoration: none;">GPT-5.4</a></div>
+            <div class="model-vendor">OpenAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,92</td>
+              <td data-label="Custo">$0,30</td>
+              <td data-label="Tokens out">10.166</td>
+              <td data-label="Idas">10</td>
+              <td data-label="Tempo">3m 20s</td>
+              <td data-label="Run"><a href="/runs/gpt-5-4/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #ef4444, #dc2626)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/fable-5/" style="color: inherit; text-decoration: none;">Fable 5</a></div>
+            <div class="model-vendor">Anthropic</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,92</td>
+              <td data-label="Custo">$0,59</td>
+              <td data-label="Tokens out">6.589</td>
+              <td data-label="Idas">3</td>
+              <td data-label="Tempo">1m 28s</td>
+              <td data-label="Run"><a href="/runs/fable-5/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/gpt-5-6-terra/" style="color: inherit; text-decoration: none;">GPT-5.6 Terra</a></div>
+            <div class="model-vendor">OpenAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,73</td>
+              <td data-label="Custo">$0,63</td>
+              <td data-label="Tokens out">20.930</td>
+              <td data-label="Idas">24</td>
+              <td data-label="Tempo">13m 42s</td>
+              <td data-label="Run"><a href="/runs/gpt-5-6-terra/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/gpt-5-5/" style="color: inherit; text-decoration: none;">GPT-5.5</a></div>
+            <div class="model-vendor">OpenAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,83</td>
+              <td data-label="Custo">$0,79</td>
+              <td data-label="Tokens out">14.572</td>
+              <td data-label="Idas">12</td>
+              <td data-label="Tempo">5m 17s</td>
+              <td data-label="Run"><a href="/runs/gpt-5-5/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+            <tr>
+              <td data-label="Modelo"><div class="model-row">
+          <div class="model-avatar" style="background: linear-gradient(135deg, #22c55e, #15803d)"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-openai"/></svg></div>
+          <div>
+            <div class="model-name"><a href="/modelo/gpt-5-6-sol/" style="color: inherit; text-decoration: none;">GPT-5.6 Sol</a></div>
+            <div class="model-vendor">OpenAI</div>
+          </div>
+        </div></td>
+              <td data-label="Veredito"><span class="verdict-badge verdict-entregou">Entregou</span></td>
+              <td data-label="Score">0,50</td>
+              <td data-label="Custo">$2,12</td>
+              <td data-label="Tokens out">28.366</td>
+              <td data-label="Idas">37</td>
+              <td data-label="Tempo">17m 21s</td>
+              <td data-label="Run"><a href="/runs/gpt-5-6-sol/003/index.html" style="color: var(--color-brand); text-decoration: none;">abrir →</a></td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>custo medido (18 de 18 runs)</td>
+              <td>—</td><td>—</td>
+              <td>$6,17</td>
+              <td>—</td><td>—</td><td>—</td><td>—</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="analysis">
+        <h4>Análise</h4>
+        18 de 18 runs julgados pelo painel cego. Score = qualidade 50% · preço 25% · velocidade 25% (scores.json).
+      </div>
+      <div class="site-sec-head" style="margin-top: 40px;">
+        <h2 style="font-size: var(--t-h3);">Como cada modelo se saiu</h2>
+      </div>
+      <div class="prose">
+        <p><b><a href="/modelo/gpt-5-6-luna/">GPT-5.6 Luna</a>:</b> Run do teste 003 (física de bolinhas): 5 rounds, 113s, US$0.06. Ferramentas: exec×4. Artefato de 258 linhas. Sem dependência externa.</p>
+        <p><b><a href="/modelo/sonnet-4-6/">Sonnet 4.6</a>:</b> Run do teste 003 (física de bolinhas): 2 rounds, 168s, US$0.29. Ferramentas: Write×1. Artefato de 324 linhas. Sem dependência externa.</p>
+        <p><b><a href="/modelo/sonnet-5/">Sonnet 5</a>:</b> Run do teste 003 (física de bolinhas): 4 rounds, 102s, US$0.20. Ferramentas: Bash×2, Write×1. Artefato de 353 linhas. Sem dependência externa.</p>
+        <p><b><a href="/modelo/grok-4-5/">Grok 4.5</a>:</b> Run do teste 003 (física de bolinhas): 58s. Ferramentas: write×2, search_replace×4. Artefato de 541 linhas. Sem dependência externa.</p>
+        <p><b><a href="/modelo/opus-4-8/">Opus 4.8</a>:</b> Run do teste 003 (física de bolinhas): 4 rounds, 140s, US$0.45. Ferramentas: Write×1, Bash×2. Artefato de 437 linhas. Sem dependência externa.</p>
+        <p><b><a href="/modelo/fable-5/">Fable 5</a>:</b> Run do teste 003 (física de bolinhas): 2 rounds, 77s, US$0.55. Ferramentas: Write×1. Artefato de 424 linhas. Sem dependência externa.</p>
+        <p><b><a href="/modelo/gpt-5-6-terra/">GPT-5.6 Terra</a>:</b> Run do teste 003 (física de bolinhas): 4 rounds, 93s, US$0.12. Ferramentas: exec×3. Artefato de 225 linhas. Sem dependência externa.</p>
+        <p><b><a href="/modelo/gpt-5-6-sol/">GPT-5.6 Sol</a>:</b> Run do teste 003 (física de bolinhas): 8 rounds, 171s, US$0.45. Ferramentas: exec×7. Artefato de 575 linhas. Sem dependência externa.</p>
+      </div>
+      <script>
+        (function () {
+          function load(el) {
+            if (el.dataset.loaded) return;
+            el.dataset.loaded = '1';
+            var f = document.createElement('iframe');
+            f.className = 'run-frame';
+            f.src = el.dataset.src;
+            f.title = el.getAttribute('aria-label') || 'preview do run';
+            el.replaceWith(f);
+          }
+          var facades = document.querySelectorAll('.run-facade');
+          facades.forEach(function (el) {
+            el.addEventListener('click', function () { load(el); });
+            el.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); load(el); }
+            });
+          });
+          if ('IntersectionObserver' in window) {
+            // carrega conforme o preview entra na viewport (com folga de 200px)
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (en) {
+                if (en.isIntersecting) { io.unobserve(en.target); load(en.target); }
+              });
+            }, { rootMargin: '200px 0px' });
+            facades.forEach(function (el) { io.observe(el); });
+          }
+        })();
+      </script>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-foot-cols">
+      <div class="site-foot-group">
+        <div class="site-foot-h">
+          <span style="display: inline-flex; align-items: center; gap: 8px;">
+            <span class="logo-mark sm">OB</span>
+            Overclock Benchmark
+          </span>
+        </div>
+        <p style="font-size: 12px; color: var(--color-muted); line-height: 1.6; max-width: 320px;">
+          Benchmark independente de modelos de IA para vibe coding.
+          Nenhum número é inventado. Todo fato vem de medição.
+        </p>
+      </div>
+      <div class="site-foot-group">
+        <div class="site-foot-h">Navegar</div>
+        <a href="/#resultados">Resultados</a>
+        <a href="/#placar">Placar por modelo</a>
+        <a href="/comparativos/">Comparativos</a>
+        <a href="/squads/">Squads recomendados</a>
+        <a href="/#metodologia">Como funciona</a>
+      </div>
+      <div class="site-foot-group">
+        <div class="site-foot-h">Links</div>
+        <a href="https://overclock.sh" target="_blank" rel="noopener">overclock.sh</a>
+        <a href="https://github.com/laschuk/overclock-benchmark" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://x.com/laschuk" target="_blank" rel="noopener">@laschuk</a>
+      </div>
+    </div>
+    <div class="site-foot-bar">
+      <span class="gen-note">gerado por <b>publish.py</b> em 2026-07-17T12:20:35-03:00 — fonte: <b>results.json</b></span>
+      <span style="font-family: var(--site-font-mono); font-size: 10px; color: var(--color-muted);">v2.0</span>
+    </div>
+  </footer>
+
+</body>
+</html>
