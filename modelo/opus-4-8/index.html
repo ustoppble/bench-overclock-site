@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Opus 4.8 (Anthropic): preço, custo real e benchmark de código — Overclock Benchmark</title>
+  <meta name="description" content="Claude Opus 4.8 vale a pena pra programar? Custo medido $3,86 em 9 tarefas reais, ranking #11. Benchmark independente, julgamento cego.">
+  <link rel="canonical" href="https://bench.overclock.sh/modelo/opus-4-8/">
+  <meta name="theme-color" content="#000000">
+  <meta property="og:site_name" content="Overclock Benchmark">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Claude Opus 4.8 (Anthropic): preço, custo real e benchmark de código — Overclock Benchmark">
+  <meta property="og:description" content="Claude Opus 4.8 vale a pena pra programar? Custo medido $3,86 em 9 tarefas reais, ranking #11. Benchmark independente, julgamento cego.">
+  <meta property="og:url" content="https://bench.overclock.sh/modelo/opus-4-8/">
+  <meta property="og:image" content="https://bench.overclock.sh/assets/og-card.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@laschuk">
+  <meta name="twitter:creator" content="@laschuk">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="/assets/site.css">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "placar", "item": "https://bench.overclock.sh/"}, {"@type": "ListItem", "position": 2, "name": "Opus 4.8", "item": "https://bench.overclock.sh/modelo/opus-4-8/"}]}</script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Quanto custa Claude Opus 4.8 pra programar?", "acceptedAnswer": {"@type": "Answer", "text": "Preço de tabela: $5/1M tokens de entrada e $25/1M de saída. Na prática, medimos $3,86 em 9 tarefas reais de vibe coding — média de $0,43 por tarefa."}}, {"@type": "Question", "name": "Claude Opus 4.8 vale a pena pra código?", "acceptedAnswer": {"@type": "Answer", "text": "No julgamento cego, Claude Opus 4.8 ficou em #11 no ranking geral (score 0,799), com 7 entregas limpas, 2 com defeitos e 0 quebradas em 9 testes."}}]}</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-1SMRLPTMSZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-1SMRLPTMSZ');
+  </script>
+</head>
+<body>
+
+  <svg style="display: none" aria-hidden="true"><symbol id="v-anthropic" viewBox="0 0 24 24"><path d="M17.3041 3.541h-3.6718l6.696 16.918H24Zm-10.6082 0L0 20.459h3.7442l1.3693-3.5527h7.0052l1.3693 3.5528h3.7442L10.5363 3.5409Zm-.3712 10.2232 2.2914-5.9456 2.2914 5.9456Z"/></symbol><symbol id="v-openai" viewBox="0 0 24 24"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></symbol><symbol id="v-xai" viewBox="0 0 1024 1024"><path d="M395.479 633.828L735.91 381.105C752.599 368.715 776.454 373.548 784.406 392.792C826.26 494.285 807.561 616.253 724.288 699.996C641.016 783.739 525.151 802.104 419.247 760.277L303.556 814.143C469.49 928.202 670.987 899.995 796.901 773.282C896.776 672.843 927.708 535.937 898.785 412.476L899.047 412.739C857.105 231.37 909.358 158.874 1016.4 10.6326C1018.93 7.11771 1021.47 3.60279 1024 0L883.144 141.651V141.212L395.392 633.916"/><path d="M325.226 695.251C206.128 580.84 226.662 403.776 328.285 301.668C403.431 226.097 526.549 195.254 634.026 240.596L749.454 186.994C728.657 171.88 702.007 155.623 671.424 144.2C533.19 86.9942 367.693 115.465 255.323 228.382C147.234 337.081 113.244 504.215 171.613 646.833C215.216 753.423 143.739 828.818 71.7385 904.916C46.2237 931.893 20.6216 958.87 0 987.429L325.139 695.339"/></symbol></svg>
+
+  <nav class="site-nav">
+    <div class="site-nav-in">
+      <a href="/" class="site-logo">
+        <span class="logo-mark">OB</span>
+        Overclock<em>Benchmark</em>
+      </a>
+      <div class="site-nav-links">
+        <a href="/#resultados">Resultados</a>
+        <a href="/#placar">Placar</a>
+        <a href="/comparativos/">Comparativos</a>
+        <a href="/#metodologia">Como funciona</a>
+        <a href="https://overclock.sh" target="_blank" rel="noopener">overclock.sh →</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="site-sec" style="padding-top: 48px;">
+    <div class="site-wrap">
+      <nav class="crumb" aria-label="breadcrumb"><a href="/">placar</a><span class="sep" aria-hidden="true">/</span>modelos<span class="sep" aria-hidden="true">/</span>Opus 4.8</nav>
+      <div class="page-head">
+        <div class="eyebrow"><svg class="vlogo" fill="currentColor" aria-hidden="true"><use href="#v-anthropic"/></svg> Anthropic</div>
+        <h1>Opus 4.8</h1>
+        <p class="lede">Era o topo da linha da Anthropic até o Fable 5; a própria Anthropic posiciona o Fable 5 como seu sucessor de upgrade — o Opus segue em US$5/US$25 como degrau do meio.</p>
+        
+        <p class="lede" style="margin-top: 12px;">O perfeccionista compulsivo: US$9,49 (o mais caro da bateria, 40% do custo total) e 99 rounds, dos quais 81 só no FPS — 31 Bash, 35 Edits, 11 Reads em 29 minutos de lapidação. Zero libs externas em todos os testes: escreve tudo na mão.</p>
+        <p class="note">4/4 runs auditados: single-shot, prompt verbatim, sem subagentes, sem skills, zero violações.</p>
+      </div>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <div class="l">ranking geral</div>
+          <div class="v"><b>#11</b> · score 0,799</div>
+          <div class="s">julgamento cego (scores.json)</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">preço de entrada</div>
+          <div class="v"><b>$5</b> / 1M tokens</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">preço de saída</div>
+          <div class="v"><b>$25</b> / 1M tokens</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">custo total medido</div>
+          <div class="v"><b>$3,86</b></div>
+          <div class="s">em 9 de 9 runs</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">vereditos</div>
+          <div class="v"><span class="verdict-badge verdict-entregou">7 entregou</span> <span class="verdict-badge verdict-defeitos">2 defeitos</span></div>
+          <div class="s">painel cego, rubrica v2</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">janela de contexto</div>
+          <div class="v"><b>1M tokens</b></div>
+          <div class="s">docs oficiais Anthropic, jul/2026</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">saída máxima</div>
+          <div class="v"><b>128k tokens</b></div>
+          <div class="s">docs oficiais Anthropic, jul/2026</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">lançamento</div>
+          <div class="v">—</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">cache</div>
+          <div class="v">write 1,25× / read 0,10×</div>
+          <div class="s">Anthropic — fórmula universal do benchmark, dossiê §8</div>
+        </div>
+      </div>
+      <div class="site-sec-head" style="margin-top: 40px;">
+        <h2 style="font-size: var(--t-h3);">Benchmarks oficiais</h2>
+      </div>
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr><th>Benchmark</th><th>Score</th><th>Fonte</th><th>Nota</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Benchmark">SWE-Bench Pro</td>
+              <td data-label="Score">69,2%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">—</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">Terminal-Bench 2.1</td>
+              <td data-label="Score">82,7%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">a OpenAI reporta o mesmo modelo no mesmo benchmark em 78,9% — divergência de auto-reporte entre labs</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">Terminal-Bench 2.1</td>
+              <td data-label="Score">78,9%</td>
+              <td data-label="Fonte">OpenAI</td>
+              <td data-label="Nota">número da tabela divulgada pela OpenAI para o mesmo modelo</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">FrontierCode Diamond (xhigh)</td>
+              <td data-label="Score">13,4%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">—</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">GDPval-AA</td>
+              <td data-label="Score">1890</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">pontuação, não %</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">OSWorld-Verified</td>
+              <td data-label="Score">83,4%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">—</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">Humanity&#x27;s Last Exam (com ferramentas)</td>
+              <td data-label="Score">57,9%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">—</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">Humanity&#x27;s Last Exam (sem ferramentas)</td>
+              <td data-label="Score">49,8%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">—</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">Blueprint-Bench 2</td>
+              <td data-label="Score">14,5%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">—</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">ExploitBench (Cap%)</td>
+              <td data-label="Score">40,0%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">—</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">HealthBench Professional</td>
+              <td data-label="Score">56,9%</td>
+              <td data-label="Fonte">Anthropic</td>
+              <td data-label="Nota">—</td>
+            </tr>
+            <tr>
+              <td data-label="Benchmark">Score composto Artificial Analysis</td>
+              <td data-label="Score">56</td>
+              <td data-label="Fonte">Artificial Analysis</td>
+              <td data-label="Nota">⚠️ reportado por fonte secundária</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="legend">números auto-reportados pelos vendors — o placar deste site mede outra coisa: se o app entrega.</p>
+      <div class="site-sec-head" style="margin-top: 40px;">
+        <h2 style="font-size: var(--t-h3);">Asteriscos</h2>
+      </div>
+      <div class="prose">
+        <ul>
+          <li>Divergência de auto-reporte: Terminal-Bench 2.1 = 82,7% segundo a Anthropic, 78,9% segundo a OpenAI — cada lab roda a própria bateria e publica o número que sai.</li>
+          <li>Scores oficiais auto-reportados pela Anthropic (tabela publicada com o lançamento do Fable 5).</li>
+        </ul>
+      </div>
+      <div class="site-sec-head" style="margin-top: 40px;">
+        <h2 style="font-size: var(--t-h3);">Comportamento medido (v0)</h2>
+      </div>
+      <div class="spec-grid">
+        <div class="spec-card">
+          <div class="l">verificou no browser</div>
+          <div class="v">1/4</div>
+        </div>
+        <div class="spec-card">
+          <div class="l">idas na bateria</div>
+          <div class="v">18</div>
+        </div>
+      </div>
+      <div class="analysis">
+        <h4>Leitura</h4>
+        Verificador seletivo: só abriu o navegador no FPS (o mais difícil), onde teve 1 erro e fez 2 Edits; escreveu e parou nos outros 3. O mais enxuto em linhas (305/382/233/704). Custo da bateria: $3,49 — 4,5× menos que o Fable 5.
+      </div>
+      <div class="site-sec-head" style="margin-top: 40px;">
+        <h2 style="font-size: var(--t-h3);">Runs na bateria</h2>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/001/">001 · sistema-solar-3d</a>
+          <span class="pill pill-diaadia">3D interativo</span>
+          <span class="verdict-badge verdict-defeitos">Defeitos</span>
+          <a class="open" href="/runs/opus-4-8/001/index.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/001/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 001"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,48</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">11.452</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">4</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">2m 20s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,71</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+          <span class="mi"><span class="ml">tokens input_uncached</span><span class="mv">220</span></span>
+          <span class="mi"><span class="ml">tokens cache_read</span><span class="mv">140.825</span></span>
+          <span class="mi"><span class="ml">tokens cache_write</span><span class="mv">40.682</span></span>
+        </div>
+        <div class="rb-body">
+          <p>Run do teste 001 (sistema solar 3D): 6 rounds, 304s, US$1.00. Ferramentas: Write×2, Bash×2, Read×1. Artefato de 614 linhas. Sem dependência externa.</p>
+          <p class="fair"><span class="fl">fairness</span>auditado, single-shot, prompt verbatim, sem subagentes, sem skills</p>
+        </div>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/002/">002 · site-apple</a>
+          <span class="pill pill-diaadia">clone de site</span>
+          <span class="verdict-badge verdict-entregou">Entregou</span>
+          <a class="open" href="/runs/opus-4-8/002/index.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/002/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 002"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,67</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">13.133</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">8</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">3m 2s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,93</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+          <span class="mi"><span class="ml">tokens input_uncached</span><span class="mv">369</span></span>
+          <span class="mi"><span class="ml">tokens cache_read</span><span class="mv">206.291</span></span>
+          <span class="mi"><span class="ml">tokens cache_write</span><span class="mv">27.564</span></span>
+        </div>
+        <div class="rb-body">
+          <p>Run do teste 002 (clone da home da Apple): 8 rounds, 232s, US$0.78. Ferramentas: Write×1, Edit×5, Bash×1. Artefato de 783 linhas. Sem dependência externa.</p>
+          <p class="fair"><span class="fl">fairness</span>auditado, single-shot, prompt verbatim, sem subagentes, sem skills</p>
+        </div>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/003/">003 · fisica-mouse</a>
+          <span class="pill pill-diaadia">física/canvas</span>
+          <span class="verdict-badge verdict-entregou">Entregou</span>
+          <a class="open" href="/runs/opus-4-8/003/index.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/003/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 003"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,29</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">6.916</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">3</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">1m 27s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,95</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+          <span class="mi"><span class="ml">tokens input_uncached</span><span class="mv">216</span></span>
+          <span class="mi"><span class="ml">tokens cache_read</span><span class="mv">67.543</span></span>
+          <span class="mi"><span class="ml">tokens cache_write</span><span class="mv">18.730</span></span>
+        </div>
+        <div class="rb-body">
+          <p>Run do teste 003 (física de bolinhas): 4 rounds, 140s, US$0.45. Ferramentas: Write×1, Bash×2. Artefato de 437 linhas. Sem dependência externa.</p>
+          <p class="fair"><span class="fl">fairness</span>auditado, single-shot, prompt verbatim, sem subagentes, sem skills</p>
+        </div>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/004/">004 · fps</a>
+          <span class="pill pill-diaadia">jogo 3D</span>
+          <span class="verdict-badge verdict-defeitos">Defeitos</span>
+          <a class="open" href="/runs/opus-4-8/004/index.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/004/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 004"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,59</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">16.888</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">2</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">3m 6s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,71</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+          <span class="mi"><span class="ml">tokens input_uncached</span><span class="mv">2.449</span></span>
+          <span class="mi"><span class="ml">tokens cache_read</span><span class="mv">7.530.454</span></span>
+          <span class="mi"><span class="ml">tokens cache_write</span><span class="mv">136.447</span></span>
+        </div>
+        <div class="rb-body">
+          <p>Run do teste 004 (jogo FPS): 81 rounds, 1731s, US$7.26. Ferramentas: Bash×31, Write×3, Read×11, Edit×35. Artefato de 1702 linhas. Sem dependência externa.</p>
+          <p class="fair"><span class="fl">fairness</span>auditado, single-shot, prompt verbatim, sem subagentes, sem skills</p>
+        </div>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/101/">101 · caca-bug</a>
+          <span class="pill pill-diaadia">debug</span>
+          <span class="verdict-badge verdict-entregou">Entregou</span>
+          <a class="open" href="/runs/opus-4-8/101/index.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/101/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 101"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,30</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">1.793</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">7</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">41s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,67</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+        </div>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/103/">103 · feature-alheia</a>
+          <span class="pill pill-diaadia">feature em código existente</span>
+          <span class="verdict-badge verdict-entregou">Entregou</span>
+          <a class="open" href="/runs/opus-4-8/103/index.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/103/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 103"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,20</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">3.138</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">8</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">50s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,84</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+        </div>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/104/">104 · css-mobile</a>
+          <span class="pill pill-diaadia">CSS responsivo</span>
+          <span class="verdict-badge verdict-entregou">Entregou</span>
+          <a class="open" href="/runs/opus-4-8/104/index.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/104/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 104"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,25</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">4.761</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">5</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">1m 15s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,93</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+        </div>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/105/">105 · revisar-codigo</a>
+          <span class="pill pill-diaadia">code review</span>
+          <span class="verdict-badge verdict-entregou">Entregou</span>
+          <a class="open" href="/runs/opus-4-8/105/index.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/105/index.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 105"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,34</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">7.841</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">5</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">2m 10s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,78</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+        </div>
+      </div>
+      <div class="runblock">
+        <div class="rb-head">
+          <a class="rb-test" href="/teste/108/">108 · dado-sujo</a>
+          <span class="pill pill-diaadia">dados</span>
+          <span class="verdict-badge verdict-entregou">Entregou</span>
+          <a class="open" href="/runs/opus-4-8/108/relatorio.html">abrir ↗</a>
+        </div>
+        <div class="run-frame run-facade" data-src="/runs/opus-4-8/108/relatorio.html" role="button" tabindex="0" aria-label="Carregar preview: Opus 4.8 — teste 108"><span>▶ carregar preview</span></div>
+        <div class="rb-meta">
+          <span class="mi"><span class="ml">custo</span><span class="mv">$0,75</span></span>
+          <span class="mi"><span class="ml">tokens out</span><span class="mv">15.908</span></span>
+          <span class="mi"><span class="ml">idas</span><span class="mv">10</span></span>
+          <span class="mi"><span class="ml">duração</span><span class="mv">3m 36s</span></span>
+          <span class="mi"><span class="ml">score</span><span class="mv">0,68</span></span>
+          <span class="mi"><span class="ml">acabamento</span><span class="mv">1/1</span></span>
+        </div>
+      </div>
+      <div class="site-sec-head" style="margin-top: 40px;">
+        <h2 style="font-size: var(--t-h3);">Duelos diretos</h2>
+      </div>
+      <div class="duel-chips">
+        <a class="duel-chip" href="/comparativo/glm-5-turbo__vs__opus-4-8/">vs GLM 5 Turbo</a>
+        <a class="duel-chip" href="/comparativo/gpt-5-3-codex-spark__vs__opus-4-8/">vs GPT-5.3 Codex Spark</a>
+        <a class="duel-chip" href="/comparativo/gpt-5-6-luna__vs__opus-4-8/">vs GPT-5.6 Luna</a>
+        <a class="duel-chip" href="/comparativo/grok-4-5__vs__opus-4-8/">vs Grok 4.5</a>
+        <a class="duel-chip" href="/comparativo/grok-composer-2-5-fast__vs__opus-4-8/">vs Grok Composer 2.5 Fast</a>
+        <a class="duel-chip" href="/comparativo/haiku-4-5__vs__opus-4-8/">vs Haiku 4.5</a>
+        <a class="duel-chip" href="/comparativo/kimi-k3__vs__opus-4-8/">vs Kimi K3</a>
+        <a class="duel-chip" href="/comparativo/opus-4-8__vs__fable-5/">vs Fable 5</a>
+        <a class="duel-chip" href="/comparativo/opus-4-8__vs__glm-5-2/">vs GLM 5.2</a>
+        <a class="duel-chip" href="/comparativo/opus-4-8__vs__gpt-5-4-mini/">vs GPT-5.4 Mini</a>
+        <a class="duel-chip" href="/comparativo/opus-4-8__vs__gpt-5-4/">vs GPT-5.4</a>
+        <a class="duel-chip" href="/comparativo/opus-4-8__vs__gpt-5-5/">vs GPT-5.5</a>
+        <a class="duel-chip" href="/comparativo/opus-4-8__vs__gpt-5-6-sol/">vs GPT-5.6 Sol</a>
+        <a class="duel-chip" href="/comparativo/opus-4-8__vs__gpt-5-6-terra/">vs GPT-5.6 Terra</a>
+        <a class="duel-chip" href="/comparativo/opus-4-8__vs__sonnet-5/">vs Sonnet 5</a>
+        <a class="duel-chip" href="/comparativo/sonnet-4-6__vs__opus-4-8/">vs Sonnet 4.6</a>
+      </div>
+      <div class="site-sec-head" style="margin-top: 40px;">
+        <h2 style="font-size: var(--t-h3);">Perguntas frequentes</h2>
+      </div>
+      <details class="faq-item">
+        <summary>Quanto custa Claude Opus 4.8 pra programar?</summary>
+        <p>Preço de tabela: $5/1M tokens de entrada e $25/1M de saída. Na prática, medimos $3,86 em 9 tarefas reais de vibe coding — média de $0,43 por tarefa.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Claude Opus 4.8 vale a pena pra código?</summary>
+        <p>No julgamento cego, Claude Opus 4.8 ficou em #11 no ranking geral (score 0,799), com 7 entregas limpas, 2 com defeitos e 0 quebradas em 9 testes.</p>
+      </details>
+      <script>
+        (function () {
+          function load(el) {
+            if (el.dataset.loaded) return;
+            el.dataset.loaded = '1';
+            var f = document.createElement('iframe');
+            f.className = 'run-frame';
+            f.src = el.dataset.src;
+            f.title = el.getAttribute('aria-label') || 'preview do run';
+            el.replaceWith(f);
+          }
+          var facades = document.querySelectorAll('.run-facade');
+          facades.forEach(function (el) {
+            el.addEventListener('click', function () { load(el); });
+            el.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); load(el); }
+            });
+          });
+          if ('IntersectionObserver' in window) {
+            // carrega conforme o preview entra na viewport (com folga de 200px)
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (en) {
+                if (en.isIntersecting) { io.unobserve(en.target); load(en.target); }
+              });
+            }, { rootMargin: '200px 0px' });
+            facades.forEach(function (el) { io.observe(el); });
+          }
+        })();
+      </script>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="site-foot-cols">
+      <div class="site-foot-group">
+        <div class="site-foot-h">
+          <span style="display: inline-flex; align-items: center; gap: 8px;">
+            <span class="logo-mark sm">OB</span>
+            Overclock Benchmark
+          </span>
+        </div>
+        <p style="font-size: 12px; color: var(--color-muted); line-height: 1.6; max-width: 320px;">
+          Benchmark independente de modelos de IA para vibe coding.
+          Nenhum número é inventado. Todo fato vem de medição.
+        </p>
+      </div>
+      <div class="site-foot-group">
+        <div class="site-foot-h">Navegar</div>
+        <a href="/#resultados">Resultados</a>
+        <a href="/#placar">Placar por modelo</a>
+        <a href="/comparativos/">Comparativos</a>
+        <a href="/squads/">Squads recomendados</a>
+        <a href="/#metodologia">Como funciona</a>
+      </div>
+      <div class="site-foot-group">
+        <div class="site-foot-h">Links</div>
+        <a href="https://overclock.sh" target="_blank" rel="noopener">overclock.sh</a>
+        <a href="https://github.com/laschuk/overclock-benchmark" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://x.com/laschuk" target="_blank" rel="noopener">@laschuk</a>
+      </div>
+    </div>
+    <div class="site-foot-bar">
+      <span class="gen-note">gerado por <b>publish.py</b> em 2026-07-17T12:20:35-03:00 — fonte: <b>results.json</b></span>
+      <span style="font-family: var(--site-font-mono); font-size: 10px; color: var(--color-muted);">v2.0</span>
+    </div>
+  </footer>
+
+</body>
+</html>
