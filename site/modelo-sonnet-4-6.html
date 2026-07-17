@@ -402,19 +402,33 @@
         <p>No julgamento cego, Claude Sonnet 4.6 ficou em #7 no ranking geral (score 0,837), com 7 entregas limpas, 2 com defeitos e 0 quebradas em 9 testes.</p>
       </details>
       <script>
-        document.querySelectorAll('.run-facade').forEach(function (el) {
-          function load() {
+        (function () {
+          function load(el) {
+            if (el.dataset.loaded) return;
+            el.dataset.loaded = '1';
             var f = document.createElement('iframe');
             f.className = 'run-frame';
             f.src = el.dataset.src;
             f.title = el.getAttribute('aria-label') || 'preview do run';
             el.replaceWith(f);
           }
-          el.addEventListener('click', load);
-          el.addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); load(); }
+          var facades = document.querySelectorAll('.run-facade');
+          facades.forEach(function (el) {
+            el.addEventListener('click', function () { load(el); });
+            el.addEventListener('keydown', function (e) {
+              if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); load(el); }
+            });
           });
-        });
+          if ('IntersectionObserver' in window) {
+            // carrega conforme o preview entra na viewport (com folga de 200px)
+            var io = new IntersectionObserver(function (entries) {
+              entries.forEach(function (en) {
+                if (en.isIntersecting) { io.unobserve(en.target); load(en.target); }
+              });
+            }, { rootMargin: '200px 0px' });
+            facades.forEach(function (el) { io.observe(el); });
+          }
+        })();
       </script>
     </div>
   </main>
@@ -449,7 +463,7 @@
       </div>
     </div>
     <div class="site-foot-bar">
-      <span class="gen-note">gerado por <b>publish.py</b> em 2026-07-17T03:33:36-03:00 — fonte: <b>results.json</b></span>
+      <span class="gen-note">gerado por <b>publish.py</b> em 2026-07-17T12:10:21-03:00 — fonte: <b>results.json</b></span>
       <span style="font-family: var(--site-font-mono); font-size: 10px; color: var(--color-muted);">v2.0</span>
     </div>
   </footer>
