@@ -1,0 +1,2 @@
+# Teste 104 — CSS quebrado no mobile
+A landing do meu cliente (index.html + style.css nesta pasta) tá perfeita no desktop, mas no celular tá toda quebrada — fica com rolagem lateral e os cards estouram a tela. Conserta o mobile (pensa num iPhone, uns 390px de largura) sem mudar NADA da aparência no desktop. O cliente já aprovou o visual desktop, então é cirúrgico: mobile responsivo, desktop intacto.

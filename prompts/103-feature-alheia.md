@@ -1,0 +1,2 @@
+# Teste 103 — Feature em código alheio (filtro por período)
+Esse é meu app de controle de gastos (index.html, app.js, style.css nesta pasta). Preciso que você adicione um filtro por período: dois campos de data ("de" e "até") do lado do filtro de categoria que já existe. Os dois filtros têm que funcionar juntos, e o total no rodapé tem que continuar refletindo só o que está visível. Segue o padrão do código que já está lá — não reestrutura o projeto, não troca lib, não muda o que já funciona.
