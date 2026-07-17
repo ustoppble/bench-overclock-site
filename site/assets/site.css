@@ -78,6 +78,19 @@ body {
 }
 ::selection { background: var(--color-brand); color: #000; }
 
+/* Fundo global: mesma malha de partículas/glow da hero, versão sutil e fixa —
+   o site inteiro vive sobre a mesma textura, não só o topo. */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 10%, rgba(239,68,68,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 90%, rgba(220,38,38,0.04) 0%, transparent 50%),
+    linear-gradient(rgba(239,68,68,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(239,68,68,0.02) 1px, transparent 1px);
+  background-size: auto, auto, 60px 60px, 60px 60px;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--color-bg); }
@@ -209,7 +222,7 @@ body {
   padding: 80px 0;
   position: relative;
 }
-.site-sec-alt { background: var(--color-deep); }
+.site-sec-alt { background: rgba(5,5,5,0.72); } /* deixa a malha do fundo atravessar de leve */
 .site-sec-label {
   display: flex; align-items: center; gap: 10px;
   font-size: var(--t-label); letter-spacing: var(--ls-label);
